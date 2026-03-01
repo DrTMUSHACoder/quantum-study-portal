@@ -1,0 +1,48 @@
+Show list of question number in top, user can attend randomly any questions
+---------------
+Keep previous question in quizzes
+----------------------------------
+After quiz, complete show the unattempt questions also, so that they can attend
+--------------------------------------
+create login page and signup page
+--------------------------------------
+signup page
+1. Name
+2. Mobile number
+3. option: Student, Individual, Faculty
+4. Email
+5. Select state from combo box
+6. If student, select college name from combo box. College name need to load based on the state. other no need college name
+7. NPTEL Introduction to QC -> Enrolled: yes/No.   Keep option button
+8. NPTEL Introduction to QC -> Exam Registered: yes/No.   Keep option button
+9. USer photo(optional)
+
+--------------------------------------
+Login with username and password:
+
+if success full login, website should main page should display, other wise throw error in credentials
+--------------------------------------
+Entire website main session information, login and logout should work properly
+--------------------------------------
+after successful login, user can their profile information and can able to change. user photo need to display
+--------------------------------------
+Add Ramachandra college of engineering header in top of all the pages. header to be freezed in all pages while scrolling. 
+Refer the https://big-data-analytics-virtual-lab.vercel.app/
+--------------------------------------
+add footer in all the pages
+Designed & Developed by
+Dr. T. M. Usha, Your names(2 students)
+Professor, Dept. of CSE(IoT)
+Ramachandra College of Engineering (Autonomous), Eluru
+-----------------------------------
+Colour Themes: for three professional colours
+---------------------------------------------
+near to Home Dashboard
+add syllabus pdf, lecture notes pdf, solutions pdf, quiz pdf,  
+-----------------------------------------------
+Left side can be hide/display by click a button
+Refer the https://big-data-analytics-virtual-lab.vercel.app/
+-------------
+
+
+

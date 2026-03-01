@@ -1,0 +1,314 @@
+# OCR Extraction: assigment3.pdf
+# Engine: mistral
+# Pages: 5
+# Total Characters: 7881
+============================================================
+
+
+--- Page 0 ---
+
+2/12/26, 2:36 PM
+Introduction to Quantum Computing: Quantum Algorithms and Qiskit - Unit 5 - Week 3
+
+X
+
+![img-0.jpeg](img-0.jpeg)
+
+(https://swayam.gov.in)
+
+![img-1.jpeg](img-1.jpeg)
+
+(https://swayam.gov.in/nc_details/NPTEL)
+
+ushawin2020@gmail.com
+
+NPTEL (https://swayam.gov.in/explorer?ncCode=NPTEL) » Introduction to Quantum Computing: Quantum Algorithms and Qiskit (course)
+
+Click to register for Certification exam (https://examform.nptel.ac.in/2020_01/exam_form/dashboard)
+
+# Week 3: Assignment 3
+
+The due date for submitting this assignment has passed.
+
+Due on 2026-02-11, 23:59 IST.
+
+As per our records you have not submitted this assignment.
+
+- This assignment has 10 questions of the multiple choice type.
+- Each question can have multiple correct options. If you indicate all the correct answers, you get 2 marks.
+- No marks will be awarded if you indicate an incorrect answer.
+- If you indicate some, but not all, correct answers, you get 1 mark.
+
+1) Consider $|X\rangle = |X_{N - 1}X_{N - 2}\ldots X_1X_0\rangle$, a N-qubit state, is there a simple unitary 1 point $\hat{U}$ such that:
+
+$$
+\hat {U} | X \rangle = | \psi \rangle = \frac {1}{\sqrt {2 ^ {N}}} \sum_ {Y \in \{0, 1 \} ^ {N}} (- 1) ^ {X \cdot Y} | Y \rangle
+$$
+
+where $X\cdot Y$ denotes the mod 2 bitwise inner product
+
+$X\cdot Y = (X_{N - 1}\cdot Y_{N - 1})\oplus (X_{N - 2}\cdot Y_{N - 2})\oplus \dots \oplus (X_1\cdot Y_1)\oplus (X_0\cdot Y_0)$ Starting from the state $|\psi \rangle$, can one get complete information of $X$ by applying some unitary gates followed by measurement?
+
+☐
+
+$\hat{U} = \hat{S}^{\otimes N}$, Yes we can get information about $X$ starting from $|\psi \rangle$ by using $\hat{S}^{\otimes N}$ followed by measurement.
+
+☐ Such a unitary cannot be achieved.
+
+☐
+
+$\hat{U} = \hat{H}^{\otimes N}$, Yes we can get information about $X$ starting from $|\psi \rangle$ by using $\hat{H}^{\otimes N}$ followed by measurement.
+
+☐
+
+https://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=36&amp;assessment=82
+
+--- Page 1 ---
+
+2/12/26, 2:36 PM
+Introduction to Quantum Computing: Quantum Algorithms and Qiskit - - Unit 5 - Week 3
+
+☐ Quantum Algorithms:
+Deutsch Jozsa Algorithm (unit? unit=36&amp;lesson =37)
+
+☐ Quantum Algorithms:
+Bernstein Vazirani Algorithm (unit? unit=36&amp;lesson =38)
+
+☐ Quantum Algorithms:
+Grovers Search (unit? unit=36&amp;lesson =39)
+
+☐ Grover's Algorithm Programming (unit? unit=36&amp;lesson =40)
+
+● Week 3:
+Lecture notes (unit? unit=36&amp;lesson =41)
+
+☐ Week 3 Feedback Form:
+Introduction to Quantum Computing: Quantum Algorithms and Qiskit (unit? unit=36&amp;lesson =42)
+
+☐ Quiz: Week 3:
+Assignment 3 (assessment? name=82)
+
+Week 4 ()
+
+$$
+\hat{U} = \hat{T}^{\otimes N}, \text{ We cannot infer } X \text{ from } |\psi\rangle.
+$$
+
+No, the answer is incorrect.
+Score: 0
+Accepted Answers:
+$$
+\hat{U} = \hat{H}^{\otimes N}, \text{ Yes we can get information about } X \text{ starting from } |\psi\rangle \text{ by using } \hat{H}^{\otimes N} \text{ followed by measurement.}
+$$
+
+2) In the Deutsch-Jozsa problem, what is the minimum number of queries a classical 1 point deterministic algorithm must make to determine with 100% certainty whether a function of input size $n$ is constant or balanced?
+
+$$
+\begin{array}{c}
+\boxed{2^n} \\
+\boxed{n} \\
+\boxed{2^{n-1} + 1} \\
+\boxed{2}
+\end{array}
+$$
+
+No, the answer is incorrect.
+Score: 0
+Accepted Answers:
+$$
+2^{n-1} + 1
+$$
+
+3) What are the possible outputs when the first 3 qubits are measured at the end of the 1 point circuit? Follow qiskit ordering
+
+$$
+\begin{array}{c}
+\boxed{0} \\
+\boxed{0} \\
+\boxed{1} \\
+\boxed{1} \\
+\boxed{1}
+\end{array}
+\quad
+\begin{array}{c}
+\boxed{H} \\
+\boxed{H} \\
+\boxed{H} \\
+\boxed{H}
+\end{array}
+$$
+
+$$
+\begin{array}{c}
+\boxed{000} \\
+\boxed{101} \\
+\boxed{010} \\
+\boxed{110} \\
+\boxed{110} \\
+\boxed{110} \\
+\boxed{110} \\
+\boxed{110} \\
+\boxed{110} \\
+\boxed{110} \\
+\boxed{110}
+\end{array}
+$$
+
+No, the answer is incorrect.
+Score: 0
+Accepted Answers:
+$$
+\begin{array}{c}
+\boxed{010} \\
+\boxed{110} \\
+\boxed{110} \\
+\boxed{110} \\
+\boxed{110} \\
+\boxed{110} \\
+\box
+\end{array}
+$$
+
+4) Which properties of a quantum mechanical system are exploited by both the Deutsch- 1 point Jozsa and Bernstein-Vazirani algorithms to encode the function's output $f(x)$ onto the phase of the input state?
+
+https://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=36&amp;assessment=82
+
+--- Page 2 ---
+
+2/12/26, 2:36 PM
+Introduction to Quantum Computing: Quantum Algorithms and Qiskit - - Unit 5 - Week 3
+
+Download Videos ()
+
+Transcripts ()
+
+☐ Uncertainty Principle
+☐ Phase Kickback
+☐ Superposition
+☐ All the above
+
+No, the answer is incorrect.
+Score: 0
+Accepted Answers:
+Phase Kickback
+Superposition
+
+5) What is the expected output when the qubits are measured at the end of the circuit 1 point
+
+![img-2.jpeg](img-2.jpeg)
+
+010&gt;
+110&gt;
+001&gt;
+000&gt;
+☐ None of these
+
+No, the answer is incorrect.
+Score: 0
+Accepted Answers:
+000&gt;
+
+6) What is the probability for all the first 4 wires to output 0 when measured at the end of 1 point the following circuit?
+
+![img-3.jpeg](img-3.jpeg)
+
+1/4
+1/16
+0
+1
+☐ None of these
+
+https://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=36&amp;assessment=82
+3/5
+
+--- Page 3 ---
+
+2/12/26, 2:36 PM
+
+Introduction to Quantum Computing: Quantum Algorithms and Qiskit - Unit 5 - Week 3
+
+No, the answer is incorrect.
+
+Score: 0
+
+Accepted Answers:
+
+0
+
+7) How does the quantum circuit for the Bernstein-Vazirani algorithm fundamentally compare to the circuit for the Deutsch-Jozsa algorithm?
+
+1 point
+
+It requires n repetitions of the Deutsch-Jozsa circuit to find each bit of the secret string.
+It is completely different, using a new set of gates and a novel structure.
+It replaces all Hadamard gates with CNOT gates to determine the secret string.
+It is identical in structure, differing only in the function implemented by the oracle.
+
+No, the answer is incorrect.
+
+Score: 0
+
+Accepted Answers:
+
+It is identical in structure, differing only in the function implemented by the oracle.
+
+8) How is the reflection about the uniform superposition state  $|u\rangle$  (the Grover diffuser) constructed?
+
+1 point
+
+By transforming  $|u\rangle$  to  $|0\ldots 0\rangle$  with Hadamard gates, reflecting about  $|0\ldots 0\rangle$ , and transforming back
+It is implemented by a different oracle designed to mark the state  $|u\rangle$
+It is a fundamental quantum gate that can be applied directly.
+By applying the oracle in reverse on the state  $|u\rangle$
+
+No, the answer is incorrect.
+
+Score: 0
+
+Accepted Answers:
+
+By transforming  $|u\rangle$  to  $|0\ldots 0\rangle$  with Hadamard gates, reflecting about  $|0\ldots 0\rangle$ , and transforming back
+
+9) What does the following quantum circuit represent?
+
+1 point
+
+![img-4.jpeg](img-4.jpeg)
+
+Deutsch-Jozsa with Constant Function Oracle
+Deutsch-Jozsa with Balanced Function Oracle
+Bernstein-Vazirani with hidden string 111
+
+https://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=36&amp;assessment=82
+
+--- Page 4 ---
+
+2/12/26, 2:36 PM
+Introduction to Quantum Computing: Quantum Algorithms and Qiskit - - Unit 5 - Week 3
+
+## Grover's Search
+
+No, the answer is incorrect.
+Score: 0
+Accepted Answers:
+*Deutsch-Jozsa with Constant Function Oracle*
+
+**10)** The geometric interpretation of Grover’s algorithm involves a rotation within a 2D plane. Which two orthogonal basis vectors span this plane?
+
+1 point
+
+☐ The initial uniform superposition state $|u\rangle$ and the final target state $|a\rangle$.
+
+☐ The target state $|a\rangle$ and a uniform superposition of all non-target states, $|e\rangle$.
+
+☐ The input register state $|x\rangle$ and the output register state $|f(x)\rangle$.
+
+☐ The all-zeros state $|0\dots 0\rangle$ and the all-ones state $|1\dots 1\rangle$.
+
+No, the answer is incorrect.
+Score: 0
+Accepted Answers:
+*The target state $|a\rangle$ and a uniform superposition of all non-target states, $|e\rangle*.
+
+https://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=36&amp;assessment=82
+5/5

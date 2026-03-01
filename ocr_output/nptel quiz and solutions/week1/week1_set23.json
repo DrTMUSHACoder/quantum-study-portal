@@ -1,0 +1,62 @@
+[
+    {
+        "q": "According to Postulate 1, the state of a quantum system is represented as what in a Hilbert space?",
+        "options": [
+            "A real vector",
+            "A unit vector (state vector)",
+            "A scalar value",
+            "A probability distribution"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 1 specifies that a quantum state is a unit vector in a complex inner product space (Hilbert space).",
+        "id": "1_23_1"
+    },
+    {
+        "q": "Which postulate addresses the physical quantities (position, momentum, spin) obtained by making measurements on a system?",
+        "options": [
+            "Postulate 1",
+            "Postulate 2",
+            "Postulate 3",
+            "Postulate 4"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 2 states that observables are described by Hermitian operators on the quantum state space.",
+        "id": "1_23_2"
+    },
+    {
+        "q": "Time evolution of a closed quantum system is described by which type of operator according to Postulate 3?",
+        "options": [
+            "Hermitian operator",
+            "Unitary operator",
+            "Stochastic operator",
+            "Projection operator"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 3 (and the Schrödinger equation) implies that the time evolution is governed by a Unitary operator, which preserves the norm.",
+        "id": "1_23_3"
+    },
+    {
+        "q": "If |0⟩ and |1⟩ are orthogonal basis states, what is the value of the inner product ⟨0|1⟩?",
+        "options": [
+            "1",
+            "0",
+            "i",
+            "-1"
+        ],
+        "answer": 1,
+        "explanation": "Orthogonal states have an inner product of 0 by definition.",
+        "id": "1_23_4"
+    },
+    {
+        "q": "What is the range of the polar angle θ and the azimuthal angle φ for a state represented on the Bloch sphere?",
+        "options": [
+            "θ ∈ [0, π], φ ∈ [0, π]",
+            "θ ∈ [0, 2π], φ ∈ [0, π]",
+            "θ ∈ [0, π], φ ∈ [0, 2π]",
+            "θ ∈ [0, π/2], φ ∈ [0, 2π]"
+        ],
+        "answer": 2,
+        "explanation": "As per the recap on Qubit state space, θ ranges from 0 to π, and φ ranges from 0 to 2π.",
+        "id": "1_23_5"
+    }
+]

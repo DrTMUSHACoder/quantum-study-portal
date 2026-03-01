@@ -1,0 +1,49 @@
+{
+  "file": "resources\\week_2\\quize\\week 2 solutions.pdf",
+  "file_name": "week 2 solutions.pdf",
+  "success": true,
+  "winner": "mistral",
+  "total_pages": 7,
+  "total_chars": 8268,
+  "pages": [
+    {
+      "page_number": 0,
+      "text": "2/12/26, 2:12 PM\nIntroduction to Quantum Computing: Quantum Algorithms and Qiskit - - Unit 4 - Week 2\n\nX\n\n![img-0.jpeg](img-0.jpeg)\n\n(https://swayam.gov.in)\n\n![img-1.jpeg](img-1.jpeg)\n\n(https://swayam.gov.in/nc_details/NPTEL)\n\nushawin2020@gmail.com\n\nNPTEL (https://swayam.gov.in/explorer?ncCode=NPTEL) » Introduction to Quantum Computing: Quantum Algorithms and Qiskit (course)\n\nClick to register for Certification exam (https://examform.nptel.ac.in/2026_01/exam_form/dashboard)\n\n# Week 2: Assignment 2\n\nThe due date for submitting this assignment has passed.\n\nDue on 2026-02-04, 23:59 IST.\n\n## Assignment submitted on 2026-02-02, 22:10 IST\n\nProgramming Notebook: Access the Google Colab Notebook with code templates for this assignment Here.\n\n(https://colab.research.google.com/drive/1OdD5guZdNRPYBHMWFdA8Ra3XvMhpr0Do?usp=sharing) Use this notebook for Questions 6, 7 and 8.\n\nCourse outline\n\nAbout NPTEL ()\n\nHow does an NPTEL online course work? ()\n\nWeek 1 ()\n\nWeek 2 ()\n\nProgramming using IBM Quantum\n\n- This assignment has 10 questions of the multiple choice type.\n- Each question can have multiple correct options. If you indicate all the correct answers, you get 2 marks.\n- No marks will be awarded if you indicate an incorrect answer.\n- If you indicate some, but not all, correct answers, you get 1 mark.\n\n1) Which of the following are Qiskit Runtime primitives currently available on the IBM 2 points Quantum Platform?\n\n☐ Sampler\n☐ Estimator\n☐ Circuit-Runner\n☐ Executor\n\nYes, the answer is correct.\n\nhttps://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=28&amp;assessment=81\n1/7",
+      "text_length": 1586
+    },
+    {
+      "page_number": 1,
+      "text": "2/12/26, 2:12 PM\nIntroduction to Quantum Computing: Quantum Algorithms and Qiskit - Unit 4 - Week 2\n\n|  Experience and Circuit Composer (unit? unit=28&lesson =29) | Score: 2\nAccepted Answers:\nSampler\nEstimator  |\n| --- | --- |\n|  Quantum Computing Concepts: Entanglement and Interference - Part 1 (unit? unit=28&lesson =30) | 2) According to the IBM Quantum Composer documentation, which version of OpenQASM is currently supported for writing quantum circuits in the code editor?\n☐ OpenQASM 1.0\n☑ OpenQASM 2.0\n☐ OpenQASM 3.0\n☐ OpenQASM 2.5\nYes, the answer is correct.\nScore: 2\nAccepted Answers:\nOpenQASM 2.0  |\n|  Quantum Computing Concepts: Entanglement and Interference - Part 2 (unit? unit=28&lesson =31) | 3) Which statement correctly describes the difference between the Sampler and Estimator primitives in Qiskit?\n☑ Sampler returns measurement outcome distributions from a circuit, while Estimator returns expectation values of specified observables\n☐ Sampler is used for variational algorithms, while Estimator is used only for circuit execution\n☐ Sampler requires observables as input, while Estimator does not\n☐ Estimator returns raw bitstrings, while Sampler returns expectation values\nYes, the answer is correct.\nScore: 2\nAccepted Answers:\nSampler returns measurement outcome distributions from a circuit, while Estimator returns expectation values of specified observables  |\n|  Programming with Qiskit (unit? unit=28&lesson =79) |   |\n|  Week 2: Lecture notes (unit? unit=28&lesson =34) |   |\n|  Week 2 Feedback Form: Introduction to Quantum Computing: Quantum Algorithms and Qiskit (unit? unit=28&lesson =35) | 4) In the transpilation process, which of the following steps are NOT performed to prepare a quantum circuit for execution on real quantum hardware?\n☐ Decomposing multi-qubit gates into basis gates supported by the backend\n☐ Mapping logical qubits to physical qubits based on the hardware topology\n☐ Optimizing circuit depth to reduce gate count\n☑ Converting all gates to Hadamard and CNOT gates only\nYes, the answer is correct.\nScore: 2\nAccepted Answers:\nConverting all gates to Hadamard and CNOT gates only  |\n|  Downloadable Notes (unit? unit=28&lesson =77) | 5) Using IBM Quantum Composer, create a 3-qubit circuit starting in state |000). Apply a 2 points rotation gate $R_y\\left(\\frac{\\pi}{3}\\right)$ to the first qubit ($q[0]$). After running the circuit and viewing the statevector visualization, which of the following images correctly represents the resulting quantum state?  |\n\nhttps://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=28&amp;assessment=81",
+      "text_length": 2589
+    },
+    {
+      "page_number": 2,
+      "text": "2/12/26, 2:12 PM\nIntroduction to Quantum Computing: Quantum Algorithms and Qiskit - Unit 4 - Week 2\n\n- Quiz: Week 2: Assignment 2 (assessment? name=81)\n- Week 2: Solution (unit? unit=28&amp;lesson=85)\n- Week 3 ()\n- Week 4 ()\n- Download Videos ()\n- Transcripts ()\n\n![img-2.jpeg](img-2.jpeg)\n![img-3.jpeg](img-3.jpeg)\n![img-4.jpeg](img-4.jpeg)\n![img-5.jpeg](img-5.jpeg)\n\nhttps://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=28&amp;assessment=81\n3/7",
+      "text_length": 448
+    },
+    {
+      "page_number": 3,
+      "text": "2/12/26, 2:12 PM\n\nIntroduction to Quantum Computing: Quantum Algorithms and Qiskit - Unit 4 - Week 2\n\nNo, the answer is incorrect.\n\nScore: 0\n\nAccepted Answers:\n\n![img-6.jpeg](img-6.jpeg)\n\n6) Create a 3-qubit GHZ state by applying a Hadamard gate to q[0], followed by CNOT 2 points gates from q[0] to q[1] and q[0] to q[2]. Visualize the density matrix using the state city representation. Which of the following images correctly shows the real and imaginary components of the density matrix?\n\n![img-7.jpeg](img-7.jpeg)\n\n![img-8.jpeg](img-8.jpeg)\n\n![img-9.jpeg](img-9.jpeg)\n\n![img-10.jpeg](img-10.jpeg)\n\nhttps://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=28&amp;assessment=81",
+      "text_length": 678
+    },
+    {
+      "page_number": 4,
+      "text": "2/12/26, 2:12 PM\n\nIntroduction to Quantum Computing: Quantum Algorithms and Qiskit - Unit 4 - Week 2\n\n![img-11.jpeg](img-11.jpeg)\n\n![img-12.jpeg](img-12.jpeg)\n\n![img-13.jpeg](img-13.jpeg)\n\n![img-14.jpeg](img-14.jpeg)\n\nYes, the answer is correct.\n\nScore: 2\n\nAccepted Answers:\n\n![img-15.jpeg](img-15.jpeg)\n\n![img-16.jpeg](img-16.jpeg)\n\n7) Starting with the initial state  $|\\psi \\rangle = \\frac{1}{2} (|00\\rangle + |01\\rangle + |10\\rangle + |11\\rangle)$ , apply a CNOT 2 points gate with control qubit q[0] and target qubit q[1], followed by a Hadamard gate on q[0]. What is the resulting quantum state?\n\n$$\n\\begin{array}{l} \\frac {1}{2} \\left(| 0 0 \\rangle + | 0 1 \\rangle + | 1 0 \\rangle - | 1 1 \\rangle\\right) \\\\ \\frac {\\sqrt {2}}{2} \\left(| 0 0 \\rangle + | 1 0 \\rangle\\right) \\\\ \\left| 0 0 \\right\\rangle \\\\ \\end{array}\n$$\n\nhttps://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=28&amp;assessment=81",
+      "text_length": 900
+    },
+    {
+      "page_number": 5,
+      "text": "2/12/26, 2:12 PM\nIntroduction to Quantum Computing: Quantum Algorithms and Qiskit - - Unit 4 - Week 2\n\n$$\n\\frac{1}{2} (|00\\rangle + |01\\rangle - |10\\rangle + |11\\rangle)\n$$\n\nNo, the answer is incorrect.\nScore: 0\nAccepted Answers:\n$$\n\\frac{\\sqrt{2}}{2} (|00\\rangle + |10\\rangle)\n$$\n\n8) Apply a rotation gate $R_y\\left(\\frac{2\\pi}{3}\\right)$ to the first qubit of state $|000\\rangle$, followed by a CNOT 2 points from qubit 0 to qubit 1. What is the resulting quantum state?\n\n☐\n$$\n\\begin{array}{l}\n\\frac{1}{2} |000\\rangle + \\frac{\\sqrt{3}}{2} |011\\rangle \\\\\n\\boxed{\\phantom{000}} \\\\\n\\frac{\\sqrt{3}}{2} |000\\rangle + \\frac{1}{2} |011\\rangle \\\\\n\\boxed{\\phantom{000}} \\\\\n\\frac{1}{2} |000\\rangle + \\frac{\\sqrt{3}}{2} |110\\rangle \\\\\n\\boxed{\\phantom{000}} \\\\\n\\frac{1}{2} |000\\rangle - \\frac{\\sqrt{3}}{2} |011\\rangle \\\\\n\\end{array}\n$$\n\nNo, the answer is incorrect.\nScore: 0\nAccepted Answers:\n$$\n\\frac{1}{2} |000\\rangle + \\frac{\\sqrt{3}}{2} |011\\rangle\n$$\n\n9) In a quantum teleportation protocol, Bob applies correction gates based on the 2-bit 2 points classical message from Alice. If Bob's gate sequences in four trials are: (I, I), (Z, I), (X, I), and (XZ, I), what are the corresponding 2-bit messages Alice sent?\n\n☐ 00, 01, 10, 11\n☐ 00, 10, 01, 11\n☐ 11, 10, 01, 00\n☐ 10, 00, 11, 01\n\nNo, the answer is incorrect.\nScore: 0\nAccepted Answers:\n00, 01, 10, 11\n\n10) Alice and Bob share an entangled state $\\frac{1}{\\sqrt{2}}(|01\\rangle + |10\\rangle)$. If Alice measures her qubit 2 points in the computational basis and obtains result $|0\\rangle$, what is the state of Bob's qubit after Alice's measurement?\n\n☐\n$$\n|1\\rangle\n$$\n☐\n$$\n|0\\rangle\n$$\n☐\n$$\n\\frac{1}{\\sqrt{2}}(|0\\rangle + |1\\rangle)\n$$\n☐\n\nhttps://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=28&amp;assessment=81\n6/7",
+      "text_length": 1766
+    },
+    {
+      "page_number": 6,
+      "text": "2/12/26, 2:12 PM\nIntroduction to Quantum Computing: Quantum Algorithms and Qiskit - - Unit 4 - Week 2\n\n$$\n\\frac {1}{\\sqrt {2}} (| 0 \\rangle - | 1 \\rangle)\n$$\n\nYes, the answer is correct.\nScore: 2\nAccepted Answers:\n|1&gt;\n\nhttps://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=28&amp;assessment=81\n7/7",
+      "text_length": 301
+    }
+  ],
+  "raw_results": {
+    "mistral": 8268,
+    "chandra": 0
+  }
+}

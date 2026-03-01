@@ -1,0 +1,104 @@
+{
+  "file": "resources\\week_1\\Lecture Notes\\PM_Lec3_QMech.pdf",
+  "file_name": "PM_Lec3_QMech.pdf",
+  "success": true,
+  "winner": "mistral",
+  "total_pages": 18,
+  "total_chars": 7536,
+  "pages": [
+    {
+      "page_number": 0,
+      "text": "# Lec 3: Quantum Measurement and the Uncertainty Principle\n\nPrabha Mandayam\n\nDepartment of Physics, Indian Institute of Technology Madras\n\n![img-0.jpeg](img-0.jpeg)\n\nNPTEL Aug 2021",
+      "text_length": 180
+    },
+    {
+      "page_number": 1,
+      "text": "# Outline\n\n- The measurement postulate\n- Spin measurements via the Stern-Gerlach set-up.\n- Sequential spin measurements and the uncertainty principle.",
+      "text_length": 150
+    },
+    {
+      "page_number": 2,
+      "text": "# Postulate 3 (Quantum Measurement)\n\nLet $A$ be a Hermitian operator (observable) on a $n$-dimensional quantum space with eigenvalues $(a_1, a_2, \\ldots, a_d)$ and eigenvectors $(|a_1\\rangle, |a_2\\rangle, \\ldots, |a_d\\rangle)$.\n\n(3a) A quantum measurement of a state $|\\psi\\rangle$ associates a probability $p(i) = |\\langle a_i|\\psi \\rangle|^2$ to outcome $a_i$.\n\n(3b) Post-measurement state: if the outcome of the measurement is $a_i$, the state of the system collapses to the corresponding eigenstate $|a_i\\rangle$.\n\n- Pictorially, we have\n\n![img-1.jpeg](img-1.jpeg)\n\n- We will next describe the **Stern-Gerlach** experiment as a physical model for quantum measurement.",
+      "text_length": 671
+    },
+    {
+      "page_number": 3,
+      "text": "# Spin measurements: the Stern-Gerlach experiment\n\n![img-2.jpeg](img-2.jpeg)\nFIGURE 1.1. The Stern-Gerlach experiment.\n\nA",
+      "text_length": 121
+    },
+    {
+      "page_number": 4,
+      "text": "# Ther Stern-Gerlach Experiment\n\n- The Stern-Gerlach experiment (1922) is a classic experiment that cannot be explained using classical (i.e., not quantum) mechanics.\n- Stern and Gerlach sent a collimated beam of silver atoms through an inhomogeneous magnetic field and detected the beam on the other end.\n- The singl unpaired electron in each silver atom carries a spin angular momentum, causing it to behave like a magnetic dipole.\n- Since the magnetic field is non-uniform, the atoms get deflected either along the $+z$-direction or the $-z$-direction, depending on the orientation of the spin.",
+      "text_length": 597
+    },
+    {
+      "page_number": 5,
+      "text": "# Outcome of the SG Experiment\n\n- Without a magnetic field, all the atoms will appear at the middle of the screen.\n- The magnetic dipole moment of the silver atoms will be distributed isotropically as there is no preferred direction.\n- Assuming a constant speed $u$ along the $y$ direction, we will expect a $z$-deflection proportional to $\\cos \\theta$.\n- The beam will spread out due (i) the force being different for different atoms and (ii) possible non-zero $z$-components of the initial velocity of the atom.\n\n![img-3.jpeg](img-3.jpeg)\n\nA smooth profile",
+      "text_length": 558
+    },
+    {
+      "page_number": 6,
+      "text": "This is what one would expect classically.\n\n![img-4.jpeg](img-4.jpeg)\n\nA single profile\n\nWhat was observed was more like this!\n\n![img-5.jpeg](img-5.jpeg)\n\nTwo separated profiles\n\nnothing in the middle!\n\nA",
+      "text_length": 204
+    },
+    {
+      "page_number": 7,
+      "text": "# SG as a model of spin measurement\n\n- Let us consider the $SGz$ configuration and suppose that several atoms are prepared in the same (normalized) state\n\n$$\n| \\psi \\rangle = a | 0 \\rangle + b | 1 \\rangle , (| a | ^ {2} + | b | ^ {2} = 1)\n$$\n\n- Then, $p(0) = |a|^2$ – this is the absolute squared of the coefficient of $|0\\rangle$ above. $p(1) = 1 - p(0) = |b|^2$.\n\n- A fraction $p(0)$ of all the atoms will appear in the $S_{z} = +\\hbar / 2$ beam and the remaining in the $S_{z} = -\\hbar / 2$ beam.\n\n- Suppose we did the Stern-Gerlach experiment by sending one atom at a time. What will we observe? The atom will appear in one of the beams due to collapse of the state vector.\n\n![img-6.jpeg](img-6.jpeg)",
+      "text_length": 704
+    },
+    {
+      "page_number": 8,
+      "text": "# SG as a model quantum measurement\n\n![img-7.jpeg](img-7.jpeg)\n\n- We begin with a Hermitian operator $\\hat{S}_z$ – the observable.\n- It has eigenvalues $\\pm 1$ in units of $\\hbar /2$. The eigenstates $\\{|0\\rangle, |1\\rangle\\}$ are the possible outcomes.\n- These occur with probabilities, $p(0) := \\left| \\langle 0 | \\psi \\rangle \\right|^2$. The outcome of the measurement is that the quantum state has collapsed to the eigenstate with one of the eigenvalues.\n\nThere are two aspects to this measurement.\n\n1. A statistical one that is particularly relevant when we prepare several copies of the system in the same input state.\n2. The measurement is destructive in the sense that we lose information about the initial state after collapse.",
+      "text_length": 736
+    },
+    {
+      "page_number": 9,
+      "text": "# Sequential SG Experiments\n\n- Let us summarize the SG experiment as follows:\n\n![img-8.jpeg](img-8.jpeg)\n\n- We could easily align the magnetic field along the $x$-axis.\n\n![img-9.jpeg](img-9.jpeg)\n\n- Let us now try a sequence:\n\n![img-10.jpeg](img-10.jpeg)",
+      "text_length": 254
+    },
+    {
+      "page_number": 10,
+      "text": "# Sequential spin measurements\n\n- Now, consider the following sequence of spin measurements.\n\n![img-11.jpeg](img-11.jpeg)\n\nThis suggests that a $S_{z}+$ beam contains both $S_{x}\\pm$ beams.\n\n- Now what happens with a sequence of 3 such as:\n\n![img-12.jpeg](img-12.jpeg)\n\nViewing $SG_{z}$ as measuring the two possible values of $S_{z}$, we see that measuring $S_{x}$ messes up a measurement of $S_{z}$.\n\nA",
+      "text_length": 404
+    },
+    {
+      "page_number": 11,
+      "text": "# Sequential Quantum Measurements\n\n- Let $A$ and $B$ be two Hermitian operators. Suppose we follow up a measurement of $A$ with a measurement of $B$. What should be the final outcome?\n- The order is important in all cases except when the operators $\\underline{\\text{commute}}$, i.e., the commutator $[A, B] := AB - BA = 0$.\n- When two operators don't commute, then the measurement of one operator affects the outcome of the other. We saw this when $A = S_z$ and $B = S_x$. One can show that,\n\n$$\n[S_z, S_x] = i\\hbar S_y.\n$$\n\n- When two observables do not commute, they satisfy an uncertainty relation: it is impossible to construct states where we know $A$ and $B$ to arbitrary precision.",
+      "text_length": 688
+    },
+    {
+      "page_number": 12,
+      "text": "# Summary\n\n- We have studied some of the key, fundamental ideas of quantum mechanics, with a specific focus on two-level quantum systems.\n\nA",
+      "text_length": 140
+    },
+    {
+      "page_number": 13,
+      "text": "# Summary\n\n- We have studied some of the key, fundamental ideas of quantum mechanics, with a specific focus on *two-level* quantum systems.\n- We understand the behavior of quantum systems via three postulates. The postulates have not been derived; rather, we have only provided some physical motivations behind them.",
+      "text_length": 316
+    },
+    {
+      "page_number": 14,
+      "text": "# Summary\n\n- We have studied some of the key, fundamental ideas of quantum mechanics, with a specific focus on two-level quantum systems.\n- We understand the behavior of quantum systems via three postulates. The postulates have not been derived; rather, we have only provided some physical motivations behind them.\n- Key takeaways from a quantum computing point of view:\n1. Quantum states $\\Leftrightarrow$ Vectors in a complex, innerproduct space (Hilbert space).\n\nA",
+      "text_length": 467
+    },
+    {
+      "page_number": 15,
+      "text": "# Summary\n\n- We have studied some of the key, fundamental ideas of quantum mechanics, with a specific focus on two-level quantum systems.\n- We understand the behavior of quantum systems via three postulates. The postulates have not been derived; rather, we have only provided some physical motivations behind them.\n- Key takeaways from a quantum computing point of view:\n1. Quantum states $\\Leftrightarrow$ Vectors in a complex, innerproduct space (Hilbert space).\n2. Quantum gates $\\Leftrightarrow$ Unitary matrices\n\nA",
+      "text_length": 519
+    },
+    {
+      "page_number": 16,
+      "text": "# Summary\n\n- We have studied some of the key, fundamental ideas of quantum mechanics, with a specific focus on two-level quantum systems.\n- We understand the behavior of quantum systems via three postulates. The postulates have not been derived; rather, we have only provided some physical motivations behind them.\n- Key takeaways from a quantum computing point of view:\n1. Quantum states $\\Leftrightarrow$ Vectors in a complex, innerproduct space (Hilbert space).\n2. Quantum gates $\\Leftrightarrow$ Unitary matrices\n3. Qubit readout $\\Leftrightarrow$ Measurement\n\nA",
+      "text_length": 566
+    },
+    {
+      "page_number": 17,
+      "text": "# References\n\n- Modern Quantum Mechanics, J J Sakurai (Chapter 1)\n- Feynman Lectures on Physics, Vol III\n- Quantum Computing and Quantum Information, Nielsen and Chuang (Chapter 2)\n\n# Acknowledgement\n\nProf. Suresh Govindarajan\nDepartment of Physics, IIT Madras.",
+      "text_length": 261
+    }
+  ],
+  "raw_results": {
+    "mistral": 7536,
+    "chandra": 0
+  }
+}

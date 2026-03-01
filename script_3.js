@@ -1,0 +1,2599 @@
+
+// Logic to generate 10 quizzes per week dynamically
+// --- Supabase Config ---
+const SUPABASE_URL = 'https://bwwiwrixnqrtmodhliru.supabase.co'; // <-- Replace with your URL
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3d2l3cml4bnFydG1vZGhsaXJ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA4ODYwNjUsImV4cCI6MjA4NjQ2MjA2NX0.lQ7aEnAW3beeaNCivU0vWVqEHex2iZLAE2QIsPRBKbA'; // <-- Replace with your Key
+const supabaseClient = (typeof supabase !== 'undefined' && SUPABASE_URL !== 'YOUR_SUPABASE_URL') ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+const videoQuestionsData = {
+  // Week 1, Lecture PDF Set 1: Introduction & Feynman's Vision
+  "1_1_1": { q: "According to Richard Feynman, why is a classical computer unable to simulate nature efficiently?", options: ["Classical computers are too slow", "Nature is naturally quantum-mechanical", "Classical memory is too small", "Nature uses binary logic"], answer: 1, explanation: "Nature operates on quantum laws, making classical binary simulation exponentially hard.", clue: "<b>Feynman's Vision</b>: In his 1981 talk, Feynman famously noted that 'Nature isn't classical, dammit, and if you want to make a simulation of nature, you'd better make it quantum mechanical.'" },
+  "1_1_2": { q: "What is the primary difference between a classical bit and a quantum bit (qubit)?", options: ["Bits are faster", "Qubits can be in a superposition of states", "Bits use more power", "Qubits are made of gold"], answer: 1, explanation: "A qubit exists as a linear combination of |0⟩ and |1⟩ until measured.", clue: "<b>Superposition</b>: Whereas a bit is strictly 0 <i>or</i> 1, a qubit occupies a <b>Superposition</b>, allowing it to represent both possibilities simultaneously with varying amplitudes." },
+  "1_1_3": { q: "In what year did Richard Feynman give the influential talk 'Simulating Physics with Computers'?", options: ["1970", "1981", "1994", "2000"], answer: 1, explanation: "The talk was given at MIT in 1981, sparking the field of QC.", clue: "<b>Historical Milestone</b>: The <b>1981 MIT Conference</b> on the Physics of Computation is widely regarded as the birthplace of the idea for quantum computing." },
+  "1_1_4": { q: "What is the 'state space' of an isolated quantum system, as defined by Postulate 1?", options: ["Real plane", "Hilbert Space", "Euclidean 3D", "Phase space"], answer: 1, explanation: "Quantum mechanics uses complex Hilbert spaces to represent system states.", clue: "<b>Postulate 1</b>: Every physical system is associated with a <b>Hilbert Space</b>, which is a complex vector space equipped with an inner product." },
+  "1_1_5": { q: "Which property allows quantum computers to cancel out 'wrong' answers?", options: ["Friction", "Interference", "Gravity", "Magnetism"], answer: 1, explanation: "Constructive and destructive interference adjust probabilities.", clue: "<b>Interference</b>: Quantum algorithms use <b>Constructive Interference</b> to amplify correct solutions and <b>Destructive Interference</b> to cancel out incorrect ones." },
+  "1_1_6": { q: "Quantum computation is considered 'reversible' because gates are:", options: ["Large", "Unitary", "Symmetric", "Metal"], answer: 1, explanation: "Unitary matrices describe reversible logic operations.", clue: "<b>Reversibility</b>: Except for measurement, all quantum operations are <b>Unitary ($U^†U = I$)</b>, meaning they can be reversed without any loss of information." },
+  "1_1_7": { q: "The ability of two qubits to become deeply linked regardless of distance is:", options: ["Superposition", "Entanglement", "Decoherence", "Interference"], answer: 1, explanation: "Entanglement is a purely quantum correlation.", clue: "<b>Entanglement</b>: Einstein's 'spooky action at a distance' where the measurement of one qubit <b>instantly determines</b> the state of its partner, no matter the separation." },
+  "1_1_8": { q: "The state |ψ⟩ = α|0⟩ + β|1⟩ is normalized if:", options: ["α + β = 1", "|α|² + |β|² = 1", "α = β", "α * β = 0"], answer: 1, explanation: "Normalization ensures total probability is 100%.", clue: "<b>Normalization</b>: To maintain valid probabilities, the <b>magnitude squared</b> of the coefficients ($|α|^2 + |β|^2$) must strictly sum to 1." },
+  "1_1_9": { q: "Large-scale quantum computers are expected to break which classical security?", options: ["Firewalls", "RSA Encryption", "Passwords", "Biometrics"], answer: 1, explanation: "Shor's algorithm can factor integers used in RSA.", clue: "<b>Shor's Algorithm</b>: A theoretical breakthrough that proves a quantum computer could factor large numbers <b>exponentially faster</b> than any classical hardware, threatening current modular encryption." },
+  "1_1_10": { q: "What does 'quantum supremacy' mean in a technical context?", options: ["Quantum is always better", "Performing a task classical computers cannot do in reasonable time", "Making small chips", "Replacing all binary code"], answer: 1, explanation: "It's a milestone demonstrating clear quantum advantage.", clue: "<b>Supremacy Milestone</b>: The point where a <b>Quantum Device</b> performs a calculation (even a useless one) that is practically impossible for the world's fastest supercomputers." },
+
+  // Week 1, Lecture PDF Set 2: Historical Background & Development
+  "1_2_1": { q: "Who proposed the 'quantum-mechanical model' for computation alongside Feynman (1982)?", options: ["Paul Benioff", "Bill Gates", "Alan Turing", "John von Neumann"], answer: 0, explanation: "Paul Benioff described the first quantum mechanical model of a Turing machine.", clue: "<b>Founders</b>: 1982, <b>Paul Benioff</b> described the first quantum-mechanical model of a computer, demonstrating that a Turing machine could be simulated by quantum gates." },
+  "1_2_2": { q: "The 'Church-Turing Thesis' suggests all physical computers can be simulated by:", options: ["Quantum computers", "A Universal Turing Machine", "A calculator", "AI"], answer: 1, explanation: "The thesis relates physical processes to computation.", clue: "<b>Turing Thesis</b>: A fundamental principle stating that any function that can be computed by an algorithm can be computed by a <b>Universal Turing Machine</b>." },
+  "1_2_3": { q: "David Deutsch's contribution in 1985 was the definition of:", options: ["The first gate", "The Universal Quantum Computer", "The internet", "A qubit"], answer: 1, explanation: "Deutsch formalized the theory of the Universal Quantum Computer.", clue: "<b>Universal Quantum Logic</b>: In 1985, <b>David Deutsch</b> published a paper providing the mathematical foundation for a <b>Universal Quantum Turing Machine</b>." },
+  "1_2_4": { q: "Which 1994 algorithm proved a practical threat to RSA cryptography?", options: ["Grover's", "Shor's", "Deutsch's", "Simon's"], answer: 1, explanation: "Shor's algorithm solves the factoring problem exponentially.", clue: "<b>Factoring Threat</b>: Peter Shor's 1994 algorithm provided a <b>Polynomial-time solution</b> to the Integer Factoring problem, which is used for security worldwide." },
+  "1_2_5": { q: "Grover's algorithm (1996) provides what type of speedup for database search?", options: ["Exponential", "Quadratic", "Linear", "Logarithmic"], answer: 1, explanation: "Grover's searches N items in √N time.", clue: "<b>Grover's Search</b>: While not as fast as Shor's, Grover's algorithm provides a <b>Quadratic speedup ($O(\\sqrt{N})$)</b> for any unstructured search problem." },
+  "1_2_6": { q: "Quantum 'Decoherence' refers to:", options: ["Circuit speed", "Loss of quantum information to the environment", "Adding qubits", "Cooling"], answer: 1, explanation: "Interaction with the environment destroys superposition.", clue: "<b>Noise and Decoherence</b>: The primary challenge in QC where external 'noise' causes a quantum state to <b>leak information</b> and decay into a classical state." },
+  "1_2_7": { q: "Which company built the first commercial 'Quantum Annealer' (though debated)?", options: ["IBM", "D-Wave", "Google", "Intel"], answer: 1, explanation: "D-Wave released the first commercial quantum processor based on annealing.", clue: "<b>Industrial History</b>: <b>D-Wave Systems</b> became the first company to sell a 'Quantum Computer' (an annealer) to organizations like Lockheed Martin and NASA." },
+  "1_2_8": { q: "The current era of quantum computers (50-100 qubits) is called:", options: ["Fault-Tolerant Era", "NISQ Era", "Gold Era", "Binary Era"], answer: 1, explanation: "Noisy Intermediate-Scale Quantum.", clue: "<b>NISQ Era</b>: Coined by John Preskill in 2018, <b>NISQ</b> refers to devices large enough for advantage but too 'noisy' for full error correction." },
+  "1_2_9": { q: "Quantum Error Correction (QEC) is needed because:", options: ["Qubits are too fast", "Natural noise creates errors that multiply", "Software has bugs", "Electricity is unstable"], answer: 1, explanation: "Sensitive quantum states are prone to bit and phase flips.", clue: "<b>QEC</b>: Unlike classical bits, qubits are fragile. We need <b>Active Correction</b> protocols to maintain the 'Logical' state across many 'Physical' qubits." },
+  "1_2_10": { q: "The first demonstration of 'Teleportation' happened in what year range?", options: ["1950s", "1970s", "Late 1990s", "2020s"], answer: 2, explanation: "Quantum teleportation was experimentally verified in the late 90s.", clue: "<b>Teleportation</b>: Proposed by Bennett et al. in 1993 and demonstrated in <b>1997</b>, this protocol transfers a quantum state using entanglement and classical bits." },
+
+  // Week 1, Lecture PDF Set 3: Postulate 1 - State Space
+  "1_3_1": { q: "What is a 'Hilbert Space' in the context of quantum mechanics?", options: ["A physical room", "A complex vector space with an inner product", "A 3D mesh", "A database table"], answer: 1, explanation: "It is the mathematical playground for quantum vectors.", clue: "<b>State Space</b>: According to Postulate 1, every isolated system is associated with a <b>Hilbert Space (H)</b>, a complete, complex inner product space." },
+  "1_3_2": { q: "The 'State Vector' |ψ⟩ must always have a length (norm) of:", options: ["0", "1", "Infinity", "π"], answer: 1, explanation: "Normalization ensures probability sums to 1.", clue: "<b>Unit Vector</b>: A physical state is represented by a <b>Normalized Vector</b> (length = 1) in the Hilbert space. If it weren't 1, we couldn't trust probabilities." },
+  "1_3_3": { q: "What does the 'complex' part of complex vector space imply?", options: ["Vectors are hard to read", "Coefficients can be imaginary numbers (a + bi)", "The system is complicated", "It uses real numbers only"], answer: 1, explanation: "Quantum amplitudes use complex numbers to allow phase and interference.", clue: "<b>Complex Amplitudes</b>: The coefficients in $|ψ⟩ = α|0⟩ + β|1⟩$ are <b>Complex Numbers</b>, which have both a magnitude and a phase (angle)." },
+  "1_3_4": { q: "An 'Isolated System' in Postulate 1 means:", options: ["No power", "No interaction with the external environment", "It is very small", "It is inside a vacuum only"], answer: 1, explanation: "Environmental interaction causes decoherence.", clue: "<b>Isolation</b>: Quantum behavior is only perfectly maintained when the system is <b>thermally and electrically isolated</b> from the 'noisy' external world." },
+  "1_3_5": { q: "The basis vectors for a single qubit are usually denoted as:", options: ["|A⟩ and |B⟩", "|0⟩ and |1⟩", "X and Y", "↑ and ↓"], answer: 1, explanation: "The computational basis uses |0⟩ and |1⟩.", clue: "<b>Computational Basis</b>: In a 2-dimensional space, we pick two <b>Orthonormal vectors</b>, typically $|0⟩$ and $|1⟩$, to span all possible states." },
+  "1_3_6": { q: "Dimensionality of the state space for 'n' qubits is:", options: ["2n", "n²", "2^n", "n"], answer: 2, explanation: "Dimensions grow exponentially with qubit count.", clue: "<b>Exponential Scaling</b>: Because systems combine via tensor products, the Hilbert space dimension for <b>n qubits</b> is exactly <b>2^n</b>." },
+  "1_3_7": { q: "What is an 'Orthonormal' basis?", options: ["Random vectors", "Vectors that are perpendicular and unit length", "Opposite vectors", "Circular vectors"], answer: 1, explanation: "Ortho = perpendicular (90°), Normal = length 1.", clue: "<b>Orthonormality</b>: A set of vectors $\\\\{|i⟩\\\\}$ is orthonormal if <b>⟨i|j⟩ = 0</b> for $i≠j$ (orthogonal) and <b>⟨i|i⟩ = 1</b> (normalized)." },
+  "1_3_8": { q: "Why are quantum states technically called 'Rays'?", options: ["They move fast", "Global phase doesn't change measurement probability", "They are straight lines", "They use light"], answer: 1, explanation: "Phases like e^iθ cancel out in probability calculations.", clue: "<b>Global Phase</b>: Two vectors $|ψ⟩$ and $e^{iθ}|ψ⟩$ represent the <b>same physical state</b>, because the 'Sign' or 'Phase' disappears when you calculate $|α|^2$." },
+  "1_3_9": { clue: "<b>Degrees of Freedom</b>: Since the state must be normalized ($|α|^2+|β|^2=1$) and global phase is irrelevant, a single qubit only has <b>Two real parameters</b> ($\\theta, \\phi$) of freedom.", q: "How many independent real parameters are needed to define a single qubit state?", options: ["1", "2", "3", "4"], answer: 1, explanation: "Normalized and phase-ignoring states map to two angles on a sphere." },
+  "1_3_10": { clue: "<b>Linearity</b>: Hilbert Space is a <b>Vector Space</b>, which means any linear combination of valid states (Sum) is also a valid state of the system.", q: "The fact that α|ψ₁⟩ + β|ψ₂⟩ is also a valid state is due to:", options: ["Complexity", "Linearity of Hilbert Space", "Measurement", "Decoherence"], answer: 1, explanation: "Linear combinations define the principle of superposition." },
+
+  // Week 1, Lecture PDF Set 4: Dirac Notation (Bra-Ket)
+  "1_4_1": { q: "The symbol |ψ⟩ is called a:", options: ["Bracket", "Bra", "Ket", "Vector"], answer: 2, explanation: "Ket represents a column vector.", clue: "<b>Dirac Notation</b>: The <b>Ket ($|ψ⟩$)</b> represents a standard column vector in the system's Hilbert space." },
+  "1_4_2": { q: "The symbol ⟨ψ| is called a:", options: ["Ket", "Bra", "C-Vector", "Operator"], answer: 1, explanation: "Bra represents a row vector (dual vector).", clue: "<b>Dirac Notation</b>: The <b>Bra ($⟨ψ|$)</b> is the dual of the Ket, appearing as a row vector and used for inner products." },
+  "1_4_3": { q: "The operation used to turn a Ket into a Bra is:", options: ["Addition", "Complex Conjugate Transpose (Dagger)", "Multiplication", "Inversion"], answer: 1, explanation: "Dagger = transpose + conjugate elements.", clue: "<b>Hermitian Adjoint</b>: To create ⟨ψ| from |ψ⟩, you perform the <b>Dagger ($†$)</b> operation: flipping the vector to a row and changing $i$ to $-i$." },
+  "1_4_4": { q: "What does the notation ⟨ψ|φ⟩ represent?", options: ["Outer Product", "Inner Product", "Addition", "Division"], answer: 1, explanation: "It's the complex dot product of two vectors.", clue: "<b>Inner Product</b>: Often called a 'Bracket', <b>$⟨ψ|φ⟩$</b> results in a complex number representing the overlap or similarity between two states." },
+  "1_4_5": { q: "What is the result of applying an operator A to a state |ψ⟩?", options: ["A Bra", "A new Ket |φ⟩ = A|ψ⟩", "A scalar", "Nothing"], answer: 1, explanation: "Operators (matrices) transform kets into new kets.", clue: "<b>Transformation</b>: Quantum gates are <b>operators (matrices)</b> that take an input Ket and output a transformed Ket." },
+  "1_4_6": { q: "If |ψ⟩ is a column vector [α; β], ⟨ψ| is represented as:", options: ["[α, β]", "[α*, β*]", "[α; β]", "[1, 0]"], answer: 1, explanation: "Row vector with conjugate values.", clue: "<b>Conjugation</b>: If $|ψ⟩ = \\begin{pmatrix} a+bi \\\\ c+di \\end{pmatrix}$, then $⟨ψ| = (a-bi, c-di)$. The <b>star (*)</b> denotes the complex conjugate." },
+  "1_4_7": { q: "The 'Outer Product' |ψ⟩⟨ψ| results in a:", options: ["Scalar", "Matrix (Operator)", "Vector", "Zero"], answer: 1, explanation: "Ket times Bra creates a projector matrix.", clue: "<b>Outer Product</b>: Unlike the inner product (number), the <b>Outer Product ($|ψ⟩⟨φ|$)</b> produces a square matrix that acts as a projection operator." },
+  "1_4_8": { q: "In the computational basis, what is ⟨0|0⟩?", options: ["0", "1", "i", "-1"], answer: 1, explanation: "A vector dot itself is its squared length, which is 1.", clue: "<b>Normalization Check</b>: Because the basis vectors are normalized, <b>$⟨0|0⟩ = 1$</b> and $⟨1|1⟩ = 1$." },
+  "1_4_9": { q: "In the computational basis, what is ⟨0|1⟩?", options: ["0", "1", "0.5", "100"], answer: 0, explanation: "The basis states are orthogonal.", clue: "<b>Orthogonality</b>: Different basis states have zero overlap. Mathematically, <b>$⟨0|1⟩ = 0$</b>, proving they are completely distinguishable." },
+  "1_4_10": { q: "Paul Dirac popularized this notation in which book?", options: ["The Principia", "The Principles of Quantum Mechanics", "Quantum for Dummies", "A Brief History of Time"], answer: 1, explanation: "Published in 1930.", clue: "<b>Literature</b>: Dirac's textbook <b>'The Principles of Quantum Mechanics'</b> introduced this formalism, which has since become the universal language of the field." },
+
+  // Week 1, Lecture PDF Set 5: Qubits & Superposition
+  "1_5_1": { q: "A 'Qubit' is the quantum equivalent of which classical unit?", options: ["Byte", "Bit", "Gate", "Circuit"], answer: 1, explanation: "Qubit stands for Quantum Bit.", clue: "<b>Information Unit</b>: The <b>Qubit</b> is the atoms of quantum information. While a bit can be 0 or 1, a qubit exists in a complex 2D state space." },
+  "1_5_2": { q: "Which Bloch sphere state represents 50/50 superposition with no relative phase?", options: ["|0⟩", "|1⟩", "|+⟩", "|-⟩"], answer: 2, explanation: "|+⟩ = (|0⟩ + |1⟩)/√2.", clue: "<b>Equal Superposition</b>: The state <b>|+⟩</b> represents an equal probability mix of 0 and 1. On the Bloch sphere, it is located on the X-axis at the equator." },
+  "1_5_3": { q: "Superposition is described mathematically as a:", options: ["Product", "Linear combination", "Difference", "Squared result"], answer: 1, explanation: "α|0⟩ + β|1⟩.", clue: "<b>Linearity</b>: Superposition means the qubit state is a <b>Linear Combination</b> ($α|0⟩ + β|1⟩$) of the basis states, where α and β are probability amplitudes." },
+  "1_5_4": { q: "What happens to a qubit in superposition when it is measured in the Z-basis?", options: ["It stays in superposition", "It collapses to either |0⟩ or |1⟩", "It turns off", "It doubles"], answer: 1, explanation: "Measurement causes wavefunction collapse.", clue: "<b>Wavefunction Collapse</b>: Upon measurement, the system <b>randomly chooses</b> one of the basis states. The superposition is destroyed, and we obtain a classical bit." },
+  "1_5_5": { q: "The 'Relative Phase' in α|0⟩ + e^{iφ}β|1⟩ is represented by:", options: ["α", "β", "φ", "i"], answer: 2, explanation: "φ is the angle of rotation around the Z-axis.", clue: "<b>Relative Phase</b>: The angle <b>φ</b> determines where the state points on the equator of the Bloch sphere. It's crucial for interference effects." },
+  "1_5_6": { q: "Which gate is most commonly used to create superposition from |0⟩?", options: ["X Gate", "Z Gate", "Hadamard (H) Gate", "CNOT"], answer: 2, explanation: "H maps |0⟩ to |+⟩.", clue: "<b>Hadamard Transform</b>: The <b>H gate</b> is the workhorse of QC. It 'spreads' the probability from a single state into an equal superposition of all possible states." },
+  "1_5_7": { q: "In the state |ψ⟩ = (1/√2)|0⟩ - (1/√2)|1⟩, what is the relative phase?", options: ["0", "π (180°)", "π/2 (90°)", "2π"], answer: 1, explanation: "The minus sign represents a phase of π ($e^{iπ} = -1$).", clue: "<b>Phase Sign</b>: A minus sign between $|0⟩$ and $|1⟩$ represents a <b>Phase shift of 180 degrees (π)</b>. This state is often denoted as $|-⟩$." },
+  "1_5_8": { q: "Is it possible to measure the exact values of α and β from a single measurement?", options: ["Yes", "No", "Only for |0⟩", "Sometimes"], answer: 1, explanation: "Measurement only gives 0 or 1; you need many 'shots' to estimate amplitudes.", clue: "<b>Probabilistic Nature</b>: A single measurement only yields <b>One piece of classical data</b>. To reconstruct the amplitudes (α, β), we must repeat the experiment many times." },
+  "1_5_9": { q: "The state space of a qubit is represented geometrically by the:", options: ["Hilbert Cube", "Bloch Sphere", "Turing Circle", "Phase Triangle"], answer: 1, explanation: "Bloch sphere maps 2D complex space to 3D unit sphere.", clue: "<b>Geometry</b>: The <b>Bloch Sphere</b> provides a 1-to-1 mapping between the state of a single qubit and the points on the surface of a unit sphere." },
+  "1_5_10": { q: "Superposition allows a quantum computer to process how many states with 10 qubits?", options: ["10", "100", "1024", "Infinity"], answer: 2, explanation: "2^10 = 1024.", clue: "<b>Parallelism</b>: With 10 qubits in superposition, the computer can technically represent and perform operations on <b>all 1024 combinations</b> ($2^{10}$) simultaneously." },
+
+  // Week 1, Lecture PDF Set 6: Probability & Born Rule (Postulate 3)
+  "1_6_1": { q: "Postulate 3 of Quantum Mechanics describes:", options: ["Evolution", "Measurement", "Composition", "Gravity"], answer: 1, explanation: "It concerns how we extract information from the system.", clue: "<b>Measurement</b>: Postulate 3 explains the <b>Transition</b> from the quantum world of amplitudes to the classical world of probabilities." },
+  "1_6_2": { q: "According to Born's Rule, the probability of measuring state |0⟩ from α|0⟩ + β|1⟩ is:", options: ["α", "|α|²", "α + β", "1/2"], answer: 1, explanation: "Probability is the square of the amplitude's magnitude.", clue: "<b>Born's Rule</b>: Max Born proposed in 1926 that the <b>Probability</b> of an outcome is the <b>Squared Absolute Value</b> ($|α|^2$) of its amplitude." },
+  "1_6_3": { q: "If the probability of outcome 'm' is P(m), what must be the sum of P(m) for all possible m?", options: ["0", "0.5", "1", "Independent"], answer: 2, explanation: "Total probability must be 1.", clue: "<b>Completeness</b>: Because the system must collapse into <i>some</i> valid state, the sum of all probabilities across the basis must <b>exactly equal 1</b>." },
+  "1_6_4": { q: "A measurement operator M_m used in Postulate 3 satisfies which completeness relation?", options: ["Σ M_m = I", "Σ M_m^† M_m = I", "Σ M_m = 0", "M_m = M_m^†"], answer: 1, explanation: "Ensures total probability is 1.", clue: "<b>Completeness Relation</b>: The set of measurement operators $\\\\{M_m\\\\}$ must satisfy <b>$\\sum M_m^† M_m = I$</b>, ensuring the probabilities for all outcomes sum to unity." },
+  "1_6_5": { q: "After a measurement with result 'm', the state |ψ⟩ becomes:", options: ["Zero", "M_m|ψ⟩ / √(P(m))", "|0⟩ always", "Destroyed"], answer: 1, explanation: "The system collapses into the subspace corresponding to the outcome.", clue: "<b>Projective Collapse</b>: After obtaining a result, the state <b>instantly simplifies</b> to the basis vector ($|m⟩$) associated with that result. It 'forgets' its previous superposition." },
+  "1_6_6": { q: "Measurement in quantum mechanics is traditionally viewed as:", options: ["Deterministic", "Probabilistic", "A suggestion", "Constant"], answer: 1, explanation: "Repeatability only yields the same distribution, not the same single result.", clue: "<b>Randomness</b>: Unlike classical physics, where everything is determined, quantum measurement is <b>inherently random</b>. Even with perfect knowledge of $|ψ⟩$, we cannot predict a single outcome." },
+  "1_6_7": { q: "A measurement that returns the same value for every trial is measuring an:", options: ["Eigenstate of the operator", "Error", "Ancilla", "Entangled state"], answer: 0, explanation: "If |ψ⟩ is an eigenvector of M, the result is certain.", clue: "<b>Certainty</b>: If the system is already in an <b>Eigenstate</b> (like being in $|0⟩$ and measuring in Z-basis), the result is 100% predictable; no randomness occurs." },
+  "1_6_8": { q: "The 'Expectation Value' ⟨A⟩ represents the:", options: ["Highest value", "Average value over many trials", "Minimum value", "Complex phase"], answer: 1, explanation: "It is the weighted average of possible outcomes.", clue: "<b>Expectation</b>: Calculated as <b>$⟨ψ|A|ψ⟩$</b>, this value tells us the <b>statistical average</b> of measurement results if we repeated the experiment thousands of times." },
+  "1_6_9": { q: "Heisenberg's Uncertainty Principle is a direct consequence of:", options: ["Bad sensors", "Non-commuting operators", "Gravity", "Circuit heat"], answer: 1, explanation: "[A, B] ≠ 0 means they cannot have shared eigenstates.", clue: "<b>Uncertainty</b>: If two measurement operators do not <b>Commute ($AB ≠ BA$)</b>, you cannot measure both properties (like Position and Momentum) simultaneously with infinite precision." },
+  "1_6_10": { q: "Which type of measurement is most common in QC, where we ask 'Is it 0 or 1'?", options: ["Continuous", "Projective (Von Neumann)", "Approximate", "Thermal"], answer: 1, explanation: "Standard computational basis measurement.", clue: "<b>Projective Measurement</b>: The most common type, where we project the state onto a specific basis (like the <b>Computational Z-basis</b>) to get binary results." },
+
+  // Week 1, Lecture PDF Set 7: Unitary Evolution (Postulate 2)
+  "1_7_1": { q: "Postulate 2 concerns the:", options: ["Definition of qubits", "Evolution of state over time", "Measurement probability", "Cost of gates"], answer: 1, explanation: "It describes the temporal path of the state vector.", clue: "<b>Dynamics</b>: Postulate 2 tells us that the state vector of a closed system changes in a <b>continuous, deterministic</b> way according to its energy." },
+  "1_7_2": { q: "The time-dependent Schrodinger equation relates d|ψ⟩/dt to:", options: ["Mass", "Hamiltonian H", "Velocity", "Temperature"], answer: 1, explanation: "iℏ ∂|ψ⟩/∂t = H|ψ⟩.", clue: "<b>Schrödinger Equation</b>: The fundamental law of quantum motion. It relates the rate of change of the state to the <b>Hamiltonian (H)</b>, which is the system's total energy." },
+  "1_7_3": { q: "An evolution operator U is Unitary if U†U equals:", options: ["0", "1 (Identity I)", "-1", "i"], answer: 1, explanation: "Identity means probability is preserved.", clue: "<b>Unitarity</b>: A matrix $U$ is unitary if <b>$U^†U = I$</b>. This ensures that the state vector stays on the surface of the Hilbert space (retains its length of 1)." },
+  "1_7_4": { q: "Unitary evolution ensures that the computation is:", options: ["Fast", "Reversible", "Classical", "Expensive"], answer: 1, explanation: "U-dagger can always undo U.", clue: "<b>Reversibility</b>: In a closed quantum system, information is never lost. Because $U$ has an inverse ($U^†$), you can always <b>computationally backtrack</b> to the initial state." },
+  "1_7_5": { q: "The Hamiltonian operator H must be:", options: ["Unitary", "Hermitian (H = H†)", "Singular", "Negative"], answer: 1, explanation: "Hermitian operators have real eigenvalues, which correspond to energy levels.", clue: "<b>Hermiticity</b>: The Hamiltonian must be <b>Hermitian</b>, meaning its matrices are equal to their own conjugate transpose. This guarantees that energy values are always <b>Real Numbers</b>." },
+  "1_7_6": { q: "The state at time 't' is found by applying U(t, t₀) to |ψ(t₀)⟩. What is U?", options: ["U = 0", "U = exp(-iHt/ℏ)", "U = H + t", "U = log(H)"], answer: 1, explanation: "U is the exponential of the Hamiltonian.", clue: "<b>Time Evolution Operator</b>: For a constant energy system, the evolution is given by the matrix <b>$U = e^{-iHt/ℏ}$</b>, which rotates the state vector in Hilbert space." },
+  "1_7_7": { q: "Quantum gates (X, Y, Z, H) are specific examples of:", options: ["Hamiltonians", "Unitary operators", "Measurements", "Classical bits"], answer: 1, explanation: "They act on qubits over fixed 'time slices'.", clue: "<b>Gate Logic</b>: Think of a <b>Quantum Gate</b> as a momentary application of a specific Hamiltonian that evolves the qubit from one state to another unitarily." },
+  "1_7_8": { q: "Why can't we use a standard classical 'AND' gate in quantum circuits directly?", options: ["It's too slow", "It's irreversible (information is lost)", "It uses too much power", "It's too big"], answer: 1, explanation: "AND takes 2 bits and gives 1, so you can't determine inputs from output.", clue: "<b>Logical Reversibility</b>: Classical gates like AND/OR are <b>Irreversible</b>. To make them quantum-compatible, we must use gates like <b>Toffoli</b> which track 'extra' bits to keep logic reversible." },
+  "1_7_9": { q: "Unitary matrices preserve 'Inner Products'. This means:", options: ["Overlap between states doesn't change during evolution", "The computer gets warmer", "States become identical", "States become random"], answer: 0, explanation: "⟨Uψ|Uφ⟩ = ⟨ψ|φ⟩.", clue: "<b>Inner Product Preservation</b>: Unitary maps are like 'rotations'. They move states around but preserve the <b>relative angles (overlaps)</b> between them, keeping probabilities consistent." },
+  "1_7_10": { q: "Evolution of of an isolated system is which kind of process?", options: ["Random", "Deterministic", "Stochastic", "Chaos"], answer: 1, explanation: "Exactly defined by U.", clue: "<b>Determinism</b>: Despite the randomness of measurement, the <b>Evolution ($|ψ⟩ \\to U|ψ⟩$)</b> of the wavefunction itself is perfectly 100% deterministic and smooth." },
+
+  // Week 1, Lecture PDF Set 8: Composite Systems (Postulate 4)
+  "1_8_1": { q: "Postulate 4 defines how to combine multiple quantum systems using which operation?", options: ["Addition", "Matrix Multiplication", "Tensor Product", "Union"], answer: 2, explanation: "Tensor product combines individual Hilbert spaces.", clue: "<b>Composition</b>: The state space of a combined system (e.g., Qubit A and Qubit B) is the <b>Tensor Product ($H_A \\otimes H_B$)</b> of their individual state spaces." },
+  "1_8_2": { q: "If Qubit A has dimension 2 and Qubit B has dimension 2, what is the dimension of A ⊗ B?", options: ["2", "4", "8", "16"], answer: 1, explanation: "Dim(A) * Dim(B) = 2 * 2 = 4.", clue: "<b>Dimensionality</b>: The size of the space grows <b>multiplicatively</b>. Two qubits create a 4-dimensional space, and three qubits create an 8-dimensional space ($2^n$)." },
+  "1_8_3": { q: "A 'Product State' |ψ⟩_A ⊗ |φ⟩_B is one that:", options: ["Cannot be separated", "Can be factored into individual qubit states", "Is entangled", "Is at 0 Kelvin"], answer: 1, explanation: "It can be written as individual states without correlation.", clue: "<b>Separability</b>: A state is a <b>Product State</b> if it can be written as $|ψ⟩_A \\otimes |φ⟩_B$. This means the properties of A are independent of the properties of B." },
+  "1_8_4": { q: "An 'Entangled State' is defined as a composite state that:", options: ["Is very cold", "CANNOT be written as a product of individual states", "Is measured", "Only has |0⟩"], answer: 1, explanation: "It lacks a factorization into component states.", clue: "<b>Entanglement Definition</b>: If a state cannot be 'factored' into $|ψ⟩_A \\otimes |φ⟩_B$, it is <b>Entangled</b>. The qubits share a collective identity that cannot be described individually." },
+  "1_8_5": { q: "Which of the following is a famous entangled state for 2 qubits?", options: ["|00⟩", "|11⟩", "Bell State (|00⟩+|11⟩)/√2", "|++⟩"], answer: 2, explanation: "The Bell states are maximally entangled.", clue: "<b>Bell States</b>: These are four <b>Maximally Entangled</b> states. If you measure one qubit of a Bell pair, the second qubit's state is determined <i>perfectly</i>, even before you measure it." },
+  "1_8_6": { q: "To represent the state of 2 qubits |01⟩, what is the tensor product |0⟩ ⊗ |1⟩?", options: ["[1; 0; 0; 0]", "[0; 1; 0; 0]", "[0; 0; 1; 0]", "[0; 0; 0; 1]"], answer: 1, explanation: "The second basis vector in 4D space (0-indexed: [1 0] ⊗ [0 1]).", clue: "<b>Basis Vectors</b>: In a 2-qubit system, the four basis possibilities are $|00⟩, |01⟩, |10⟩, |11⟩$. These correspond to the four positions in a <b>4-element column vector</b>." },
+  "1_8_7": { q: "Entropy of an individual qubit in a maximally entangled pair is:", options: ["0", "Maximum (1 bit)", "-1", "i"], answer: 1, explanation: "A single part of an entangled pair has no certain state by itself.", clue: "<b>Entropy and Information</b>: When two qubits are entangled, the <b>Global system</b> is pure, but individual qubits look completely 'random' (Mixed) when viewed alone." },
+  "1_8_8": { q: "The 'Tensor Product' of two matrices A and B is also known as the:", options: ["Dot Product", "Kronecker Product", "Cross Product", "Inner Product"], answer: 1, explanation: "Standard term in linear algebra for this operation.", clue: "<b>Kronecker Product</b>: The mathematical formula for combining operators. If gate X acts on qubit 1 and gate Y on qubit 2, the total operation is <b>$X \\otimes Y$</b>." },
+  "1_8_9": { q: "Can entanglement be used to send classical information faster than light?", options: ["Yes", "No", "Only for 1 meter", "Sometimes"], answer: 1, explanation: "No-Communication Theorem; you still need a classical channel.", clue: "<b>No-Communication Theorem</b>: Although entanglement is 'instant', it <b>cannot transmit information</b> faster than light. You still need a classical signal to 'decode' the quantum correlation." },
+  "1_8_10": { q: "The state (|01⟩ - |10⟩)/√2 is known as the:", options: ["Singlet state", "Triplet state", "Super state", "Zero state"], answer: 0, explanation: "It is the anti-symmetric Bell state.", clue: "<b>Singlet State</b>: A crucial Bell state with total spin 0. It is <b>Rotationally Invariant</b>, meaning it looks the same in any measurement basis (X, Y, or Z)." },
+
+  // Week 2, Lecture PDF Set 1: Introduction to Qiskit SDK
+  "2_1_1": { q: "Which programming language is the primary interface for Qiskit?", options: ["Java", "Python", "C++", "Rust"], answer: 1, explanation: "Qiskit is a Python-based SDK.", clue: "<b>Software Stack</b>: Qiskit is built as a <b>Python Library</b>, allowing researchers to use standard data science tools like NumPy and Matplotlib alongside quantum circuits." },
+  "2_1_2": { q: "What is the role of 'Qiskit Terra'?", options: ["Simulation", "Foundation for building circuits and pulses", "Error correction only", "Hardware cooling"], answer: 1, explanation: "Terra is the 'earth' or foundation of Qiskit.", clue: "<b>Qiskit Terra</b>: The <b>Foundation Layer</b> (Terra means Earth) that provides the tools to design quantum circuits at the level of gates and pulses." },
+  "2_1_3": { q: "Which module in Qiskit is used for high-performance simulators?", options: ["Aer", "Ignis", "Aqua", "Terra"], answer: 0, explanation: "Aer provides simulators.", clue: "<b>Qiskit Aer</b>: The <b>Simulators Layer</b> (Aer means Air) which allows you to mimic real quantum hardware on your classical computer with various noise models." },
+  "2_1_4": { q: "To install Qiskit, which command is typically used?", options: ["npm install qiskit", "pip install qiskit", "git clone qiskit", "brew install qiskit"], answer: 1, explanation: "Standard Python package manager.", clue: "<b>Installation</b>: Since Qiskit is hosted on PyPI, you simply use <b>pip install qiskit</b> to get the latest stable version of the entire framework." },
+  "2_1_5": { q: "What does 'Aer' mean in the context of Qiskit's naming convention?", options: ["Speed", "Air", "Atom", "Array"], answer: 1, explanation: "Elements: Terra (Earth), Aer (Air), Aqua (Water), Ignis (Fire).", clue: "<b>The Elements</b>: IBM uses a 'four elements' naming scheme. <b>Aer (Air)</b> represents the simulators because they are 'virtual' and exist above the physical hardware." },
+  "2_1_6": { q: "Which class is used to initialize a quantum program in Qiskit?", options: ["QuantumProgram", "QuantumCircuit", "QuantumApp", "MainCircuit"], answer: 1, explanation: "QuantumCircuit is the core object.", clue: "<b>Core Object</b>: To start any quantum project, you must instantiate the <b>QuantumCircuit</b> class, which acts as the container for all your gates and measurements." },
+  "2_1_7": { q: "What is a 'Backend' in Qiskit?", options: ["The database", "The target system (simulator or real device)", "The UI", "The motherboard"], answer: 1, explanation: "A backend executes the circuit.", clue: "<b>Backends</b>: A <b>Backend</b> is any physical or virtual machine that can process a Qiskit circuit. Examples include <i>'statevector_simulator'</i> or actual <i>'ibm_brisbane'</i> hardware." },
+  "2_1_8": { q: "IBM Quantum provides access to real hardware via which cloud interface?", options: ["AWS", "IBMQ / Quantum Runtime", "Azure", "Google Cloud"], answer: 1, explanation: "IBM has its own quantum cloud service.", clue: "<b>Cloud Access</b>: You can send your local Python circuits to <b>Actual Quantum Hardware</b> in New York or Zurich by using your API token through the IBM Quantum provider." },
+  "2_1_9": { q: "Which Qiskit component was historically used for high-level algorithms (Chemistry/Finance)?", options: ["Terra", "Aqua", "Ignis", "Aer"], answer: 1, explanation: "Aqua was the algorithms library.", clue: "<b>Algorithm Layer</b>: <b>Qiskit Aqua</b> (Water) was the original home for high-level applications, though these are now migrated into specialized <b>Qiskit Runtime Primitives</b>." },
+  "2_1_10": { q: "The command 'qiskit.__version__' is used to:", options: ["Run a circuit", "Check the installed Qiskit version", "Delete Qiskit", "Update drivers"], answer: 1, explanation: "Debugging tool.", clue: "<b>Maintenance</b>: Always check your <b>Version</b> to ensure compatibility, as Qiskit evolves rapidly with new features and frequent syntax updates." },
+
+  // Week 2, Lecture PDF Set 2: Quantum and Classical Registers
+  "2_2_1": { q: "In Qiskit, which object represents a collection of qubits?", options: ["QubitArray", "QuantumRegister", "BitSet", "LogicGate"], answer: 1, explanation: "QuantumRegister is used to group qubits.", clue: "<b>Register Logic</b>: A <b>QuantumRegister (qr)</b> allows you to label and manage groups of qubits, which is especially helpful in complex multi-qubit algorithms." },
+  "2_2_2": { q: "In Qiskit, which object is used to store measurement results?", options: ["DataStore", "ClassicalRegister", "OutputArray", "BitRegister"], answer: 1, explanation: "ClassicalRegister holds the 0s and 1s.", clue: "<b>Classical Readout</b>: Unlike qubits, <b>ClassicalRegister (cr)</b> entries store standard 0s and 1s. They are essential for saving the result of a <b>Measure</b> operation." },
+  "2_2_3": { q: "If you define 'QuantumRegister(3)', how many qubits do you have?", options: ["1", "3", "9", "0"], answer: 1, explanation: "The number refers to the count.", clue: "<b>Qubit Count</b>: Creating a register with an integer argument (like 3) allocates <b>exactly that many</b> individual physical or virtual qubits for your circuit." },
+  "2_2_4": { q: "Which index refers to the FIRST qubit in a register 'qr'?", options: ["qr[1]", "qr[0]", "qr.first()", "qr[A]"], answer: 1, explanation: "Python uses 0-based indexing.", clue: "<b>Indexing</b>: Just like lists in Python, Qiskit registers are <b>0-indexed</b>. The first qubit is always <b>qr[0]</b>, the second is qr[1], and so on." },
+  "2_2_5": { q: "Can a QuantumCircuit be initialized without explicit registers?", options: ["No, registers are mandatory", "Yes, using shorthand (e.g., QuantumCircuit(2, 2))", "Only on simulators", "Only for 1 qubit"], answer: 1, explanation: "Shorthand is common for simple circuits.", clue: "<b>Shorthand Syntax</b>: For simple scripts, you can just call <b>QuantumCircuit(2, 2)</b>, which automatically creates a 2-qubit register and a 2-bit classical register for you." },
+  "2_2_6": { q: "What is the default bit order in Qiskit (Little-endian vs Big-endian)?", options: ["MSB is at index 0", "LSB is at index 0 (Little-endian)", "Order is random", "Alphabetical"], answer: 1, explanation: "Qiskit uses Little-endian for bitstrings.", clue: "<b>Bit Ordering</b>: Qiskit uses <b>Little-endian</b> ordering. This means the bit at index 0 ($q_0$) corresponds to the <b>rightmost</b> bit in a binary string (e.g., in '10', $q_0$ is 0)." },
+  "2_2_7": { q: "The method 'qc.add_register()' is used to:", options: ["Build a gate", "Add an existing register object to a circuit", "Measure a bit", "Change the name"], answer: 1, explanation: "Registers can be added after circuit creation.", clue: "<b>Dynamic Expansion</b>: You can start with a small circuit and use <b>add_register()</b> to append more qubits or classical bits as your algorithm grows in complexity." },
+  "2_2_8": { q: "If a circuit has 'num_qubits = 5', how many classical bits does it have by default?", options: ["5", "0 (unless specified)", "1", "10"], answer: 1, explanation: "Classical bits must be added explicitly.", clue: "<b>Separate Resources</b>: Qubits and classical bits are <b>distinct registers</b>. If you only specify qubits, you won't have anywhere to store measurement results until you add a ClassicalRegister." },
+  "2_2_9": { q: "What is 'qc.qubits'?", options: ["A function to measure", "A list containing all Qubit objects in the circuit", "The total count", "A type of gate"], answer: 1, explanation: "Property to inspect components.", clue: "<b>Inspection</b>: The <b>.qubits</b> property returns a list of every 'Qubit' object in your circuit, allowing you to iterate over them or check their metadata." },
+  "2_2_10": { q: "Why would you name a register (e.g., QuantumRegister(1, name='ancilla'))?", options: ["To make it faster", "For readability and multi-register control", "Required by IBM", "To change the color"], answer: 1, explanation: "Naming helps organize complex circuits.", clue: "<b>Readability</b>: In large algorithms, <b>Naming Registers</b> (like 'data' vs 'ancilla') makes your code and diagrams much easier to debug and understand for other researchers." },
+
+  // Week 2, Lecture PDF Set 3: Basic Gates (X, Y, Z)
+  "2_3_1": { q: "The 'X Gate' in Qiskit is equivalent to which classical gate?", options: ["AND", "NOT", "OR", "XOR"], answer: 1, explanation: "X flips |0⟩ to |1⟩ and vice-versa.", clue: "<b>The Bit-Flip</b>: The X Gate is the quantum <b>NOT gate</b>. It rotates the state by 180 degrees around the X-axis of the Bloch sphere, swapping 0 and 1." },
+  "2_3_2": { q: "What is the matrix for the Pauli-Z gate?", options: ["[0 1; 1 0]", "[1 0; 0 -1]", "[1 0; 0 1]", "[0 -i; i 0]"], answer: 1, explanation: "Z leaves 0 unchanged and flips phase of 1.", clue: "<b>Phase-Flip</b>: The Z gate is the <b>Phase-Flip gate</b>. Its matrix has a 1 and a -1 on the diagonal, meaning it flips the sign of $|1⟩$ while leaving $|0⟩$ untouched." },
+  "2_3_3": { q: "To apply an X gate to the first qubit in 'qc', which command is used?", options: ["qc.flip(0)", "qc.not(0)", "qc.x(0)", "qc.pauli_x(0)"], answer: 2, explanation: "Shorthand is .x()", clue: "<b>Syntax</b>: In Qiskit, applying basic gates is as simple as calling <b>qc.x(0)</b>. The 'x' represents the gate name and '0' is the index of the target qubit." },
+  "2_3_4": { q: "What is the result of applying X then X to a qubit in state |0⟩?", options: ["|0⟩", "|1⟩", "|+⟩", "|-⟩"], answer: 0, explanation: "Gates are reversible; X is its own inverse.", clue: "<b>Self-Inverse</b>: All Pauli gates (X, Y, Z) are their own <b>Inverses</b>. Applying X twice returns the qubit to its original state, effectively doing nothing ($X^2 = I$)." },
+  "2_3_5": { q: "The 'Y Gate' combines which two operations (ignoring a global phase)?", options: ["X and Z", "H and X", "Z and H", "X and X"], answer: 0, explanation: "Y rotation is a mix of bit and phase flip.", clue: "<b>Rotation</b>: The Y gate performs a rotation around the Y-axis. Mathematically, it acts like a <b>Bit-flip and a Phase-flip</b> combined ($Y \\approx iXZ$)." },
+  "2_3_6": { q: "The 'Identity Gate' (I) does what to the qubit state?", options: ["Flips it", "Sets it to 0", "Leaves it unchanged", "Measures it"], answer: 2, explanation: "I is the identity matrix.", clue: "<b>Identity</b>: The <b>I gate</b> represents a 'wait' or 'no-operation'. It results in the identity matrix, which transforms any state into itself without changes." },
+  "2_3_7": { q: "Pauli gates are 'Hermitian'. This means:", options: ["They are slow", "They are their own conjugate transpose (M = M†)", "They are only for 1 qubit", "They use imaginary numbers"], answer: 1, explanation: "Hermitian gates often represent measurable observables.", clue: "<b>Hermiticity</b>: A matrix is <b>Hermitian</b> if flipping it and conjugating its numbers doesn't change it. This is why Pauli gates are both <b>Unitary ($U^†U=I$) and Hermitian ($U=U^†$)</b>." },
+  "2_3_8": { q: "What is the matrix for the Identity gate?", options: ["[0 1; 1 0]", "[1 0; 0 1]", "[1 1; 1 -1]", "[i 0; 0 -i]"], answer: 1, explanation: "1s on the diagonal.", clue: "<b>Standard Matrix</b>: The identity matrix <b>$I = \\begin{pmatrix} 1 & 0 \\\\ 0 & 1 \\end{pmatrix}$</b> is the mathematical representation of doing nothing to the state vector." },
+  "2_3_9": { q: "Applying a Z gate to the state |+⟩ result in:", options: ["|+⟩", "|-⟩", "|0⟩", "|1⟩"], answer: 1, explanation: "Z maps (|0⟩+|1⟩)/√2 to (|0⟩-|1⟩)/√2.", clue: "<b>Sign Swap</b>: The Z gate transforms the 'plus' state ($|+⟩$) into the <b>'minus' state ($|-⟩$)</b> by flipping the relative phase between the two basis components." },
+  "2_3_10": { q: "The physical implementation of gates on IBM hardware uses:", options: ["Magnets", "Microwave pulses", "Lasers", "Electricity"], answer: 1, explanation: "IBM uses superconducting qubits and microwave pulses.", clue: "<b>Hardware Physics</b>: When you call `qc.x(0)`, the backend actually sends a <b>Microwave Pulse</b> at a specific frequency to the physical qubit to induce a state change." },
+
+  // Week 2, Lecture PDF Set 4: The Hadamard Gate
+  "2_4_1": { q: "What is the primary function of the Hadamard (H) gate?", options: ["To flip a bit", "To create superposition", "To measure the qubit", "To reset the state"], answer: 1, explanation: "H maps basis states to superposition states.", clue: "<b>Superposition</b>: The <b>Hadamard (H)</b> gate is the primary tool for creating quantumness. it takes a definite 0 or 1 and 'spreads' it into an equal 50/50 mix of both." },
+  "2_4_2": { q: "Applying H to |0⟩ results in which state?", options: ["|1⟩", "|+⟩", "|-⟩", "0"], answer: 1, explanation: "|+⟩ is the equal positive superposition.", clue: "<b>Positive Mix</b>: Applying $H$ to $|0⟩$ gives <b>$|+⟩ = \\frac{|0⟩ + |1⟩}{\\sqrt{2}}$</b>, where both results are equally likely upon measurement." },
+  "2_4_3": { q: "Applying H to |1⟩ results in which state?", options: ["|0⟩", "|+⟩", "|-⟩", "i"], answer: 2, explanation: "|-⟩ is the equal negative superposition.", clue: "<b>Negative Mix</b>: Applying $H$ to $|1⟩$ gives <b>$|-⟩ = \\frac{|0⟩ - |1⟩}{\\sqrt{2}}$</b>. It has the same probabilities as $|+⟩$ but a different <b>Relative Phase (π)</b>." },
+  "2_4_4": { q: "Wait, if you apply H then H again to |0⟩, what do you get?", options: ["|0⟩", "|1⟩", "|+⟩", "|-⟩"], answer: 0, explanation: "H is its own inverse.", clue: "<b>Reversibility</b>: Like the Pauli gates, the Hadamard gate is its own <b>Inverse ($H^2 = I$)</b>. Applying it twice undoes the superposition and returns you to the basis state." },
+  "2_4_5": { q: "The Hadamard gate can be viewed as a rotation of 180° around which axis?", options: ["X-axis", "Z-axis", "X+Z axis (diagonal)", "Y-axis"], answer: 2, explanation: "It swaps X and Z bases.", clue: "<b>Geometric View</b>: On the Bloch sphere, the H gate acts as a <b>180-degree rotation</b> around the axis that sits halfway between the X and Z axes." },
+  "2_4_6": { q: "H|0⟩ has what probability of being measured as '1'?", options: ["0%", "50%", "100%", "25%"], answer: 1, explanation: "|1/√2|² = 1/2.", clue: "<b>Balanced Probability</b>: Because the coefficient is $1/\\sqrt{2}$, squaring it gives <b>1/2</b>. This is the definition of a fair 50/50 coin flip in quantum terms." },
+  "2_4_7": { q: "Which basis does the Hadamard gate transform the computational basis into?", options: ["Z-basis", "X-basis", "Y-basis", "Binary-basis"], answer: 1, explanation: "0/1 (Z) becomes +/- (X).", clue: "<b>Basis Transform</b>: The Hadamard gate is often used as a <b>Change of Basis</b>. It allows you to move between the standard Z-basis and the $X$-basis ($|+⟩, |-$)." },
+  "2_4_8": { q: "Is the Hadamard matrix unitary?", options: ["Yes", "No", "Only for |0⟩", "Only for real numbers"], answer: 0, explanation: "All quantum gates must be unitary.", clue: "<b>Unitary Property</b>: Like all valid gates, $H^†H = I$. This is why it <b>preserves the length</b> of the state vector while it 'rotates' it into superposition." },
+  "2_4_9": { q: "The Hadamard gate's matrix has which common factor outside?", options: ["1/2", "1/√2", "i", "π"], answer: 1, explanation: "Normalization coefficient.", clue: "<b>Normalization</b>: The matrix <b>$H = \\frac{1}{\\sqrt{2}} \\begin{pmatrix} 1 & 1 \\\\ 1 & -1 \\end{pmatrix}$</b> uses the $1/\\sqrt{2}$ factor to ensure the output vector stays normalized to a length of 1." },
+  "2_4_10": { q: "In most algorithms (like DJ), the first step is to apply H gates to:", options: ["The last qubit only", "All input qubits", "None", "The ancilla only"], answer: 1, explanation: "Creating a uniform superposition.", clue: "<b>Initial State</b>: We almost always start algorithms by applying <b>H gates to all qubits</b>. This allows the computer to process every possible input combination at the same time." },
+
+  // Week 2, Lecture PDF Set 5: Multi-qubit Gates
+  "2_5_1": { q: "Which gate is the primary tool for creating entanglement in Qiskit?", options: ["X", "H", "CNOT (cx)", "Toffoli"], answer: 2, explanation: "Conditional operations link qubits.", clue: "<b>CNOT Logic</b>: The <b>Controlled-NOT (cx)</b> gate flips the target qubit if and only if the control qubit is in the $|1⟩$ state, creating a quantum link." },
+  "2_5_2": { q: "In 'qc.cx(0, 1)', which qubit is the control?", options: ["Qubit 1", "Qubit 0", "Both", "Depends on the system"], answer: 1, explanation: "First argument is control.", clue: "<b>Control/Target</b>: In the command <b>qc.cx(control, target)</b>, the first number you type is the qubit that 'watches', and the second is the one that might 'flip'." },
+  "2_5_3": { q: "If the control is |0⟩ and target is |0⟩, what is the output of CNOT?", options: ["|00⟩", "|01⟩", "|10⟩", "|11⟩"], answer: 0, explanation: "Control is 0, so no flip.", clue: "<b>Conditional Action</b>: If the control is <b>0</b>, the target stays exactly as it was. The output for $|00⟩$ remains $|00⟩$ after the CNOT gate." },
+  "2_5_4": { q: "If the control is |1⟩ and target is |0⟩, what is the output of CNOT?", options: ["|01⟩", "|11⟩", "|10⟩", "|00⟩"], answer: 1, explanation: "Control is 1, so target 0 flips to 1.", clue: "<b>Triggered Flip</b>: If the control is <b>1</b>, the target bit is inverted. Thus, the state $|10⟩$ becomes $|11⟩$ after passing through a CNOT." },
+  "2_5_5": { q: "What is the 'SWAP' gate used for?", options: ["Flipping a bit", "Exchanging the states of two qubits", "Measuring two qubits", "Deleting a qubit"], answer: 1, explanation: "Swaps α|0⟩+β|1⟩ from q0 to q1.", clue: "<b>Position Exchange</b>: The <b>SWAP gate</b> moves the quantum state of qubit A to qubit B and vice versa. It is effectively three CNOT gates in a specific configuration." },
+  "2_5_6": { q: "The 'CZ' gate (Controlled-Z) applies a phase flip to which state?", options: ["|00⟩", "|01⟩", "|10⟩", "|11⟩"], answer: 3, explanation: "Only flips sign if both are 1.", clue: "<b>Controlled Phase</b>: The <b>CZ gate</b> only acts on the <b>$|11⟩$</b> state, changing its sign to $-|11⟩$ while leaving all other basis states untouched." },
+  "2_5_7": { q: "How many qubits does a Toffoli gate (ccx) act upon?", options: ["1", "2", "3", "4"], answer: 2, explanation: "Two controls, one target.", clue: "<b>CC-NOT</b>: The <b>Toffoli Gate</b> is a three-qubit gate. It flips the third qubit only if the first <b>TWO</b> are both in the $|11⟩$ state." },
+  "2_5_8": { q: "Toffoli gate is important classically because it is a:", options: ["Fast gate", "Universal gate for classical logic", "Random gate", "Error-prone gate"], answer: 1, explanation: "Can simulate AND/OR/NOT.", clue: "<b>Classical Universality</b>: The Toffoli gate is <b>Universally Reversible</b>, meaning you can build any classical logic circuit (like an entire CPU) using only Toffoli gates." },
+  "2_5_9": { q: "In the matrix for CNOT (4x4), which corner contains the Identity matrix?", options: ["Top-left", "Top-right", "Bottom-left", "Bottom-right"], answer: 0, explanation: "First 2 states (00, 01) are identity.", clue: "<b>Matrix Structure</b>: The 4x4 CNOT matrix starts with a <b>2x2 Identity</b> block in the top-left, because if the first bit is 0, the overall state doesn't change." },
+  "2_5_10": { q: "What happens to the control qubit itself after a CNOT operation?", options: ["It flips", "It stays the same", "It collapses", "It disappears"], answer: 1, explanation: "In the computational basis, control is unchanged.", clue: "<b>Control Stability</b>: One interesting property is that in the basis states, the <b>Control Qubit</b> remains in its original state; only the target is potentially modified." },
+
+  // Week 2, Lecture PDF Set 6: Statevector Simulator (Aer)
+  "2_6_1": { q: "What does the 'statevector_simulator' in Qiskit return?", options: ["A list of 0s and 1s", "The full mathematical state vector (complex amplitudes)", "A graph", "The energy of the circuit"], answer: 1, explanation: "It returns the exact amplitudes.", clue: "<b>Mathematical Ground Truth</b>: The <b>statevector_simulator</b> allows you to see the 'pure' quantum state (alpha and beta) of every qubit before any measurement noise is added." },
+  "2_6_2": { q: "Which Qiskit method is used to get the statevector after execution?", options: ["result.get_statevector()", "result.get_counts()", "result.get_amplitudes()", "result.get_data()"], answer: 0, explanation: "Standard result extraction.", clue: "<b>Result Extraction</b>: Once the backend finishes, you call <b>.get_statevector(circuit)</b> to retrieve the 1D array of complex numbers representing the state." },
+  "2_6_3": { q: "The statevector for 2 qubits has how many entries?", options: ["2", "4", "8", "None"], answer: 1, explanation: "2^2 = 4.", clue: "<b>Memory Scaling</b>: Because the statevector contains every possible combination ($|00⟩, |01⟩, |10⟩, |11⟩$), its size is exactly <b>$2^n$</b> for $n$ qubits." },
+  "2_6_4": { q: "Does the statevector_simulator include 'shots' (sampling)?", options: ["Yes", "No", "Only if requested", "Only for X gates"], answer: 1, explanation: "It is an ideal mathematical calculation.", clue: "<b>Infinite Precision</b>: The statevector simulator does <b>not use shots</b>. It calculates the exact probability distribution directly from linear algebra, as if you had an infinite number of perfect measurements." },
+  "2_6_5": { q: "Why can't the statevector_simulator run 100 qubits on a laptop?", options: ["It's too fast", "Exponential memory requirement", "Licensing issues", "Heat limits"], answer: 1, explanation: "Each entry is a complex number; 2^100 is impossible.", clue: "<b>The Bottleneck</b>: To store the state of 50 qubits, you would need petabytes of RAM. This <b>Exponential growth</b> is why we need actual quantum computers instead of just simulators." },
+  "2_6_6": { q: "In a statevector [1, 0], what is the state of the qubit?", options: ["|0⟩", "|1⟩", "|+⟩", "|-⟩"], answer: 0, explanation: "[α, β] = [1, 0] means α=1.", clue: "<b>Vector Format</b>: A statevector of <b>$[1, 0]$</b> means 100% of the probability is in the first basis state, which is <b>$|0⟩$</b>." },
+  "2_6_7": { q: "In a statevector [0, 1], what is the state of the qubit?", options: ["|0⟩", "|1⟩", "|+⟩", "|-⟩"], answer: 1, explanation: "[α, β] = [0, 1] means β=1.", clue: "<b>Vector Format</b>: A statevector of <b>$[0, 1]$</b> means 100% of the probability is in the second basis state, which is <b>$|1⟩$</b>." },
+  "2_6_8": { q: "What are the entries in the statevector for the state |+⟩?", options: ["[1, 1]", "[1/√2, 1/√2]", "[1, 0]", "[0.5, 0.5]"], answer: 1, explanation: "Equal superposition requires normalization.", clue: "<b>Normalization Check</b>: For $|+⟩$, the vector is <b>$[ \\frac{1}{\\sqrt{2}}, \\frac{1}{\\sqrt{2}} ]$</b>. Squaring both terms gives $0.5 + 0.5 = 1$, satisfying the probability law." },
+  "2_6_9": { q: "Which library does Qiskit Aer use for efficient matrix math?", options: ["jQuery", "NumPy / C++", "TensorFlow", "React"], answer: 1, explanation: "Uses high-performance numerical libraries.", clue: "<b>Under the Hood</b>: Qiskit Aer is written in <b>optimized C++</b> and uses <b>NumPy</b> to perform the large matrix multiplications required to simulate quantum gates." },
+  "2_6_10": { q: "If you measure a circuit and then get the statevector, what happens?", options: ["You get the superposition", "You get the collapsed state", "The code errors", "The computer resets"], answer: 1, explanation: "Measurement collapses the vector in simulation too.", clue: "<b>Simulated Collapse</b>: If your circuit contains `qc.measure()`, the statevector will reflect the <b>collapsed result</b> (e.g., [1, 0] OR [0, 1]) rather than the original superposition." },
+
+  // Week 2, Lecture PDF Set 7: QASM Simulator & Measurement Shots
+  "2_7_1": { q: "What does 'QASM' stand for?", options: ["Quantum Aspect System Management", "Quantum Assembly Language", "Quick Array Storage Map", "Quantum Analog Sort Menu"], answer: 1, explanation: "It is the low-level instructions for quantum hardware.", clue: "<b>OpenQASM</b>: Standing for <b>Quantum Assembly Language</b>, this is the format used to describe quantum circuits at a level that hardware controllers can understand." },
+  "2_7_2": { q: "The 'qasm_simulator' mimics which physical process?", options: ["Cooling", "Measurement shots and sampling noise", "Gate timing", "Power consumption"], answer: 1, explanation: "It simulates repeating an experiment multiple times.", clue: "<b>Shot-based Simulation</b>: Unlike the statevector simulator, <b>qasm_simulator</b> mimics real life by running the circuit many times and counting how often each result occurs." },
+  "2_7_3": { q: "What is a 'Shot' in quantum computing?", options: ["A photo of the chip", "A single execution and measurement of a circuit", "A type of gate", "An error"], answer: 1, explanation: "One run of the program.", clue: "<b>Sampling</b>: Because quantum results are probabilistic, we must run the circuit many times. Each individual run is called a <b>'Shot'</b>." },
+  "2_7_4": { q: "What is the default number of shots in Qiskit's 'execute()' command?", options: ["1", "1024", "100", "Unlimited"], answer: 1, explanation: "Standard default for statistical significance.", clue: "<b>Default Accuracy</b>: By default, Qiskit runs <b>1024 shots</b>. This is usually enough to get a reasonably accurate picture of the probability distribution." },
+  "2_7_5": { q: "The 'get_counts()' method returns what type of object?", options: ["A list", "A dictionary (bitstring keys, count values)", "A matrix", "An image"], answer: 1, explanation: "e.g., {'0': 512, '1': 512}.", clue: "<b>Histograms</b>: The results of a shot-based run are stored as a <b>Python Dictionary</b>, mapping each result string (like '00') to the number of times it was measured." },
+  "2_7_6": { q: "Why would you increase the number of shots to 8192?", options: ["To make it faster", "To reduce statistical error / shot noise", "To add more qubits", "To save power"], answer: 1, explanation: "More samples = better precision.", clue: "<b>Precision</b>: To distinguish very small differences in probability, you need more data. Increasing <b>shots</b> reduces the 'noise' in your final histogram." },
+  "2_7_7": { q: "In Qiskit, 'qc.measure_all()' does what?", options: ["Measures all qubits and creates a new classical register", "Deletes the circuit", "Measures only qubit 0", "Starts the simulator"], answer: 0, explanation: "Convenience function.", clue: "<b>Convenience Tool</b>: Instead of manual mapping, <b>measure_all()</b> automatically creates a classical register of matching size and maps every qubit to its corresponding bit." },
+  "2_7_8": { q: "If you run H|0⟩ with 10 shots, can you get exactly 5 'zeros' and 5 'ones'?", options: ["Yes, always", "Yes, but it's not guaranteed (randomness)", "No, only even numbers", "No, impossible"], answer: 1, explanation: "It's like tossing a coin; 5/5 is likely but not certain.", clue: "<b>Statistical Fluctuation</b>: Just like flipping a coin 10 times, you might get 6 heads and 4 tails. With <b>few shots</b>, your results will vary slightly from the theoretical 50/50." },
+  "2_7_9": { q: "The simulator 'aer_simulator' is a unified interface for:", options: ["Only qasm", "Only statevector", "All Aer simulation methods", "Hardware only"], answer: 2, explanation: "Newer flexible Qiskit interface.", clue: "<b>Modern Interface</b>: The <b>aer_simulator</b> is the latest, high-level way to access all simulation types. It automatically picks the best method (statevector, stabilizer, etc.) for your circuit." },
+  "2_7_10": { q: "Results are retrieved from an 'execute' job using the method:", options: ["job.read()", "job.result()", "job.data()", "job.status()"], answer: 1, explanation: "Blocking call to wait for finish.", clue: "<b>Job Lifecycle</b>: After you submit a circuit, it becomes a <b>Job</b>. You must call <b>.result()</b> to wait for the computation to finish and download the data." },
+
+  // Week 2, Lecture PDF Set 8: Visualization Tools
+  "2_8_1": { q: "Which function is used to plot a bar chart of measurement results?", options: ["plot_bloch_vector", "plot_histogram", "plot_state_city", "draw()"], answer: 1, explanation: "Used for counts dictionary.", clue: "<b>Result Charts</b>: The <b>plot_histogram</b> function takes your counts dictionary and generates a clean bar graph, showing the probability of each outcome." },
+  "2_8_2": { q: "What does 'qc.draw(output=\"mpl\")' produce?", options: ["Text diagram", "Matplotlib-based graphical circuit diagram", "Code summary", "3D model"], answer: 1, explanation: "Provides professional look.", clue: "<b>Schematics</b>: Using <b>output='mpl'</b> generates a high-quality graphical diagram of your quantum circuit, with colored gates and clear horizontal wires." },
+  "2_8_3": { q: "Which tool visualizes the state of a single qubit as a point on a sphere?", options: ["plot_histogram", "plot_bloch_multivector", "plot_state_hinton", "qc.measure()"], answer: 1, explanation: "Shows θ and φ orientations.", clue: "<b>Spatial View</b>: The <b>plot_bloch_multivector</b> tool gives you a visual representation of each qubit's orientation, showing how gates like H or X have rotated the state." },
+  "2_8_4": { q: "The 'Q-sphere' visualization is useful for:", options: ["Measuring time", "Visualizing multi-qubit entanglement and phases", "Checking battery", "Drawing gates"], answer: 1, explanation: "Complex visualization for N-qubits.", clue: "<b>The Q-Sphere</b>: Unlike the Bloch Sphere, the <b>Q-Sphere</b> can show multiple qubits at once, using the size and color of dots to represent amplitudes and phases." },
+  "2_8_5": { q: "What does 'plot_state_city' represent?", options: ["A map of IBM labs", "The real and imaginary parts of a density matrix", "Number of qubits", "Execution order"], answer: 1, explanation: "Looks like a 3D bar chart (skyline).", clue: "<b>Density Matrix</b>: Often called a 'City Plot', <b>plot_state_city</b> shows the components of the quantum state in a 3D grid format, resembling a city skyline." },
+  "2_8_6": { q: "To use 'mpl' or 'latex' drawing, which library must be installed?", options: ["pandas", "matplotlib / pylatexenc", "tensorflow", "requests"], answer: 1, explanation: "External dependencies for rendering.", clue: "<b>Dependencies</b>: If you want 'pretty' diagrams, you need to have <b>Matplotlib</b> and <b>pylatexenc</b> installed in your Python environment; otherwise, Qiskit defaults to simple text." },
+  "2_8_7": { q: "A 'Hinton' plot in Qiskit visualization uses:", options: ["Colors only", "Squares of different sizes", "Circles", "Lines"], answer: 1, explanation: "Visualizes matrix elements.", clue: "<b>Hinton Plot</b>: A specialized graph where the <b>size of a square</b> indicates the magnitude of a matrix element, and the color indicates its sign (positive or negative)." },
+  "2_8_8": { q: "Which visualization is best for checking if your 50/50 superposition is truly equal?", options: ["plot_state_paulivec", "plot_histogram", "plot_bloch_vector", "qc.draw()"], answer: 1, explanation: "Histogram clearly shows bar heights.", clue: "<b>Fairness Check</b>: For a perfect superposition, the <b>plot_histogram</b> should show bars of equal height for '0' and '1', each at roughly 50% probability." },
+  "2_8_9": { q: "Does the Bloch Sphere change during a statevector simulation with no gates?", options: ["Yes, it spins", "No, the state vector is static", "It disappears", "It grows"], answer: 1, explanation: "States only change when operators are applied.", clue: "<b>Static States</b>: A quantum state is static in its Hilbert space unless it is <b>Evolved</b> by a gate or <b>Interacts</b> with the environment (noise/measurement)." },
+  "2_8_10": { q: "Can 'qc.draw()' be used to export a circuit to a LaTeX file?", options: ["No, only images", "Yes, using the 'latex' or 'latex_source' output", "Only for 1 qubit", "Only on Linux"], answer: 1, explanation: "Power user feature for papers.", clue: "<b>Academic Export</b>: For publishing research papers, you can use <b>output='latex'</b> to get the raw TeX code for your circuit, producing professional vector graphics." },
+
+  // Week 2, Lecture PDF Set 9: Circuit Operations & Metadata
+  "2_9_1": { q: "What does 'qc.depth()' calculate?", options: ["The number of qubits", "The longest path of gates from start to finish", "The memory size", "The total number of gates"], answer: 1, explanation: "A measure of time/latency.", clue: "<b>Circuit Depth</b>: Depth is the <b>'Critical Path'</b> of your circuit. It tells you the minimum number of time steps required to execute all the gates." },
+  "2_9_2": { q: "What does 'qc.width()' represent in Qiskit?", options: ["Number of gates", "The combined total of qubits and classical bits", "The execution time", "The screen size"], answer: 1, explanation: "Measure of horizontal resource usage.", clue: "<b>Resource Width</b>: Width counts how many <b>total registers</b> (Quantum + Classical) are active in your circuit. It is a measure of the 'space' complexity." },
+  "2_9_3": { q: "The method 'qc.count_ops()' returns:", options: ["Total number of gates", "A dictionary counting each type of gate (e.g., {'h': 2, 'cx': 1})", "A list of errors", "The price of execution"], answer: 1, explanation: "Inventory of gates.", clue: "<b>Gate Inventory</b>: <b>count_ops()</b> is a useful debugging tool that breaks down exactly how many of each gate (H, X, CNOT) you have placed in your circuit." },
+  "2_9_4": { q: "Which method is used to remove the last applied gate?", options: ["qc.pop()", "qc.undo()", "qc.data.pop()", "qc.clear()"], answer: 2, explanation: "Directly manipulating the underlying data list.", clue: "<b>Manual Edit</b>: While not commonly used, you can access the raw gate list through <b>qc.data</b> and use standard Python list methods like .pop() to remove instructions." },
+  "2_9_5": { q: "What is 'Transpilation' in Qiskit?", options: ["Running the code", "Translating a high-level circuit into the native gates of a specific backend", "Fixing bugs", "Upgrading Qiskit"], answer: 1, explanation: "Optimization for physical hardware.", clue: "<b>The Transpiler</b>: Real quantum chips only support a few <b>Native Gates</b>. Transpilation is the 'compiler' step that breaks your complex gates down into those native pieces." },
+  "2_9_6": { q: "Which parameter in 'transpile()' controls the level of optimization?", options: ["speed", "optimization_level (0 to 3)", "quality", "pass_count"], answer: 1, explanation: "Level 3 is highest optimization.", clue: "<b>Optimization Level</b>: By setting <b>optimization_level=3</b>, the Qiskit compiler works extra hard to reduce the number of CNOTs and gates, which helps minimize errors on real hardware." },
+  "2_9_7": { q: "Can you combine two circuits into one using the '+' operator?", options: ["No, it errors", "Yes, it appends the second circuit to the first", "Only for 1 qubit", "Only in old versions"], answer: 1, explanation: "Circuit composition.", clue: "<b>Composition</b>: Just like strings, you can use <b>qc1 + qc2</b> to chain two circuits together, provided they have the same number of qubits and bits." },
+  "2_9_8": { q: "What does 'qc.size()' return?", options: ["Memory in bytes", "The total number of instructions/gates in the circuit", "Number of qubits", "Number of lines"], answer: 1, explanation: "Total gate count.", clue: "<b>Gate Count</b>: The <b>.size()</b> method gives you a single number representing the total count of gate operations, regardless of which qubit they act on." },
+  "2_9_9": { q: "A 'Barrier' in a quantum circuit is used to:", options: ["Stop errors", "Prevent the transpiler from optimizing across specific points", "Cool the qubits", "Block measurement"], answer: 1, explanation: "Visual and compiler separation.", clue: "<b>Barrier</b>: The <b>qc.barrier()</b> instruction tells the compiler 'don't mix the gates on either side'. It is also visually useful to group stages of an algorithm." },
+  "2_9_10": { q: "How do you clear all gates from a circuit while keeping the registers?", options: ["qc.delete()", "qc.data = []", "qc.reset()", "qc.clear()"], answer: 1, explanation: "Deep reset of instructions.", clue: "<b>Circuit Wipe</b>: If you want to reuse your register structure but start a new program, setting <b>qc.data = []</b> wipes all instructions while keeping your qubits defined." },
+
+  // Week 2, Lecture PDF Set 10: Building and Running a Bell State Circuit
+  "2_10_1": { q: "To create a Bell State (|00⟩+|11⟩)/√2, which gates are applied and in what order?", options: ["X then CNOT", "H then CNOT", "CNOT then H", "X then Z"], answer: 1, explanation: "H creates superposition, CNOT entangles.", clue: "<b>Bell State Recipe</b>: Step 1: Apply <b>H</b> to qubit 0. Step 2: Apply <b>CNOT</b> with qubit 0 as control and qubit 1 as target." },
+  "2_10_2": { q: "In the Bell State circuit, which qubit is the control for the CNOT?", options: ["Qubit 0", "Qubit 1", "Both", "None"], answer: 0, explanation: "Standard setup using the superposed qubit as control.", clue: "<b>Entangling Source</b>: Qubit 0 is put into superposition first ($|+⟩$), and then acts as the <b>Control</b> to link its state to Qubit 1." },
+  "2_10_3": { q: "When running this Bell circuit on a simulator with 1000 shots, what result distribution do you expect?", options: ["1000 '00' results", "500 '00' and 500 '11' results", "250 of each possible state", "1000 '01' results"], answer: 1, explanation: "Bell state is a superposition of 00 and 11.", clue: "<b>Correlated Outcomes</b>: Because the qubits are entangled, you should <b>only</b> see '00' or '11'. You should almost never see '01' or '10' (in a perfect simulation)." },
+  "2_10_4": { q: "If you measure only Qubit 0 of a Bell State, what is the result?", options: ["Exactly 0", "Exactly 1", "Randomly 0 or 1 with 50/50 probability", "It stays in superposition"], answer: 2, explanation: "Entanglement means a single qubit looks random alone.", clue: "<b>Local Randomness</b>: Even though the whole system is in a pure state, <b>Qubit 0 alone</b> behaves like a perfectly random bit if you don't look at Qubit 1." },
+  "2_10_5": { q: "What is the expected statevector for a Bell State (|00⟩+|11⟩)/√2?", options: ["[1; 0; 0; 0]", "[1/√2; 0; 0; 1/√2]", "[0; 1/√2; 1/√2; 0]", "[0.5; 0.5; 0.5; 0.5]"], answer: 1, explanation: "Amplitudes for 00 and 11 are equal.", clue: "<b>Combined Vector</b>: In the 4D space, the amplitudes for <b>$|00⟩$ and $|11⟩$</b> are both $1/\\sqrt{2}$ (the 1st and 4th entries), while the middle entries are 0." },
+  "2_10_6": { q: "Can a Bell State be represented as a product of two independent qubits (e.g., |a⟩ ⊗ |b⟩)?", options: ["Yes", "No, it is an entangled state", "Only if measured", "Only on IBM chips"], answer: 1, explanation: "Entanglement is defined by non-separability.", clue: "<b>Non-Separability</b>: The defining feature of a <b>Bell State</b> is that it <b>cannot</b> be factored. You cannot talk about the state of qubit 0 without including the state of qubit 1." },
+  "2_10_7": { q: "To measure the Bell State results into classical bits 'c0' and 'c1', use:", options: ["qc.read()", "qc.measure([0, 1], [0, 1])", "qc.output()", "qc.measure_all()"], answer: 1, explanation: "Standard mapping function.", clue: "<b>Mapping to Bits</b>: The command <b>qc.measure([0,1], [0,1])</b> tells Qiskit to take the quantum results from qubits 0 and 1 and save them into classical bits 0 and 1." },
+  "2_10_8": { q: "If you change the circuit to H(0) followed by X(1) and then CNOT(0, 1), what state do you get?", options: ["|00⟩+|11⟩", "|01⟩+|10⟩", "|00⟩-|11⟩", "|11⟩"], answer: 1, explanation: "X(1) flips the target basis before entanglement.", clue: "<b>State Mutation</b>: By adding an <b>X gate</b> to the target before the CNOT, you create the $|01⟩ + |10⟩$ Bell state (sometimes called $\\Psi^+$)." },
+  "2_10_9": { q: "Why is the Bell State circuit considered the 'Hello World' of quantum computing?", options: ["It's the hardest to build", "It demonstrates both superposition and entanglement in two gates", "it prints text", "It was built by Bell Labs"], answer: 1, explanation: "Simple yet powerful demonstration of quantum principles.", clue: "<b>Quantum Hello World</b>: It is the simplest circuit that exhibits <b>all core quantum behaviors</b> (Superposition + Entanglement), making it the standard first lesson for students." },
+  "2_10_10": { q: "Which Qiskit function is best to verify the entanglement of the Bell state using simulation?", options: ["qc.draw()", "execute(qc, backend, shots=1024).result().get_counts()", "qc.depth()", "qc.width()"], answer: 1, explanation: "Comparing counts for 00 and 11 verifies the correlation.", clue: "<b>Verification</b>: To 'prove' the link, you check the <b>Counts</b>. If you see high numbers for '00' and '11' but zero for the others, you have successfully created entanglement." },
+
+  // Week 3, Lecture PDF Set 1: Deutsch Algorithm
+  "3_1_1": { q: "The Deutsch algorithm is designed to distinguish between which two types of functions?", options: ["Linear and Quadratic", "Constant and Balanced", "Real and Imaginary", "Even and Odd"], answer: 1, explanation: "It determines if f(0)=f(1).", clue: "<b>Deutsch's Problem</b>: The simplest quantum algorithm, designed to tell if a function $f: \\\\{0,1\\\\} \\rightarrow \\\\{0,1\\\\}$ is <b>Constant</b> (same output) or <b>Balanced</b> (different outputs)." },
+  "3_1_2": { q: "How many queries does a classical computer need to solve the Deutsch problem?", options: ["0", "1", "2", "Unlimited"], answer: 2, explanation: "Must check both f(0) and f(1).", clue: "<b>Classical Limit</b>: Classically, you have to look at both inputs to be sure. This requires <b>two function calls</b> (queries) to the oracle." },
+  "3_1_3": { q: "How many queries does the Deutsch algorithm need to solve the problem?", options: ["0", "1", "2", "3"], answer: 1, explanation: "Quantum parallelism allows solving in one step.", clue: "<b>Quantum Advantage</b>: By using superposition, the Deutsch algorithm succeeds with <b>exactly one query</b>, proving that quantum computers can out-perform classical ones." },
+  "3_1_4": { q: "What is the initial state of the ancilla qubit in Deutsch's algorithm?", options: ["|0⟩", "|1⟩", "|+⟩", "|-⟩"], answer: 1, explanation: "Starts at 1 to prepare for |-⟩.", clue: "<b>Helper Qubit</b>: We start the second qubit (ancilla) in the <b>$|1⟩$</b> state so that after applying a Hadamard gate, it becomes the vital <b>$|-⟩$</b> state." },
+  "3_1_5": { q: "What happens to the relative phase when the oracle is applied to the |-⟩ state?", options: ["It disappears", "It is 'kicked back' to the input qubit", "It rotates 360°", "Nothing"], answer: 1, explanation: "The core of many algorithms.", clue: "<b>Phase Kickback</b>: This is the 'magic' of quantum logic. The answer from the function is recorded as a <b>Relative Phase (-1)</b> on the first qubit, rather than changing the bit value." },
+  "3_1_6": { q: "If the final measurement of the first qubit is |1⟩, the function is:", options: ["Constant", "Balanced", "Broken", "Zero"], answer: 1, explanation: "Non-zero indicates a change.", clue: "<b>Result Logic</b>: In the Deutsch circuit, a final result of $|1⟩$ (or '1') signifies that the function is <b>Balanced</b>, while a result of '0' means it is Constant." },
+  "3_1_7": { q: "The Deutsch algorithm relies on which quantum phenomenon for its speedup?", options: ["Entanglement only", "Interference of amplitudes", "Decoherence", "Tunneling"], answer: 1, explanation: "Constructive and destructive interference reveal the property.", clue: "<b>Interference</b>: The algorithm uses <b>interference</b> to cancel out wrong answers and constructively amplify the amplitude that represents the global property of the function." },
+  "3_1_8": { q: "In Deutsch's algorithm, what state are both qubits in just BEFORE the oracle?", options: ["|00⟩", "|+ -⟩", "|- +⟩", "|11⟩"], answer: 1, explanation: "H gates applied to both (initial 0 and 1).", clue: "<b>Superposition Set</b>: We apply Hadamard gates to create the state <b>$|+⟩$</b> (superposition of all inputs) and <b>$|-⟩$</b> (to facilitate phase kickback)." },
+  "3_1_9": { q: "Can Deutsch's algorithm tell you the exact value of f(0)?", options: ["Yes", "No, only the global property", "Only if it is 1", "Always"], answer: 1, explanation: "It only finds the XOR sum (f(0) ⊕ f(1)).", clue: "<b>Property vs Detail</b>: A key theme in quantum algorithms is that they help you find <b>Global Properties</b> of data without revealing individual, local details." },
+  "3_1_10": { q: "Who proposed the Deutsch algorithm?", options: ["Richard Feynman", "David Deutsch", "Peter Shor", "Lov Grover"], answer: 1, explanation: "Proposed in 1985.", clue: "<b>History</b>: <b>David Deutsch</b>, a pioneer of quantum computation, published the first algorithm that showed a formal advantage over classical Turing machines in 1985." },
+
+  // Week 3, Lecture PDF Set 2: Deutsch-Jozsa (DJ) Algorithm Basics
+  "3_2_1": { q: "The Deutsch-Jozsa (DJ) algorithm generalizes Deutsch's algorithm to:", options: ["N inputs bits", "Higher energy levels", "More classical bits", "Only 3 qubits"], answer: 0, explanation: "Handles a string of bits.", clue: "<b>Generalization</b>: The <b>Deutsch-Jozsa Algorithm</b> extends the idea of constant vs. balanced functions to strings of any length <b>n</b>." },
+  "3_2_2": { q: "How many queries does a classical computer need in the WORST CASE for the DJ problem?", options: ["1", "n", "2^(n-1) + 1", "2^n"], answer: 2, explanation: "Must check half plus one inputs.", clue: "<b>Exponential Gap</b>: Classically, you might be 'unlucky' and see the same result for half the inputs. To be 100% sure, you need to check <b>more than half ($2^{n-1} + 1$)</b> of all possible inputs." },
+  "3_2_3": { q: "How many queries does the DJ algorithm need in ALL cases?", options: ["1", "n", "2^n", "√n"], answer: 0, explanation: "Quantum advantage scales with n.", clue: "<b>Constant Time</b>: Miraculously, the DJ algorithm still only requires <b>exactly one query</b>, regardless of how large 'n' is. This is an exponential speedup over classical logic." },
+  "3_2_4": { q: "If the measured bitstring is '00...0' (all zeros), the function is:", options: ["Balanced", "Constant", "Random", "Identity"], answer: 1, explanation: "All zeros indicates no phase changes.", clue: "<b>Readout</b>: In DJ, if you measure <b>all zeros</b>, you are 100% certain the function is <b>Constant</b>. Any other result (even one '1') means it is Balanced." },
+  "3_2_5": { q: "What is the role of the 'H^⊗n' operation in DJ?", options: ["Measure", "Create a uniform superposition of all 2^n states", "Flip all bits", "Delete qubits"], answer: 1, explanation: "Preparing the input register.", clue: "<b>Uniform Superposition</b>: By applying a Hadamard to <b>every input qubit</b>, we create a giant wave covering <b>every possible input</b> value at exactly the same time ($n$ qubits $\\rightarrow 2^n$ states)." },
+  "3_2_6": { q: "The 'Oracle' in DJ must be implemented as a:", options: ["Unitary transformation", "Classical if-statement", "Camera", "Sensor"], answer: 0, explanation: "All gates must be unitary.", clue: "<b>Oracle Design</b>: The Oracle is a <b>Unitary operator $U_f$</b>. Mathematically, it maps $|x⟩|y⟩$ to $|x⟩|y \\oplus f(x)⟩$, preserving the reversibility of the calculation." },
+  "3_2_7": { q: "To what does DJ map the function property?", options: ["To the magnitude of the state", "To the relative phase of the superposition", "To the temperature", "To the qubit count"], answer: 1, explanation: "Phase kickback is key.", clue: "<b>Encoding the Answer</b>: Like Deutsch, DJ encodes the answer into the <b>Relative Phase</b>. The interference after the final Hadamards converts this phase info back into measurable bit values." },
+  "3_2_8": { q: "Is the function in the DJ problem allowed to be 'partially' balanced?", options: ["Yes", "No, it must be exactly constant or exactly 50/50", "Only for small n", "Only on IBM hardware"], answer: 1, explanation: "The problem assumes one of the two extremes.", clue: "<b>Problem Constraints</b>: The DJ algorithm works under the <b>Promise</b> that the function is either 100% constant or perfectly balanced (exactly half 0, half 1)." },
+  "3_2_9": { q: "Which of these is a CONSTANT function output?", options: ["0110", "1111", "1010", "0011"], answer: 1, explanation: "Constant means same output for all inputs.", clue: "<b>Constant Logic</b>: A function is <b>Constant</b> if it ignores the input and always shouts the same answer (e.g., $f(x) = 1$ for all $x$)." },
+  "3_2_10": { q: "Which of these is a BALANCED function output?", options: ["0000", "1111", "1001", "0001"], answer: 2, explanation: "Balanced means 50% zeros, 50% ones.", clue: "<b>Balanced Logic</b>: A function is <b>Balanced</b> if it returns '0' for exactly half of its possible input combinations and '1' for the other half." },
+
+  // Week 3, Lecture PDF Set 3: DJ Algorithm (Constructing Balanced Oracles)
+  "3_3_1": { q: "How do you create a constant '0' oracle in a circuit?", options: ["X gates", "H gates", "Identity (Do nothing)", "CNOTs"], answer: 2, explanation: "If output is always 0, y stays y.", clue: "<b>Identity Oracle</b>: To represent a function that always returns 0, you simply <b>do nothing</b> to the target qubit. The phase stays positive for all states." },
+  "3_3_2": { q: "How do you create a constant '1' oracle?", options: ["Apply an X gate to the target qubit", "H gates", "CNOT", "Z gate"], answer: 0, explanation: "Flips target 100% of the time.", clue: "<b>Not Oracle</b>: To represent a function that always returns 1, you apply an <b>X gate</b> to the target qubit, regardless of what the input qubits are doing." },
+  "3_3_3": { q: "To create a balanced oracle, we often use:", options: ["Z gates", "CNOT gates", "Measurements", "Reset commands"], answer: 1, explanation: "CNOTs link inputs to the output conditionally.", clue: "<b>Conditional Mapping</b>: Balanced oracles use <b>CNOT gates</b> to flip the target qubit for specific input combinations, ensuring exactly half the states are modified." },
+  "3_3_4": { q: "In a balanced oracle for 2 qubits, how many input states should trigger a flip?", options: ["1", "2", "3", "4"], answer: 1, explanation: "Half of 2^2 = 4 is 2.", clue: "<b>Halfway Mark</b>: For a 2-qubit register (4 states total), a balanced function must flip the target for exactly <b>two</b> of those states (like $|01⟩$ and $|10⟩$)." },
+  "3_3_5": { q: "What is the purpose of placing X gates before and after a CNOT in an oracle?", options: ["To slow it down", "To change WHICH input state triggers the flip", "To fix errors", "To add phase"], answer: 1, explanation: "Shifts the trigger to a different bitstring.", clue: "<b>Trigger Logic</b>: By wrapping a CNOT control in <b>X gates</b>, you change it from 'flip if 1' to 'flip if 0'. This allows you to 'program' the oracle for any specific secret string." },
+  "3_3_6": { q: "Does the number of CNOTs determine if the oracle is balanced?", options: ["Yes", "No", "Only if there are 2", "Depends on the system"], answer: 1, explanation: "It's about the logic, not the gate count.", clue: "<b>Logical Balance</b>: Even one CNOT can create a balanced function (e.g., $f(x_1, x_2) = x_1$). It is about the <b>Total Truth Table</b>, not just the gate density." },
+  "3_3_7": { q: "If we use a CNOT targeting the ancilla for every input qubit, is it balanced?", options: ["Yes (unless there are an even number of 1s in every state?)", "Yes, if at least one qubit has a 1", "No", "Sometimes"], answer: 1, explanation: "Parity functions are balanced.", clue: "<b>Parity Logic</b>: A function that returns the <b>XOR sum (Parity)</b> of all input bits is a classic example of a balanced function." },
+  "3_3_8": { q: "In DJ, if the oracle is balanced, the final state of the input register will be:", options: ["|00...0⟩", "Orthogonal to |00...0⟩", "Random", "Exactly |11...1⟩"], answer: 1, explanation: "Destructive interference removes the 000 amplitude.", clue: "<b>Orthogonality</b>: If a function is balanced, the final interference results in an amplitude of <b>zero</b> for the 'all-zeros' state. Every other state combined will hold the 100% remaining probability." },
+  "3_3_9": { q: "To represent $f(x) = x_0$ (balanced), how many CNOTs do you need?", options: ["0", "1", "2", "4"], answer: 1, explanation: "Just one CNOT from qubit 0 to target.", clue: "<b>Simple Balance</b>: The simplest balanced oracle for $n$ bits just looks at exactly <b>one bit</b>. If that bit is 1, it flips; if 0, it doesn't. This creates exactly 50% flips." },
+  "3_3_10": { q: "Can a DJ oracle use non-CNOT gates like H or Z internally?", options: ["No, it must be purely classical logic (X/CNOT)", "Yes", "Only on simulators", "Only if they are reversed"], answer: 0, explanation: "Oracle must mimic a classical function.", clue: "<b>Classical Subroutine</b>: A DJ Oracle is supposed to represent a <b>Classical Boolean Function</b>. Therefore, it should only use gates that correspond to classical logic (NOT, CNOT, Toffoli)." },
+
+  // Week 3, Lecture PDF Set 4: DJ Algorithm (Simulating in Qiskit)
+  "3_4_1": { q: "In Qiskit, how do you call the DJ oracle for a circuit 'qc'?", options: ["qc.oracle()", "qc.append(oracle_gate, q_indices)", "qc.call()", "qc.run()"], answer: 1, explanation: "Oracles are treated as custom gates.", clue: "<b>Modular Design</b>: In Qiskit, it is best practice to build your <b>Oracle as a separate circuit</b> and then 'append' it as a single block to your main DJ algorithm circuit." },
+  "3_4_2": { q: "Why do we use 'qc.barrier()' when building DJ?", options: ["To protect against radiation", "To clearly separate preparation, oracle, and interference steps", "To make it faster", "To measure qubits"], answer: 1, explanation: "Visual and logical aid.", clue: "<b>Algorithm Stages</b>: Barriers help researchers visualize the <b>Three Core Phases</b> of DJ: (1) Superposition, (2) The Oracle call, and (3) The final basis transformation." },
+  "3_4_3": { q: "After the oracle call, what is the next step in the Qiskit DJ circuit?", options: ["Measurement", "Apply another round of H gates to all inputs", "Apply X gates", "Reset"], answer: 1, explanation: "Transformation back to computational basis.", clue: "<b>Final H-Layer</b>: We must apply <b>another layer of Hadamard gates</b> to the input register. This causes the phase-encoded information to interfere and reveal the function's property." },
+  "3_4_4": { q: "If you forget the last H-layer, what results will you see for a constant function?", options: ["All zeros", "A uniform distribution of all possible bitstrings", "All ones", "None"], answer: 1, explanation: "The state stays in the phase basis.", clue: "<b>Missing Interference</b>: Without the final H-layer, your qubits are still in the 'X-basis'. Measuring them will yield a <b>completely random</b> result, hiding the answer you worked for." },
+  "3_4_5": { q: "How do you verify the DJ result in a Qiskit histogram?", options: ["Look for a single peak at '00...0'", "Look for a random cloud", "Look for peaks only at even numbers", "There is no graph"], answer: 0, explanation: "Peak at 0 means constant; no 0 means balanced.", clue: "<b>Decoding Graphs</b>: Check the <b>'000' bar</b>. If it is 100% tall, you have a Constant function. If that specific bar is empty (0%), you have a Balanced function." },
+  "3_4_6": { q: "In Qiskit, how can you automate the creation of a 'random' balanced oracle?", options: ["Use a for loop with random CNOT indices", "IBM generates it", "It is built-in", "Not possible"], answer: 0, explanation: "Programming flexibility.", clue: "<b>Random Oracles</b>: You can use Python's <b>random.sample()</b> to pick a few qubits to serve as CNOT controls, ensuring your test covers different balanced scenarios." },
+  "3_4_7": { q: "If we define 'dj_circuit = QuantumCircuit(n+1, n)', the '+1' is for:", options: ["The computer name", "The ancilla qubit", "A backup bit", "Voltage"], answer: 1, explanation: "Used for phase kickback.", clue: "<b>Ancilla Qubit</b>: The extra <b>$n+1$-th qubit</b> is the 'target' for the oracle. It must be prepared in $|-⟩$ to enable the phase kickback effect." },
+  "3_4_8": { q: "When using the statevector_simulator for DJ, what do you check first?", options: ["Execution time", "The probability of the zero-state index", "The color of the sphere", "Total gates"], answer: 1, explanation: "Checking if amplitude of 0 is 1 or 0.", clue: "<b>Vector Analysis</b>: With the <b>Statevector</b>, you simply check index 0. If its amplitude squared is 1, it's Constant. If it's 0, the function is Balanced." },
+  "3_4_9": { q: "For n=3, how many bits will your 'get_counts()' dictionary keys have?", options: ["3", "4", "1", "8"], answer: 0, explanation: "Usually we only measure the 3 inputs.", clue: "<b>Measured Output</b>: We generally only measure the <b>n input qubits</b>. So for $n=3$, you'll see result strings like '011' or '000'." },
+  "3_4_10": { q: "Transpiling DJ for a real chip often results in higher depth because:", options: ["H gates are slow", "Real chips have limited connectivity (need SWAPs for CNOTs)", "The code is long", "Heat management"], answer: 1, explanation: "Physical layout mapping.", clue: "<b>Hardware Reality</b>: In your code, you can use any CNOT. But on a physical chip, qubits are <b>wired</b>. The compiler must add <b>SWAP gates</b> to bridge the gap between qubits that aren't neighbors." },
+
+  // Week 3, Lecture PDF Set 5: Bernstein-Vazirani (BV) Algorithm Basics
+  "3_5_1": { q: "Bernstein-Vazirani (BV) is designed to solve which specific problem?", options: ["Factoring", "Finding a hidden bitstring 's'", "Defining pi", "Sorting a list"], answer: 1, explanation: "Extracting 's' from f(x) = s · x mod 2.", clue: "<b>BV Problem</b>: Imagine a black box that calculates the <b>dot product</b> of your input with a secret string 's'. The goal is to find 's'." },
+  "3_5_2": { q: "How many queries does a classical computer need to find an n-bit secret string 's'?", options: ["1", "n", "2^n", "√n"], answer: 1, explanation: "Must check each bit position one-by-one.", clue: "<b>Classical Discovery</b>: To find each bit of 's', you'd have to input strings like '100', '010', '001', etc. This takes <b>exactly n</b> queries." },
+  "3_5_3": { q: "How many queries does the BV algorithm need?", options: ["1", "n", "2^n", "n/2"], answer: 0, explanation: "Full string extraction in one step.", clue: "<b>Maximum Efficiency</b>: The BV algorithm extracts the <b>entire secret string</b> in exactly <b>one query</b>, demonstrating a linear speedup ($n$ vs. $1$)." },
+  "3_5_4": { q: "The function definition for BV is f(x) = ...", options: ["x^2", "s · x (mod 2)", "sin(x)", "s + x"], answer: 1, explanation: "Bitwise dot product.", clue: "<b>Dot Product Oracle</b>: The secret 's' is encoded such that the output is the result of <b>$(s_0 x_0 \\oplus s_1 x_1 \\oplus ... \\oplus s_n x_n)$</b>." },
+  "3_5_5": { q: "After running the BV circuit, where does the result 's' appear?", options: ["In the ancilla state", "Directly in the measurement of the input qubits", "In the cloud", "As a phase"], answer: 1, explanation: "The interference pattern reveals 's'.", clue: "<b>Direct Output</b>: When you measure the input register at the end, the <b>binary value you see</b> IS the secret string. If 's' was '101', your meter will read '101'." },
+  "3_5_6": { q: "The BV circuit structure is almost identical to which other algorithm?", options: ["Shor's", "Deutsch-Jozsa", "Grover's", "VQE"], answer: 1, explanation: "Both use H layers and phase kickback.", clue: "<b>Algorithm Family</b>: BV is a 'cousin' of <b>Deutsch-Jozsa</b>. They use the same 'H-Oracle-H' sandwich, but they encode and extract different types of data." },
+  "3_5_7": { q: "Why is BV considered more impressive than DJ?", options: ["It uses more qubits", "It extracts a specific string, not just a binary property", "It is newer", "It is harder to code"], answer: 1, explanation: "BV gives you the data itself.", clue: "<b>Information Density</b>: While DJ only gives a 'Yes/No' answer (is it constant?), BV retrieves <b>$n$ bits of information</b> (the whole string) in that same single step." },
+  "3_5_8": { q: "What happens if s = '000'? The function is:", options: ["Balanced", "Constant (always 0)", "Random", "Identity"], answer: 1, explanation: "All dot products with 000 are 0.", clue: "<b>Zero Case</b>: If the secret string is all zeros, the oracle never flips the ancilla. This makes it a <b>Constant-Zero</b> function." },
+  "3_5_9": { q: "BV proved that which complexity class gap exists?", options: ["P vs NP", "Quantum vs Classical query complexity", "Real vs Complex", "CPU vs GPU"], answer: 1, explanation: "Specifically BQP vs BPP in some contexts.", clue: "<b>Complexity Theory</b>: BV was one of the first proofs that quantum computers belong to a different <b>Complexity Class</b> (BQP) that can solve certain problems faster than any classical machine (BPP)." },
+  "3_5_10": { q: "If we measure '101' for an n=3 BV circuit, what was the function?", options: ["f(x) = x_0 ⊕ x_2", "f(x) = x_1", "f(x) = 0", "f(x) = 1"], answer: 0, explanation: "1 at indices 0 and 2.", clue: "<b>Mapping the String</b>: A string of '101' means bits 0 and 2 of the secret were 1, so the oracle must have been checking <b>qubit 0 and qubit 2</b>." },
+
+  // Week 3, Lecture PDF Set 6: BV Algorithm (Oracle & Qiskit)
+  "3_6_1": { q: "How is a BV oracle for secret '101' constructed in Qiskit?", options: ["X on qubit 1", "CNOTs from qubits 0 and 2 to the target", "H gates on all", "Z on all"], answer: 1, explanation: "CNOTs at index positions where s_i = 1.", clue: "<b>Building the Oracle</b>: For every '1' in your secret string, you place a <b>CNOT gate</b> with that qubit as control and the ancilla as target. If 's' is 101, you use qubits 0 and 2." },
+  "3_6_2": { q: "If s = '000', do you need any CNOTs in the BV oracle?", options: ["Yes, one", "No", "Yes, at index 0", "Depends on n"], answer: 1, explanation: "0 bit means no interaction.", clue: "<b>Empty Oracle</b>: If the secret bit is 0, it doesn't contribute to the dot product. Thus, no CNOT is needed for that position, effectively leaving $|s \\cdot x⟩ = 0$." },
+  "3_6_3": { q: "What is the complexity of the classical oracle for dot product if you only check one input at a time?", options: ["O(1)", "O(n)", "O(n^2)", "O(log n)"], answer: 1, explanation: "Finding n bits sequentially.", clue: "<b>Step-by-Step</b>: Classically, you determine the string bit-by-bit. To find bit 0, you ask 'what is 100?'. To find bit 1, you ask 'what is 010?'. This <b>Linear</b> process takes $n$ steps." },
+  "3_6_4": { q: "What happens if the ancilla qubit in BV is NOT in the |-⟩ state?", options: ["The algorithm still works", "Phase kickback fails to occur", "The computer crashes", "Results are inverted"], answer: 1, explanation: "Kickback requires an eigenstate of the operation.", clue: "<b>Kickback Condition</b>: For the bit-flip ($X$) from the CNOT to 'kick back' as a phase flip ($-1$), the target qubit MUST be in the <b>Minus state ($|-⟩$)</b>." },
+  "3_6_5": { q: "In Qiskit, how do you prepare the ancilla in the |-⟩ state starting from |0⟩?", options: ["qc.x(n); qc.h(n)", "qc.h(n); qc.x(n)", "qc.z(n)", "qc.y(n)"], answer: 0, explanation: "0 -> 1 (via X) -> |-⟩ (via H).", clue: "<b>Manual Prep</b>: To get the ancilla ready, we first flip it with an <b>X gate</b> to get $|1⟩$, then apply a <b>Hadamard</b> to reach $|-⟩ = (|0⟩ - |1⟩)/\\sqrt{2}$." },
+  "3_6_6": { q: "The secret string 's' in BV is often called a:", options: ["Key", "Hidden Bitstring", "Oracle Code", "Password"], answer: 1, explanation: "Standard nomenclature.", clue: "<b>Terminology</b>: In literature, 's' is referred to as the <b>Hidden Bitstring</b>, and the goal of BV is to solve the 'Hidden Bitstring Problem'." },
+  "3_6_7": { q: "Does the BV algorithm use entanglement?", options: ["Yes, during the oracle call", "No, only superposition", "Only for n > 10", "Only on simulators"], answer: 0, explanation: "Oracle CNOTs create entanglement with the ancilla.", clue: "<b>Hidden Correlation</b>: While we measure the qubits independently at the end, the <b>CNOT gates</b> in the oracle technically create a temporary entanglement between the inputs and the ancilla." },
+  "3_6_8": { q: "One application of BV is in which field?", options: ["Cryptanalysis", "Learning Parity with Noise (simplified)", "Cooking", "Web Design"], answer: 1, explanation: "Relevant to parity problems.", clue: "<b>Theoretical Impact</b>: BV is a foundational algorithm for <b>Complexity Theory</b> and is related to problems like 'Learning Parity', which has implications for modern cryptography." },
+  "3_6_9": { q: "If your secret string is '110', how many CNOTs are in the circuit?", options: ["1", "2", "3", "0"], answer: 1, explanation: "Two 1s in the string.", clue: "<b>Gate Mapping</b>: A string of 1-1-0 means we need to pull parity from qubit 0 and qubit 1. This requires <b>two CNOT gates</b>." },
+  "3_6_10": { q: "BV demonstrates a speedup that is:", options: ["Exponential", "Linear (but with reduced constant factor)", "Quadratic", "None"], answer: 1, explanation: "n vs 1 query.", clue: "<b>Query Speedup</b>: Classically it takes $n$ queries. Quantumly it takes $1$. While not exponential, this <b>Linear Speedup</b> is the most efficient possible for this problem." },
+
+  // Week 3, Lecture PDF Set 7: Grover's Algorithm (Intro)
+  "3_7_1": { q: "Grover's algorithm is used for which primary task?", options: ["Factoring", "Searching an unstructured database", "Simulating weather", "Sorting numbers"], answer: 1, explanation: "Searching for a marked item in N items.", clue: "<b>Unstructured Search</b>: Grover's is the 'search engine' of quantum computing. It finds a specific 'marked' item in a list of size $N$ without needing the list to be sorted." },
+  "3_7_2": { q: "How many entries does a classical search need to check in the worst case for a list of N?", options: ["1", "log N", "N", "√N"], answer: 2, explanation: "Must check every item until found.", clue: "<b>Linear Search</b>: If you have 100 files and no index, you might have to open all <b>100</b> ($N$) of them to find the secret one." },
+  "3_7_3": { q: "What is the query complexity of Grover's Algorithm?", options: ["O(1)", "O(log N)", "O(N)", "O(√N)"], answer: 3, explanation: "Quadratic speedup.", clue: "<b>The √N Breakthrough</b>: Grover's algorithm only needs roughly <b>$\\sqrt{N}$</b> steps. For 1 million items, classical needs 1,000,000 checks, but Grover only needs 1,000!" },
+  "3_7_4": { q: "What type of speedup does Grover's offer?", options: ["Exponential", "Linear", "Quadratic", "Logarithmic"], answer: 2, explanation: "N to √N is a square-root speedup.", clue: "<b>Quadratic Advantage</b>: Although not as powerful as Shor's exponential jump, the <b>Quadratic Speedup</b> of Grover's is extremely useful because it applies to almost <i>any</i> search or optimization problem." },
+  "3_7_5": { q: "Can Grover's search reach O(1) complexity like DJ?", options: ["Yes", "No, √N is the proven optimal limit", "Only for N=4", "Only on Google chips"], answer: 1, explanation: "Lower bound is proven.", clue: "<b>Proven Limit</b>: Mathematicians have proven that you <b>cannot</b> search faster than $\\sqrt{N}$ on a quantum computer. Grover's algorithm is mathematically <b>Optimal</b>." },
+  "3_7_6": { q: "The geometric interpretation of Grover's algorithm involves:", options: ["Cube expansion", "Rotation of a state vector in a 2D subspace", "Scaling a sphere", "Folding paper"], answer: 1, explanation: "Rotating towards the solution state.", clue: "<b>State Rotation</b>: Geometrically, Grover's algorithm is like <b>steering a needle</b>. Each step 'rotates' the system's state vector closer and closer to the 'target' state." },
+  "3_7_7": { q: "What is the 'marked state' |w⟩?", options: ["The first qubit", "The correct answer to the search", "The errors", "The background noise"], answer: 1, explanation: "The target we are searching for.", clue: "<b>The Target</b>: In Grover nomenclature, <b>$|w⟩$ (the Winner)</b> is the specific basis state that represents the solution to your problem." },
+  "3_7_8": { q: "Before the first iteration, what state are the qubits in?", options: ["All zeros", "Uniform superposition of all 2^n states", "All ones", "Random"], answer: 1, explanation: "Start with equal probability for everything.", clue: "<b>Equal Odds</b>: We start with a <b>Uniform Superposition</b>. This means every possible answer, right or wrong, begins with exactly the same probability amplitude." },
+  "3_7_9": { q: "Is Grover's algorithm only for searching lists?", options: ["Yes", "No, it can speed up any NP problem search", "Only for numbers", "Only for text"], answer: 1, explanation: "Broadly applicable to function inversion.", clue: "<b>Universal Tool</b>: Grover's is actually 'Function Inversion'. It can find a needle in <i>any</i> haystack, whether it's a database, a password, or a solution to a complex Sudoku." },
+  "3_7_10": { q: "Who invented Grover's algorithm?", options: ["Richard Feynman", "Lov Grover", "David Deutsch", "John Bell"], answer: 1, explanation: "Invented in 1996.", clue: "<b>The Author</b>: <b>Lov Grover</b> published this groundbreaking algorithm in 1996 while working at Bell Labs, changing how we think about database complexity." },
+
+  // Week 3, Lecture PDF Set 8: Grover Oracle & Phase Inversion
+  "3_8_1": { q: "What does the Grover Oracle do to the 'marked' state |w⟩?", options: ["Deletes it", "Flips its bit value to 1", "Flips its Phase (multiplies amplitude by -1)", "Measures it"], answer: 2, explanation: "Oracle identifies but doesn't amplify yet.", clue: "<b>Marking the Spot</b>: The Oracle's only job is to 'change the sign' of the correct answer. It makes the amplitude of the winner <b>Negative</b>, while keeping the others positive." },
+  "3_8_2": { q: "Does the oracle increase the probability of finding the answer by itself?", options: ["Yes", "No, it only changes the sign", "Only for N=2", "Always"], answer: 1, explanation: "Amplitude is squared for probability; (-A)² = A².", clue: "<b>Invisible Change</b>: Simply flipping the sign <b>does not change the probability</b> (since $(-a)^2 = a^2$). We need the next step—the Diffuser—to turn that sign into a higher probability." },
+  "3_8_3": { q: "A phase oracle for a 3-qubit state |101⟩ results in which amplitude change?", options: ["|101⟩ → |111⟩", "A_{101} → -A_{101}", "A_{101} → 0", "A_{000} → -A_{101}"], answer: 1, explanation: "Sign flip on the target index.", clue: "<b>Mathematical Flip</b>: The Oracle performs the operation <b>$I - 2|w⟩⟨w|$</b>. For the marked state $|w⟩$, the result is exactly $-|w⟩$." },
+  "3_8_4": { q: "To build an oracle in Qiskit for state |111⟩, which gate is often used?", options: ["CX", "CCX (Toffoli)", "MCZ (Multi-Controlled Z)", "H"], answer: 2, explanation: "Flips phase if all inputs are 1.", clue: "<b>Multi-Control</b>: We use a <b>Multi-Controlled Z gate</b>. It only triggers (flips the sign) if your input qubits exactly match the secret bit pattern of the 'winner'." },
+  "3_8_5": { q: "If you want to search for '000', what must you do in the oracle circuit?", options: ["Apply X gates to all qubits before and after the MCZ", "Do nothing", "Apply H gates", "Measure immediately"], answer: 0, explanation: "X gates temporarily treat 0 as 1 for the control logic.", clue: "<b>Bit Selection</b>: To mark a '0', you must wrap the control wire in <b>X gates</b>. This trick allows the gate to 'see' a 0 as a trigger, marking the string '000' as the goal." },
+  "3_8_6": { q: "Is the Grover Oracle 'reversable'?", options: ["Yes, like all unitary gates", "No", "Only if it fails", "Only for small N"], answer: 0, explanation: "Quantum gates must be unitary and reversible.", clue: "<b>Reversibility</b>: The Oracle is a <b>Unitary operator</b>. If you apply the same oracle twice, they cancel each other out ($O^2 = I$), returning the state to its original positive form." },
+  "3_8_7": { q: "The Oracle represents which part of the search problem?", options: ["The database", "The 'Black Box' function f(x) where f(w)=1", "The user", "The internet"], answer: 1, explanation: "Encodes the success condition.", clue: "<b>The Question</b>: The Oracle encodes the <b>Condition</b> of your search. For example, if you are searching for a password, the Oracle is the logic that checks if a guess is 'Correct' or 'Incorrect'." },
+  "3_8_8": { q: "In terms of 'Average Amplitude', the oracle makes the target amplitude:", options: ["Go above the average", "Go below the average", "Zero", "Stay the same"], answer: 1, explanation: "By becoming negative, it is far 'below' the positive average.", clue: "<b>Below Average</b>: By flipping the winner's amplitude to be <b>Negative</b>, the Oracle creates a huge gap between the 'wrong' states and the 'right' one, setting the stage for the Diffuser." },
+  "3_8_9": { q: "How many different oracles can be defined for n=2 qubits?", options: ["1", "2", "4 (one for each basis state)", "Infinite"], answer: 2, explanation: "Targets are 00, 01, 10, 11.", clue: "<b>Search Space</b>: With 2 qubits, there are <b>4 possible locations</b>. You can create 4 different oracles, each marking a different 'hiding spot' for the treasure." },
+  "3_8_10": { q: "Wait, if your oracle marks two states instead of one, will Grover's still work?", options: ["No", "Yes, it will find one of them", "Only if N is big", "Only on simulators"], answer: 1, explanation: "Grover handles multi-solution search.", clue: "<b>Broad Search</b>: Grover's is flexible! If your oracle marks <b>multiple correct answers</b>, the algorithm will find one of them even faster than it would find a single one." },
+
+  // Week 3, Lecture PDF Set 9: Grover Diffuser (Inversion about Mean)
+  "3_9_1": { q: "The 'Diffuser' in Grover's algorithm is also known as:", options: ["The Oracle", "The Amplitude Encoder", "Inversion About the Mean", "The Result Reader"], answer: 2, explanation: "Reflects all amplitudes across their average.", clue: "<b>Inversion about the Mean</b>: This is the second half of a Grover step. It takes the amplitudes and <b>reflects them</b> over the average value of all amplitudes." },
+  "3_9_2": { q: "What is the physical effect of the Diffuser on the negative 'marked' amplitude?", options: ["It becomes more negative", "It gets 'flipped' to a large positive value", "It stays the same", "It goes to zero"], answer: 1, explanation: "Distance from mean is doubled and flipped.", clue: "<b>Amplitude Boost</b>: Because the winner's amplitude was negative (far from the average), reflecting it over the average causes it to 'hop' up to a <b>much higher positive value</b>." },
+  "3_9_3": { q: "What happens to the amplitudes of the UNMARKED states during diffusion?", options: ["They increase", "They slightly decrease", "They become zero", "They become negative"], answer: 1, explanation: "Total probability is conserved; winner takes from losers.", clue: "<b>Resource Stealing</b>: Since the total probability must stay 1, the winner <b>'steals' probability</b> from the other states. The incorrect states naturally shrink as the correct one grows." },
+  "3_9_4": { q: "How is the Diffuser implemented in a circuit (for any N)?", options: ["H gates, then a specific Z-logic, then H gates", "Only X gates", "Measurement and Reset", "A single CNOT"], answer: 0, explanation: "Reflects about the state |s⟩.", clue: "<b>Diffuser Circuit</b>: The standard diffuser uses a <b>sandwich of H-gates</b> around a 'Reflection about Zero' operator. This translates 'reflection about the mean' into a simpler bit-logic." },
+  "3_9_5": { q: "Which property is conserved by the Diffuser operator?", options: ["Energy", "Phase only", "Total Probability (Normalization)", "Bit count"], answer: 2, explanation: "It is a unitary operation.", clue: "<b>Unitary Balance</b>: Just like any valid quantum gate, the Diffuser is <b>Unitary</b>. It moves probability around but never creates or destroys it." },
+  "3_9_6": { q: "After ONE iteration of Oracle + Diffuser, what is the probability of finding the answer for N=4?", options: ["50%", "100%", "25%", "0%"], answer: 1, explanation: "For N=4, one step is perfect.", clue: "<b>Perfect Search</b>: For exactly 4 items (2 qubits), <b>one single iteration</b> is enough! The probability of the correct answer jumps from 25% straight to <b>100%</b>." },
+  "3_9_7": { q: "Geometricly, one Grover iteration corresponds to rotating by how much angle?", options: ["θ", "2θ", "90°", "180°"], answer: 1, explanation: "Two reflections create a rotation by twice the angle.", clue: "<b>Double Rotation</b>: Each Grover step consists of two reflections. Mathematically, two reflections combine to form a <b>Rotation by $2\\theta$</b> closer to the solution vector." },
+  "3_9_8": { q: "Does the Diffuser depend on the secret string 's'?", options: ["Yes", "No, it is a global operation independent of the target", "Only for N > 100", "Only on real hardware"], answer: 1, explanation: "Diffuser is always the same.", clue: "<b>Blind Operation</b>: One of the coolest parts of Grover's is that the <b>Diffuser is universal</b>. It doesn't know what you are looking for—it just blindly amplifies whatever the Oracle 'marked'." },
+  "3_9_9": { q: "If the mean amplitude is 0.1 and the winner is -0.5, what is its new amplitude after diffusion?", options: ["0.2", "0.7", "0.1", "-0.1"], answer: 1, explanation: "Formula: 2*mean - original = 2(0.1) - (-0.5) = 0.7.", clue: "<b>The Formula</b>: The math is simple: <b>$A_{new} = 2 \\times Avg - A_{old}$</b>. $2(0.1) - (-0.5) = 0.2 + 0.5 = 0.7$. The height nearly doubles!" },
+  "3_9_10": { q: "What happens if you run the Diffuser WITHOUT running the Oracle first?", options: ["It works normally", "It does nothing (state returns to uniform superposition)", "It deletes the state", "It crashes the script"], answer: 1, explanation: "Reflecting a uniform set about its own mean changes nothing.", clue: "<b>Symmetry</b>: If all states are positive and equal, they are <i>at</i> the mean. Reflecting them across the mean <b>changes nothing</b>. This is why the Oracle MUST mark the winner first." },
+
+  // Week 3, Lecture PDF Set 10: Optimality & Iterations
+  "3_10_1": { q: "What is the optimal number of iterations for Grover's search for a list of N?", options: ["N/2", "√N", "Approximately (π/4)√N", "log N"], answer: 2, explanation: "Standard formula for peak probability.", clue: "<b>The Sweet Spot</b>: To get the highest success rate, you should repeat the process roughly <b>$(\\pi/4)\\sqrt{N}$</b> times. For 100 items, that's about 8 iterations." },
+  "3_10_2": { q: "What happens if you run TOO MANY iterations?", options: ["Probability increases to 100%", "The probability peaks and then starts to Decrease (Over-rotation)", "Nothing", "The circuit breaks"], answer: 1, explanation: "You rotate past the solution.", clue: "<b>Over-rotation</b>: Because Grover's is a rotation, if you keep turning, you will <b>pass</b> the solution and start moving away from it. This 'over-shoots' and actually lowers your chance of success." },
+  "3_10_3": { q: "For n=10 qubits (N=1024), roughly how many iterations are needed?", options: ["1024", "32", "25", "512"], answer: 2, explanation: "pi/4 * sqrt(1024) = 0.78 * 32 ≈ 25.", clue: "<b>Scaling Demo</b>: For 1024 possible answers, you only need <b>about 25 iterations</b> to find the right one with nearly 100% certainty." },
+  "3_10_4": { q: "If there are M solutions in a list of N, how many iterations are needed?", options: ["√N", "√(N/M)", "1", "N"], answer: 1, explanation: "More solutions = faster search.", clue: "<b>Multi-Target Speed</b>: If there are many 'treasure' items, the search becomes even faster! You only need roughly <b>$\\sqrt{N/M}$</b> steps to find any one of them." },
+  "3_10_5": { q: "What is the probability of success for Grover's if you stop at the optimal point?", options: ["Exactly 50%", "Exactly 100% (always)", "Extremely high (approaching 100% as N grows)", "It depends on the weather"], answer: 2, explanation: "Gets very close to 1 as N increases.", clue: "<b>Near-Certainty</b>: While it's not always <i>exactly</i> 100% (except for N=4), it gets <b>very close to 1</b> for large databases, making it a highly reliable algorithm." },
+  "3_10_6": { q: "Can Grover search be used if you don't know the value of M (number of solutions)?", options: ["No", "Yes, using 'Quantum Counting' or iterative guessing", "Only if M=1", "Only for even N"], answer: 1, explanation: "Adaptive strategies exist.", clue: "<b>Quantum Counting</b>: If you don't know how many solutions there are, you can use a technique called <b>Quantum Counting</b> (BV + Phase Estimation) to find $M$ first, then use Grover's." },
+  "3_10_7": { q: "If N=2 (one qubit), what is √N?", options: ["1", "1.414", "2", "0.5"], answer: 1, explanation: "Math check.", clue: "<b>Small N</b>: For a single qubit ($N=2$), Grover's isn't very useful because $\\sqrt{2} \\approx 1.4$, which is basically the same as 1 or 2 classical checks." },
+  "3_10_8": { q: "Which complexity class describes problems that Grover can speed up?", options: ["P", "NP", "BQP", "All of them"], answer: 1, explanation: "Any NP problem which has a verifiable answer.", clue: "<b>NP Speedup</b>: Any problem where you can 'verify' the answer quickly (the <b>NP class</b>) can have its search space explored faster by Grover's algorithm." },
+  "3_10_9": { q: "Does Grover's algorithm give you an exponential speedup?", options: ["Yes", "No, only quadratic", "Only for Shor's", "Only for prime numbers"], answer: 1, explanation: "N vs √N.", clue: "<b>Quadratic vs Exponential</b>: Always remember: Grover's is <b>Quadratic</b> ($N \\rightarrow \\sqrt{N}$), whereas Shor's is <b>Exponential</b>. Quadratic is good, but exponential is game-changing." },
+  "3_10_10": { q: "Is Grover search useful for finding a needle in a purely random list?", options: ["No", "Yes, that is exactly its primary use case", "Only if the needle is 1", "Only if the list is sorted"], answer: 1, explanation: "Doesn't require any pre-sorting.", clue: "<b>Random Haystacks</b>: This is the 'killer app' for Grover's. It works on <b>Unstructured Data</b> where there is no pattern or sorting that a classical computer could use to go faster." },
+
+  // Week 4, Lecture PDF Set 1: Variational Quantum Algorithms (VQA)
+  "4_1_1": { q: "What is a 'Hybrid' quantum algorithm?", options: ["Uses two quantum computers", "Uses both a quantum processor and a classical optimizer", "Runs on gasoline", "Only for 1 qubit"], answer: 1, explanation: "Quantum for state prep/measure, classical for optimization.", clue: "<b>Hybrid Loop</b>: <b>VQAs</b> are hybrid because they use a cycle: (1) Quantum computer prepares a state, (2) Classical computer calculates the 'cost' and updates the parameters for the next try." },
+  "4_1_2": { q: "Why are VQAs popular in the NISQ era?", options: ["They are shorter", "They are resilient to small amounts of noise", "They use zero qubits", "IBM mandates them"], answer: 1, explanation: "Optimization loops can 'tune away' some systematic errors.", clue: "<b>NISQ Friendly</b>: <b>Noisy Intermediate-Scale Quantum (NISQ)</b> devices have errors. VQAs are 'noise-resilient' because the classical optimizer can often find the best result even if the qubits are a bit fuzzy." },
+  "4_1_3": { q: "What is an 'Ansatz' in VQA?", options: ["A type of cable", "A mathematical 'guess' or trial state with tunable parameters", "A final result", "A type of gate"], answer: 1, explanation: "Ansatz is the circuit structure we vary.", clue: "<b>The Ansatz</b>: An <b>Ansatz</b> (German for 'approach' or 'setup') is a template circuit. You vary the angles of the gates inside to explore different areas of the state space." },
+  "4_1_4": { q: "The parameters inside a VQA Ansatz are usually:", options: ["Integer bitstrings", "Rotation angles (θ, φ, λ)", "Gate names", "Qubit IDs"], answer: 1, explanation: "Continuous angles for Rz, Ry, Rx gates.", clue: "<b>Tunable Knobs</b>: In a VQA, the 'knobs' we turn are the <b>rotation angles</b> of parametric gates like <i>$Ry(\\theta)$</i> or <i>$Rz(\\varphi)$</i>." },
+  "4_1_5": { q: "Which classical method is used to update VQA parameters?", options: ["Sorting", "Gradient Descent or SPSA", "Binary search", "Hashing"], answer: 1, explanation: "Optimization algorithms minimize a cost function.", clue: "<b>The Optimizer</b>: We use classical mathematical tools like <b>Gradient Descent</b> or <b>SPSA</b> (Simultaneous Perturbation Stochastic Approximation) to find the 'bottom' of the energy hill." },
+  "4_1_6": { q: "What does the 'Cost Function' represent in VQA?", options: ["Price of hardware", "The physical quantity you want to minimize (e.g., energy)", "Total gate count", "Code length"], answer: 1, explanation: "The target metric for optimization.", clue: "<b>Cost Landscape</b>: The <b>Cost Function</b> is the value we are trying to lower. In chemistry, this is usually the <b>Energy</b> of a molecule; in finance, it might be <b>Portfolio Risk</b>." },
+  "4_1_7": { q: "An 'Objective Function' is another name for:", options: ["Cost function", "Ansatz", "Hardware", "Measurement"], answer: 0, explanation: "Standard optimization terminology.", clue: "<b>Goal Post</b>: The <b>Objective Function</b> is the mathematical goal. Every loop of the VQA is focused on making this number as small (or as large) as possible." },
+  "4_1_8": { q: "In VQA, 'Barren Plateaus' refer to:", options: ["Successful results", "Regions where the gradient becomes nearly zero, making optimization hard", "Mountains in NY", "A type of chip"], answer: 1, explanation: "A major scaling challenge.", clue: "<b>Flat Grounds</b>: A <b>Barren Plateau</b> is the 'death valley' for optimizers. The landscape becomes so flat that the optimizer doesn't know which way is 'down', and the algorithm gets stuck." },
+  "4_1_9": { q: "Can VQAs be used for Machine Learning?", options: ["Yes (Quantum Neural Networks)", "No", "Only for sorting", "Only on Google Colab"], answer: 0, explanation: "QML uses variational circuits as layers.", clue: "<b>Quantum ML</b>: Variational circuits are the backbone of <b>Quantum Neural Networks (QNNs)</b>, where the gate angles act like the 'weights' in a classical neural net." },
+  "4_1_10": { q: "Which company's ambassadors are famous for VQA research (from course context)?", options: ["Microsoft", "IBM (e.g., Shesha Raghunathan)", "Apple", "Nvidia"], answer: 1, explanation: "Course mentions IBM ambassadors.", clue: "<b>Expertise</b>: IBM Quantum ambassadors like <b>Shesha Raghunathan</b> have been central to discussing how VQAs can leverage current hardware for real-world scaling." },
+
+  // Week 4, Lecture PDF Set 2: Ansatz & Parameterized Circuits
+  "4_2_1": { q: "The term 'HW-Efficient' Ansatz means:", options: ["Uses zero gates", "Uses only the native gates and connectivity of the physical device", "Is cheap to buy", "Only works on GPUs"], answer: 1, explanation: "Tailoring the circuit to the chip reduces error.", clue: "<b>Efficiency</b>: A <b>Hardware-Efficient Ansatz</b> is designed to fit the 'shape' of the chip perfectly, avoiding extra SWAP gates that would otherwise introduce more noise." },
+  "4_2_2": { q: "What is an 'Entangling Layer' in an Ansatz?", options: ["A layer of H gates", "A set of CNOT or CZ gates to correlate qubits", "The measurement step", "A wire"], answer: 1, explanation: "Spreads information across qubits.", clue: "<b>Quantum Linkage</b>: To explore complex states, we need an <b>Entangling Layer</b> (usually CNOTs) that creates correlations between all the qubits in the register." },
+  "4_2_3": { q: "What is a 'Rotation Layer'?", options: ["The computer spinning", "A series of parameterized single-qubit gates (like Ry)", "A measurement", "A reset"], answer: 1, explanation: "Changes individual qubit orientations.", clue: "<b>Directional Change</b>: A <b>Rotation Layer</b> consists of gates like $Ry(\\theta)$ or $Rx(\\phi)$. Changing these angles allows us to 'point' each qubit in a specific direction on its Bloch sphere." },
+  "4_2_4": { q: "The 'Depth' of an Ansatz affects its 'Expressibility'. This means:", options: ["It is harder to draw", "It can represent a wider variety of quantum states", "It uses more electricity", "It is more accurate always"], answer: 1, explanation: "Deeper circuits can reach more complex regions of Hilbert space.", clue: "<b>Expressibility</b>: A circuit with more layers is more <b>Expressive</b>—it can reach 'farther' corners of the quantum universe to find the elusive ground state." },
+  "4_2_5": { q: "What is the trade-off with a very deep Ansatz?", options: ["None", "More gates = More noise/error accumulation", "Too fast", "Uses too little RAM"], answer: 1, explanation: "The 'NISQ' limit.", clue: "<b>The Noise Trade-off</b>: While a deeper circuit can represent more states, <b>More gates mean more noise</b>. If the circuit is too deep for the hardware, the result will be pure random signal." },
+  "4_2_6": { q: "In Qiskit, the library of pre-built Ansatz circuits is called:", options: ["AnsatzKit", "qiskit.circuit.library", "Q-Lib", "GateSet"], answer: 1, explanation: "Contains TwoLocal, RealAmplitudes, etc.", clue: "<b>Pre-built Tools</b>: Qiskit provides the <b>circuit.library</b>, which includes ready-to-use templates like <i>'TwoLocal'</i> and <i>'RealAmplitudes'</i> for your variational algorithms." },
+  "4_2_7": { q: "A 'TwoLocal' circuit in Qiskit is a common:", options: ["Sorting algorithm", "Variational Ansatz template", "Measurement technique", "Error correction code"], answer: 1, explanation: "Used widely in VQE and QML.", clue: "<b>TwoLocal</b>: This is a <b>Standard Template</b> consisting of alternating layers of single-qubit rotations and entangling gates (usually CNOTs) between neighboring qubits." },
+  "4_2_8": { q: "What happens if the Ansatz doesn't have enough parameters?", options: ["It might never reach the true solution (under-parametrization)", "It works faster", "It uses more memory", "It crashes"], answer: 0, explanation: "Cannot express the target state.", clue: "<b>Under-parametrization</b>: If your 'guess' (Ansatz) is too simple, it might be physically <b>impossible</b> for it to reach the correct answer, no matter how much you optimize the angles." },
+  "4_2_9": { q: "The parameters θ are updated by which device?", options: ["The Quantum Computer", "The Classical Host Computer", "A smartphone", "A sensor"], answer: 1, explanation: "Quantum does the calc, classical does the logic.", clue: "<b>Classical Brain</b>: Remember, in VQA, the 'Brain' is the <b>Classical CPU</b>. It looks at the quantum numbers and decides: 'Let's try a slightly larger angle next time'." },
+  "4_2_10": { q: "Increasing the number of repetitions (reps) in an Ansatz generally:", options: ["Decreases the parameter count", "Increases the number of layers and parameters", "Resets the circuit", "Deletes qubits"], answer: 1, explanation: "Adds more expressive power.", clue: "<b>Repetitions</b>: By setting <b>reps=3</b>, you are effectively telling Qiskit to 'repeat the entangling and rotation pattern 3 times', making the circuit deeper and more powerful." },
+
+  // Week 4, Lecture PDF Set 3: Variational Quantum Eigensolver (VQE)
+  "4_3_1": { q: "What is the primary goal of the VQE algorithm?", options: ["Search a database", "Find the ground state energy (lowest eigenvalue) of a system", "Shor's algorithm", "Encrypt data"], answer: 1, explanation: "Used for physics and chemistry simulations.", clue: "<b>Ground State Search</b>: <b>VQE</b> (Variational Quantum Eigensolver) is primarily used to find the <b>lowest energy level</b> of a complex molecule or material." },
+  "4_3_2": { q: "The Variational Principle guarantees that the computed energy will ALWAYS be:", options: ["Exactly correct", "Greater than or equal to the true ground state energy", "Less than the true energy", "Zero"], answer: 1, explanation: "Mathematical lower bound.", clue: "<b>The Safety Net</b>: The <b>Variational Principle</b> states that Any 'guessed' state will have an energy <b>Higher</b> than the real bottom. This means we can keep lowering it until we can't lower it anymore." },
+  "4_3_3": { q: "The 'Hamiltonian' (H) in VQE describes:", options: ["The name of the scientist", "The total energy of the physical system", "The gate count", "The speed of the processor"], answer: 1, explanation: "H = Potential + Kinetic energy.", clue: "<b>The Physics Map</b>: The <b>Hamiltonian (H)</b> is the mathematical operator that maps the physics of your molecule into a language the computer can understand." },
+  "4_3_4": { q: "Expectation value ⟨H⟩ represents:", options: ["The maximum energy", "The average energy measured over many shots", "The qubit count", "The temperature"], answer: 1, explanation: "Result of quantum measurement.", clue: "<b>Quantum Average</b>: We cannot get the energy from one shot. We must measure many times and calculate the <b>Expectation Value (⟨ψ|H|ψ⟩)</b> to see if we are getting closer to the bottom." },
+  "4_3_5": { q: "VQE is often described as 'Noise-Resilient' because:", options: ["Quantum gates are perfect", "The optimizer can compensate for small constant gate errors", "It uses lead shielding", "It only runs on simulators"], answer: 1, explanation: "Adjusting angles can bypass some hardware bias.", clue: "<b>Noise Resilience</b>: Since the optimizer keeps trying new angles, it can often <b>self-correct</b> for slight imperfections in the hardware's calibration." },
+  "4_3_6": { q: "Which domain is the biggest user of VQE today?", options: ["Video games", "Quantum Chemistry and Material Science", "Web development", "Social media"], answer: 1, explanation: "Simulating orbitals and chemical bonds.", clue: "<b>Killer App</b>: <b>Quantum Chemistry</b> is the first major application for VQE. Companies use it to design new fertilizers, batteries, and medicines by simulating how atoms bond." },
+  "4_3_7": { q: "The 'State Preparation' step in VQE uses which component?", options: ["The Oracle", "The Ansatz", "The Detector", "The Cloud"], answer: 1, explanation: "Ansatz creates the trial state.", clue: "<b>Step One</b>: In VQE, the <b>Ansatz</b> is used to 'Prepare the State'. You start with $|00..0⟩$ and use the Ansatz gates to turn it into your current trial 'guess' for the molecular state." },
+  "4_3_8": { q: "VQE replaces which classically hard task in Chemistry?", options: ["Naming elements", "Finding the exact ground state of a multi-electron system", "Measuring mass", "Mixing chemicals"], answer: 1, explanation: "Exact diagonalization is exponentially hard.", clue: "<b>Exponential Barrier</b>: Classically, solving for the energy of large molecules is <b>impossible</b> because the complexity doubles for every electron you add. Quantum VQE breaks this barrier." },
+  "4_3_9": { q: "In Qiskit Runtime, the 'Estimator' primitive is used for:", options: ["Counting gates", "Efficiently calculating expectation values for VQE", "Drawing graphs", "Buying qubits"], answer: 1, explanation: "New architecture for faster execution.", clue: "<b>The Estimator</b>: IBM's <b>Estimator Primitive</b> is a specialized cloud service that handles all the measurements and math needed to return the <b>Expectation Value</b> as fast as possible." },
+  "4_3_10": { q: "Wait, can VQE find excited states (higher energies) too?", options: ["No, only ground states", "Yes, using modifications like VQD (Variational Quantum Deflation)", "Only with lasers", "Only on Sundays"], answer: 1, explanation: "Advanced VQE variations exist.", clue: "<b>Higher Levels</b>: While standard VQE targets the bottom, advanced versions like <b>VQD</b> can 'push' the state up to find the 1st and 2nd excited states of a molecule." },
+
+  // Week 4, Lecture PDF Set 4: VQE in Chemistry
+  "4_4_1": { q: "In Quantum Chemistry, what is 'Electronic Structure'?", options: ["How wires are laid out", "The distribution and energies of electrons in atoms/molecules", "The price of electricity", "A type of battery"], answer: 1, explanation: "Determines bonding and reactivity.", clue: "<b>Chemistry Core</b>: Determining the <b>Electronic Structure</b> is the 'holy grail' of chemistry—it tells you how reactive a molecule is and how it will bond with others." },
+  "4_4_2": { q: "Mapping an electronic problem to qubits requires which type of mapping?", options: ["Google Maps", "Jordan-Wigner or Bravyi-Kitaev", "Linear mapping", "No mapping needed"], answer: 1, explanation: "Translating Fermion behavior to Qubits.", clue: "<b>The Mapping</b>: We have to translate 'Fermions' (electrons) into 'Qubits' (spins). Techniques like <b>Jordan-Wigner</b> are the mathematical 'translators' that make this possible." },
+  "4_4_3": { q: "What is 'Chemical Accuracy'?", options: ["100%", "Within 1 kcal/mol of the true energy", "0.0001%", "The color of the result"], answer: 1, explanation: "Threshold for useful scientific predictions.", clue: "<b>Goal Accuracy</b>: To be useful for scientists, a quantum computer must reach <b>'Chemical Accuracy'</b> (approx. 1 kcal/mol). This is the precision needed to predict if a reaction will happen." },
+  "4_4_4": { q: "Which molecules are currently simulated using VQE (NISQ benchmark)?", options: ["DNA", "Small molecules like H2, LiH, and H2O", "Proteins", "Fullerenes"], answer: 1, explanation: "Current hardware is limited to small systems.", clue: "<b>Benchmark Molecules</b>: We start small! Researchers use <b>Hydrogen ($H_2$)</b> and <b>Lithium Hydride ($LiH$)</b> as the 'training ground' to test their quantum algorithms before moving to bigger targets." },
+  "4_4_5": { q: "The 'Born-Oppenheimer Approximation' assumes:", options: ["Qubits don't fail", "Nuclei are static relative to fast-moving electrons", "Everything is 0", "Light is slow"], answer: 1, explanation: "Simplifies the Hamiltonian calculation.", clue: "<b>Physics Shortcut</b>: This approximation simplifies the math by assuming the heavy <b>nuclei are 'frozen'</b> in space while the light electrons zip around them." },
+  "4_4_6": { q: "A 'Potential Energy Surface' (PES) shows:", options: ["The temperature of the chip", "How molecular energy changes with bond length/geometry", "Total qubit count", "The size of the lab"], answer: 1, explanation: "A landscape used to find stable molecular shapes.", clue: "<b>Energy Map</b>: The <b>PES</b> is a graph where the 'valley' represents the most stable bond distance. Finding the bottom of this valley is what VQE is designed for." },
+  "4_4_7": { q: "What is a 'Unitary Coupled Cluster' (UCC) Ansatz?", options: ["A type of cloud storage", "A physics-inspired Ansatz for chemistry problems", "A sorting method", "A marketing term"], answer: 1, explanation: "Tends to be more accurate but deeper than HW-efficient.", clue: "<b>UCC Ansatz</b>: More structured than standard templates, <b>UCC</b> is built using actual chemistry theory. It is more accurate but requires <b>many more gates</b>, making it 'the hard road' for current hardware." },
+  "4_4_8": { q: "Why is Nitrogenase simulation a 'dream target' for VQE?", options: ["It uses nitrogen", "It could unlock energy-efficient fertilizer production", "it is easy to see", "It's a small molecule"], answer: 1, explanation: "Massive industrial impact.", clue: "<b>Industrial Dream</b>: Simulating <b>Nitrogenase</b> would help us fix nitrogen at room temperature, potentially saving <b>2% of the world's energy</b> currently used for fertilizer production." },
+  "4_4_9": { q: "The 'Fermionic Hamiltonian' is mapped into a:", options: ["Sum of Pauli strings (e.g., XII + ZIZ...)", "Single bit", "List of images", "Database"], answer: 0, explanation: "Language of qubits is Pauli operators.", clue: "<b>Pauli Strings</b>: To run chemistry on a quantum chip, the problem is broken into a 'Sum of Pauli Strings' (like $X \\otimes Z \\otimes Y$). The computer measures each string and adds them up." },
+  "4_4_10": { q: "In Qiskit Nature, what is the 'Second Quantization'?", options: ["Counting twice", "A framework to represent systems with varying number of particles", "The 1920s era", "A type of gate"], answer: 1, explanation: "Standard physics representation used in Nature module.", clue: "<b>Second Quantization</b>: This is the high-level language of <b>Qiskit Nature</b>. It treats the world as 'Occupied' or 'Empty' orbitals rather than tracking individual electron labels." },
+
+  // Week 4, Lecture PDF Set 5: Quantum Finance (QGANs)
+  "4_5_1": { q: "What does QGAN stand for in finance?", options: ["Quick Game Analog", "Quantum Generative Adversarial Network", "Quality Global Access", "Quantum Gate Array"], answer: 1, explanation: "A hybrid framework for data generation.", clue: "<b>Quantum GANs</b>: A <b>QGAN</b> uses quantum circuits to 'learn' and then 'reproducce' complex financial data distributions, like stock price movements." },
+  "4_5_2": { q: "A GAN consists of which two competing networks?", options: ["Leader and Follower", "Generator and Discriminator", "Input and Output", "Fast and Slow"], answer: 1, explanation: "They train against each other.", clue: "<b>Adversarial Training</b>: Think of it as a <b>'Counterfeiter' (Generator)</b> trying to make fake money and a <b>'Detective' (Discriminator)</b> trying to spot it. Both get better over time!" },
+  "4_5_3": { q: "In a QGAN, which part is typically 'Quantum'?", options: ["The Discriminator", "The Generator", "The user", "The bank"], answer: 1, explanation: "Quantum circuits generate synthetic data distributions.", clue: "<b>Quantum Forge</b>: In a QGAN, the <b>Generator</b> is a quantum circuit. Its 'weights' are quantum gate angles that are tuned to produce realistic financial scenarios." },
+  "4_5_4": { q: "Why is the QGAN Discriminator usually 'Classical' in current research?", options: ["It's cheaper", "Classical CPUs are better at classifying data currently", "IBM only allows classical", "Quantum can't detect"], answer: 1, explanation: "Leveraging classical stability in a hybrid model.", clue: "<b>Hybrid Advantage</b>: We use a <b>Classical Discriminator</b> because neural networks are already amazing at spotting fakes. This lets the Quantum side focus on the 'hard' task of generating complex data." },
+  "4_5_5": { q: "In finance, QGANs are used to model:", options: ["ATM repairs", "Probability distributions of assets (Option Pricing)", "Employee names", "Bank vault locations"], answer: 1, explanation: "Understanding market behavior.", clue: "<b>Market Modeling</b>: Financial markets are messy. QGANs are used to 'learn' the shape of <b>Stock Price Distributions</b>, which helps banks estimate risk and price investments correctly." },
+  "4_5_6": { q: "What is 'Amplitude Estimation' (AE)?", options: ["Measuring sound", "A quantum algorithm to estimate probabilities with a quadratic speedup", "Building circuits", "Deleting qubits"], answer: 1, explanation: "Key for Monte Carlo simulations in finance.", clue: "<b>Precise Math</b>: <b>Amplitude Estimation</b> is the 'engine' for much of quantum finance. It allows us to calculate average returns and risks <b>much faster</b> than classical Monte Carlo methods." },
+  "4_5_7": { q: "Quantum speedup in Option Pricing is:", options: ["Linear", "Exponential", "Quadratic", "None"], answer: 2, explanation: "Quadratic gain over classical Monte Carlo ($1/ε$ vs $1/ε^2$).", clue: "<b>Speed to Market</b>: Quantum computers can estimate financial results with <b>Quadratic speedup</b>. For a task that takes 10,000 simulations classically, quantum might only need 100!" },
+  "4_5_8": { q: "Which major banks are actively researching these QGANs?", options: ["Only local banks", "JPMorgan Chase, Goldman Sachs, and Barclays", "Food banks", "Only central banks"], answer: 1, explanation: "Large institutions want a competitive edge.", clue: "<b>Banking Interest</b>: Wall Street giants like <b>JPMorgan</b> and <b>Goldman Sachs</b> are already building quantum teams to master QGANs and gain an edge in market predictions." },
+  "4_5_9": { q: "What is the 'Real Data' used to train a QGAN?", options: ["Random numbers", "Historical stock price tables", "Images of coins", "Empty files"], answer: 1, explanation: "Learning from the past to predict the future.", clue: "<b>Training Data</b>: A QGAN starts by looking at <b>Years of Historical Data</b> (from S&P 500, etc.). It then tries to create new, synthetic 'future' data that follows the same patterns." },
+  "4_5_10": { q: "The goal of optimization in a QGAN is to find the:", options: ["Nash Equilibrium", "Highest price", "Shortest code", "Largest qubit"], answer: 0, explanation: "Point where neither network can improve further.", clue: "<b>Game Theory</b>: Training ends at the <b>Nash Equilibrium</b>—the point where the Generator is so good at 'fake' data that the Discriminator is forced to just guess randomly." },
+
+  // Week 4, Lecture PDF Set 6: Quantum Machine Learning (QML)
+  "4_6_1": { q: "In QML, what is 'Feature Mapping'?", options: ["Drawing maps", "Translating classical data into a quantum state (Hilbert space)", "Finding the GPS coords of the chip", "Measuring qubits"], answer: 1, explanation: "Mapping data to higher-dimensional quantum states.", clue: "<b>Feature Map</b>: To use quantum logic on classical data (like images), we must first translate that data into a quantum state. This process is called <b>Feature Mapping</b>." },
+  "4_6_2": { q: "What is a 'Quantum Kernel'?", options: ["The center of an atom", "A measure of similarity between two data points in Hilbert space", "A type of kernel in Linux", "The power supply"], answer: 1, explanation: "Used in Quantum Support Vector Machines (QSVM).", clue: "<b>Quantum Kernels</b>: A kernel measures how 'similar' two pieces of data are. By calculating this in <b>Hilbert Space</b>, we can find patterns that classical computers are blind to." },
+  "4_6_3": { q: "A Quantum Neural Network (QNN) uses which component as its 'neurons'?", options: ["Biological cells", "Parameterized quantum circuits (Ansatzes)", "Classical transistors", "Resistors"], answer: 1, explanation: "Tunable gates act as weights.", clue: "<b>Quantum Neurons</b>: In a <b>QNN</b>, our 'weights' are the angles of quantum gates. Setting these angles is how the network 'learns' to classify data." },
+  "4_6_4": { q: "What is the advantage of using 'Higher Dimensionality' in QML?", options: ["It takes more space", "Separating complex data that is inseparable in 2D or 3D", "It is easier to draw", "None"], answer: 1, explanation: "Curse of dimensionality becomes a blessing.", clue: "<b>High-D Advantage</b>: Complex data often looks 'tangled' in 2D. But in a <b>thousand-dimensional Hilbert space</b>, that same data becomes easy to separate into categories." },
+  "4_6_5": { q: "QSVM stands for:", options: ["Quantum Simple Valve Machine", "Quantum Support Vector Machine", "Quick Super Volume", "Quality Super View"], answer: 1, explanation: "Quantum version of a popular classical classifier.", clue: "<b>QSVM</b>: The <b>Quantum Support Vector Machine</b> is a powerful tool for classification. It uses a quantum computer to calculate the 'Kernel' that defines the boundary between groups." },
+  "4_6_6": { q: "In Qiskit, which module contains QML tools?", options: ["qiskit.qml", "qiskit_machine_learning", "qiskit.ai", "qiskit.brain"], answer: 1, explanation: "Dedicated ecosystem for ML.", clue: "<b>Qiskit ML</b>: The <b>qiskit_machine_learning</b> library provides high-level classes like <i>'NeuralNetworkClassifier'</i> to help you build quantum models with just a few lines of code." },
+  "4_6_7": { q: "What is 'Data Re-uploading'?", options: ["Uploading a file twice", "Applying the feature map multiple times to increase model capacity", "Fixing a bug", "Deleting cookies"], answer: 1, explanation: "Technique to make small circuits more powerful.", clue: "<b>Data Re-uploading</b>: To get more 'punch' out of a few qubits, we don't just upload data once. We <b>interleave</b> data loading with tunable gates throughout the circuit." },
+  "4_6_8": { q: "Quantum Convolutional Neural Networks (QCNN) are inspired by:", options: ["Classical CNNs for image processing", "The speed of light", "Radio waves", "DNA"], answer: 0, explanation: "Architecture for local pattern recognition.", clue: "<b>QCNNs</b>: Inspired by classical <b>Computer Vision</b>, QCNNs use layers of local gates to 'scan' quantum states for patterns, just like a classical AI scans an image for a cat." },
+  "4_6_9": { q: "Which type of QML algorithm is best for small NISQ devices?", options: ["Full fault-tolerant search", "Variational Quantum Classifiers (VQC)", "Searching and Sorting", "Classical simulations"], answer: 1, explanation: "VQC uses the same hybrid loop as VQE.", clue: "<b>VQC</b>: The <b>Variational Quantum Classifier</b> is the 'easy-to-run' version of QML. It works well on today's noisy hardware by using the same optimization tricks as VQE." },
+  "4_6_10": { q: "What is the primary bottleneck in current QML?", options: ["Lack of data", "The 'Data Loading' problem (moving big classical data to quantum states)", "Screen resolution", "Software price"], answer: 1, explanation: "Quantum state prep is slow for huge datasets.", clue: "<b>The Loading Problem</b>: While the quantum <i>calculation</i> is fast, <b>Loading your data</b> into the qubits is slow. This 'Data Bottleneck' is one of the biggest challenges researchers are solving today." },
+
+  // Week 4, Lecture PDF Set 7: Quantum Error Correction (QEC) Foundations
+  "4_7_1": { q: "Why is Error Correction more difficult in quantum computing than classical?", options: ["It's not", "The No-Cloning Theorem prevents copying qubits to check them", "Qubits are too small", "Batteries die"], answer: 1, explanation: "Cannot simply copy/backup a state.", clue: "<b>No-Cloning Barrier</b>: Classically, you just make three copies. But <b>Quantumly</b>, you aren't allowed to copy a state! We have to find clever ways to detect errors without seeing the data." },
+  "4_7_2": { q: "What is a 'Physical Qubit' vs a 'Logical Qubit'?", options: ["They are the same", "Logical is the error-corrected version made of many Physical ones", "Physical is software", "Logical is hardware"], answer: 1, explanation: "Redundancy creates stability.", clue: "<b>Logical Qubits</b>: A <b>Logical Qubit</b> is like a 'Team' of physical qubits working together. If one teammate fails (errors), the others can still maintain the correct information." },
+  "4_7_3": { q: "What are the two main types of errors in QEC?", options: ["Up and Down", "Bit-Flip (X) and Phase-Flip (Z)", "Heating and Cooling", "Input and Output"], answer: 1, explanation: "Analogous to bit flips and sign changes.", clue: "<b>The Error Duo</b>: We have to watch for two things: <b>Bit-Flips</b> (where 0 becomes 1) and <b>Phase-Flips</b> (where the 'plus' sign in superposition becomes a 'minus' sign)." },
+  "4_7_4": { q: "Can we measure a qubit to see if it has an error during a calculation?", options: ["Yes", "No, measurement 'collapses' the state and ruins the math", "Only if it is 1", "Only on IBM chips"], answer: 1, explanation: "Direct measurement kills superposition.", clue: "<b>The Measurement Trap</b>: If you measure your qubit to check for an error, you <b>destroy the calculation</b>. QEC uses 'syndrome measurements' to look for clues <i>beside</i> the data." },
+  "4_7_5": { q: "What is 'Decoherence'?", options: ["Getting smarter", "The loss of quantum info due to interaction with the environment", "A type of gate", "Turning off the power"], answer: 1, explanation: "Main cause of quantum noise.", clue: "<b>Decoherence</b>: This is the enemy of all quantum computers. It's when the <b>environment (heat, vibrations)</b> 'leaks' into the computer and slowly turns your quantum states back into classical ones." },
+  "4_7_6": { q: "The 'Threshold Theorem' states that if error rates are low enough:", options: ["Quantum computers are impossible", "We can perform arbitrarily long calculations by adding more layers", "Computers get smaller", "Software is free"], answer: 1, explanation: "The fundamental proof for the future of QC.", clue: "<b>The Threshold</b>: This is the 'holy grail' of QC theory. It proves that if we keep our hardware errors below a certain <b>Threshold</b>, we can build a <b>stable computer</b> that never fails." },
+  "4_7_7": { q: "What is 'Redundancy' in the context of QEC?", options: ["Doing things twice", "Encoding one qubit of info into multiple interconnected qubits", "Using extra RAM", "Backing up files"], answer: 1, explanation: "Strength in numbers.", clue: "<b>Redundancy</b>: Just like in a multi-engine plane, <b>Redundancy</b> means having enough qubits so that one 'engine' failure doesn't crash the entire calculation." },
+  "4_7_8": { q: "What is a 'Pauli Error'?", options: ["A mistake by a student", "An error that acts like applying X, Y, or Z gates unintentionally", "A voltage spike", "A coding bug"], answer: 1, explanation: "Most QEC models assume Pauli errors.", clue: "<b>Pauli Errors</b>: We model the 'random noise' as if nature accidentally applied an <b>X, Y, or Z gate</b> to our qubit while we weren't looking." },
+  "4_7_9": { q: "Standard classical error correction uses which code?", options: ["Hadamard code", "3-bit Repetition Code (Majority Voting)", "Morse code", "Binary Search"], answer: 1, explanation: "Classical baseline.", clue: "<b>Classical Baseline</b>: The simplest classical protection is the <b>Repetition Code</b>. If you see '110', you assume it should have been '111' because of <b>Majority Voting</b>." },
+  "4_7_10": { q: "Surface Codes are currently leading because they:", options: ["Only require 2D nearest-neighbor connectivity on the chip", "Are the cheapest", "Were made by Microsoft", "Use zero gates"], answer: 0, explanation: "Layout compatible with modern 2D chips.", clue: "<b>Surface Codes</b>: These are the superstars of QEC. They are designed for <b>2D lattices</b> (like current IBM chips), using a 'grid' of qubits to catch and fix errors in real-time." },
+
+  // Week 4, Lecture PDF Set 8: Bit-Flip & Phase-Flip Repetition Codes
+  "4_8_1": { q: "How many physical qubits are needed for the simplest bit-flip repetition code?", options: ["1", "2", "3", "9"], answer: 2, explanation: "Need 3 to determine majority.", clue: "<b>The Rule of Three</b>: To find one error using majority vote, you need at least <b>3 qubits</b>. If you see '101', the '0' in the middle is clearly the odd one out!" },
+  "4_8_2": { q: "In the 3-qubit bit-flip code, what is the logical '|0⟩_L' state?", options: ["|0⟩", "|010⟩", "|000⟩", "|+⟩"], answer: 2, explanation: "Triple repetition.", clue: "<b>Logical Zero</b>: We define our 'Safe Zero' (Logical $|0⟩$) as the state <b>$|000⟩$</b>. All three physical qubits agree that the value is zero." },
+  "4_8_3": { q: "If one qubit flips in '|000⟩' to '|010⟩', how do we know which one failed?", options: ["Measuring all of them", "Using CNOTs and an ancilla to compare (Parity Check)", "Guessing", "Restarting"], answer: 1, explanation: "Syndromes reveal the location.", clue: "<b>Comparison</b>: We use <b>CNOT gates</b> to compare neighbors (Does qubit 1 = qubit 2? Does qubit 2 = qubit 3?). This tells us where the flip happened without ruining the data." },
+  "4_8_4": { q: "Does the 3-qubit bit-flip code protect against Phase-Flips (Z)?", options: ["Yes", "No, it only fixes X-errors", "Only for small n", "Only on Tuesdays"], answer: 1, explanation: "Specifically designed for bit values.", clue: "<b>Specific Defense</b>: The bit-flip code is like a shield for one side. It is <b>Great for Bit-Flips</b>, but it is <b>Completely Vulnerable</b> to Phase-Flips because they don't change the 0/1 counts." },
+  "4_8_5": { q: "How do we adapt the repetition code to fix Phase-Flips (Z)?", options: ["By using more qubits", "By switching from the Z-basis (|0⟩,|1⟩) to the X-basis (|+⟩,|-⟩)", "Applying X gates", "Measuring faster"], answer: 1, explanation: "Z-errors become X-errors in the H-basis.", clue: "<b>Dual Bases</b>: To fix <b>Phase-Flips</b>, we simply rotate everyone into the <b>Plus/Minus basis</b>. In that world, a 'phase flip' acts exactly like a 'bit flip', so our old code works again!" },
+  "4_8_6": { q: "The 'Phase-Flip Code' uses which logical state for '|0⟩_L'?", options: ["|000⟩", "|+++⟩", "|---⟩", "|111⟩"], answer: 1, explanation: "Repetition in the H-basis.", clue: "<b>Logical Plus</b>: For phase protection, we repeat the <b>Plus state</b> ($|+++⟩$). This way, nature has to 'un-superpose' multiple qubits at once to hide an error." },
+  "4_8_7": { q: "What is an 'Identity' error?", options: ["A false ID", "When no error occurs", "A bit flip", "A sign change"], answer: 1, explanation: "Represented by the I matrix.", clue: "<b>No Error</b>: Mathematically, 'No Error' is represented by the <b>Identity matrix ($I$)</b>. In QEC, we always hopenature chooses $I$!" },
+  "4_8_8": { q: "Which gate is used to switch between bit-flip and phase-flip protection?", options: ["Hadamard (H)", "NOT (X)", "CNOT", "Phase (S)"], answer: 0, explanation: "H rotates between bases.", clue: "<b>The Bridge</b>: The <b>Hadamard gate</b> is the bridge between the two error types. It lets us treat Phase-Flips as Bit-Flips, making our code design much simpler." },
+  "4_8_9": { q: "Why can't we just measure each qubit value in '|010⟩'?", options: ["It's too slow", "It collapses the superposition α|000⟩ + β|111⟩", "It costs money", "Qubits are fragile"], answer: 1, explanation: "Data measurement is destructive.", clue: "<b>Don't Touch the Data!</b>: If your qubit is in a superposition, <b>Measuring it directly 'kills' the quantumness</b>. We must use indirect checks to see if things 'match' without seeing 'what' they are." },
+  "4_8_10": { q: "In the 3-qubit code, majority voting is applied at which stage?", options: ["During the gate", "At the very end (post-measurement)", "In the hardware", "It never is"], answer: 1, explanation: "Classical post-processing step.", clue: "<b>Majority Power</b>: We measure the 'hints' (syndromes), and then our <b>Classical software</b> uses 'Majority Logic' to decide: 'Qubit 2 was the error; let's flip it back'." },
+
+  // Week 4, Lecture PDF Set 9: Syndrome Measurement & Ancillas
+  "4_9_1": { q: "What is an 'Ancilla Qubit' in the context of QEC?", options: ["A primary data qubit", "A helper qubit used for measurement without disturbing data", "A type of battery", "The screen"], answer: 1, explanation: "Helper qubit for extraction.", clue: "<b>Helper Qubits</b>: <b>Ancillas</b> are like the 'probes' in a circuit. They touch the data qubits via CNOTs to 'extract' information about errors, then they are measured while the data stays safe." },
+  "4_9_2": { q: "A 'Syndrome' is:", options: ["A disease", "The result of measuring an ancilla, revealing which error occurred", "A type of gate", "The name of a chip"], answer: 1, explanation: "Diagnostic fingerprint of the noise.", clue: "<b>The Fingerprint</b>: A <b>Syndrome</b> is the diagnostic code (e.g., '01') that we read from the ancillas. It tells us exactly what nature did to our qubits behind our backs." },
+  "4_9_3": { q: "In a syndrome circuit, how do you check if two data qubits are 'different'?", options: ["Measure both", "Apply CNOTs from both data qubits to a single ancilla", "Look at them", "Guess"], answer: 1, explanation: "Parity extraction.", clue: "<b>Parity Check</b>: By using two <b>CNOTs</b> targeting one ancilla, we calculate the <b>XOR (Parity)</b>. If the ancilla is $|1⟩$ after the gates, we know our two data qubits have 'disagreed'." },
+  "4_9_4": { q: "After measuring the syndrome, how do you fix the error?", options: ["Rewriting the code", "Applying a Recovery Gate (Conditional X or Z)", "Shaking the chip", "Power cycling"], answer: 1, explanation: "Active correction based on readout.", clue: "<b>Active Correction</b>: Once we see a syndrome of 'error at qubit 2', we apply an <b>X gate</b> to qubit 2 to 'flip it back' to the correct state." },
+  "4_9_5": { q: "Why is 'Stabilizer Formalism' used in QEC?", options: ["To make it faster", "To describe error codes using operator groups instead of long wavefunctions", "To stabilize voltage", "It is easier to draw"], answer: 1, explanation: "Algebraic simplification for complex codes.", clue: "<b>Algebraic Tools</b>: <b>Stabilizers</b> are the math language of QEC. Instead of trackin millions of numbers, we just track a few 'rules' (operators) that our state must follow." },
+  "4_9_6": { q: "The 'Distance' of a code (d) relates to:", options: ["The length of the chip", "How many errors the code can detect/correct", "Qubit count", "Speed"], answer: 1, explanation: "Determines protection level.", clue: "<b>Safety Distance</b>: The <b>Distance ($d$)</b> tells you how big an error has to be to 'break' the code. A distance of 3 can fix 1 error. Bigger distance means a safer computer." },
+  "4_9_7": { q: "What is a 'Transversal Gate'?", options: ["A gate that moves", "An operation that can be performed logically by acting on physical qubits individually", "A type of measure", "None"], answer: 1, explanation: "Prevents error spreading.", clue: "<b>Error Containment</b>: A <b>Transversal Gate</b> is the 'Holy Grail' of operations. It ensures that if one qubit has an error, it <b>Doesn't Spread</b> to the others when you do math." },
+  "4_9_8": { q: "Fault-Tolerant (FT) design ensures:", options: ["Errors never happen", "One small error in a gate doesn't cause a catastrophic failure", "The chip is cheap", "Results are 100% true"], answer: 1, explanation: "Limit error propagation.", clue: "<b>Fault Tolerance</b>: This is the design philosophy where we assume <b>everything</b> can fail (gates, measurement, wires) and aim to make the system succeed anyway." },
+  "4_9_9": { q: "How many ancillas are needed for a 3-qubit bit-flip code syndrome check?", options: ["1", "2", "3", "0"], answer: 1, explanation: "Need 2 checks: (1-2) and (2-3).", clue: "<b>Syndrome Pair</b>: To pinpoint an error in 3 qubits, we need <b>2 helper bits</b>. One checks the first two, one checks the last two. Together, they form a unique 'address' for the error." },
+  "4_9_10": { q: "Syndrome measurement 'projects' the noise into which category?", options: ["Random heat", "A discrete Pauli error (X, Y, or Z)", "Analog voltage", "Nothing"], answer: 1, explanation: "Measurement digitizes the continuous noise.", clue: "<b>Digital Projection</b>: One of the magic tricks of QC is that messy, 'analog' noise becomes a clean, <b>'digital' error</b> (X or Z) the moment we measure the syndrome." },
+
+  // Week 4, Lecture PDF Set 10: Shor Code & Future
+  "4_10_1": { q: "How many physical qubits does the Shor Code use to protect one logical qubit?", options: ["3", "5", "7", "9"], answer: 3, explanation: "Combines 3-qubit bit and phase codes.", clue: "<b>The Shor Nine</b>: Peter Shor's 1995 masterpiece uses <b>9 physical qubits</b>. It was the first code to prove we could fix <i>any</i> single-qubit error (X, Z, or Y)." },
+  "4_10_2": { q: "What is special about the Shor 9-qubit code structure?", options: ["It uses only H gates", "It is a 'Concatenated' code (repetition inside repetition)", "It is very small", "It is classical"], answer: 1, explanation: "3 blocks of 3 qubits.", clue: "<b>Nested Protection</b>: The Shor code is like a <b>Russian Doll</b>. It puts 3 'bit-flip' codes inside a 'phase-flip' code, creating a double layer of security." },
+  "4_10_3": { q: "The Shor code can correct which type of single-qubit error?", options: ["Only X", "Only Z", "Both X and Z (and thus Y)", "None"], answer: 2, explanation: "Universal single-qubit protection.", clue: "<b>Total Shield</b>: Because nature's worst errors (Y) are just a mix of X and Z, the Shor code provides a <b>Complete Shield</b> against any single 'ouch' from the environment." },
+  "4_10_4": { q: "A 'Surface Code' manages errors on which geometry?", options: ["A straight line", "A 2D lattice (grid)", "A circle", "3D space"], answer: 1, explanation: "Grid of data and measurement qubits.", clue: "<b>The Grid</b>: <b>Surface Codes</b> live on a 2D checkerboard grid. This makes them perfect for the flat chips built by IBM and Google." },
+  "4_10_5": { q: "What is 'Logical gate fidelity'?", options: ["The color of the gate", "The accuracy of an operation on a protected logical qubit", "The price", "The speed"], answer: 1, explanation: "The ultimate metric for scaled QC.", clue: "<b>Logical Fidelity</b>: For a real quantum computer, we don't care about physical gates. We care about <b>Logical Fidelity</b>—how reliably we can do math on the 'team' of qubits." },
+  "4_10_6": { q: "What is an 'Erasure Error'?", options: ["When you delete a file", "When you know a qubit is lost but don't know the error type", "A sign flip", "A bit flip"], answer: 1, explanation: "Specific error model in some experiments.", clue: "<b>Missing Info</b>: An <b>Erasure Error</b> is when you <i>know</i> something went wrong in a specific spot. These are actually easier to fix because half the mystery is already solved!" },
+  "4_10_7": { q: "What is 'Magic State Distillation'?", options: ["Making water", "A process to produce high-fidelity non-Clifford gates (like T-gates)", "A cooling technique", "A marketing term"], answer: 1, explanation: "Essential for universal fault-tolerant QC.", clue: "<b>Magic States</b>: Some gates are naturally 'Fault-Tolerant', but others (like the <b>T-gate</b>) are hard. We 'distill' many noisy versions into one <b>'Magic' pure version</b> to finish the calculation." },
+  "4_10_8": { q: "The ratio of physical to logical qubits in surface codes is roughly:", options: ["1:1", "5:1", "Hundreds or Thousands to 1", "2:1"], answer: 2, explanation: "High overhead for protection.", clue: "<b>The Overhead</b>: Real error correction is <b>expensive</b>. To have 1 perfect logical qubit, you might need <b>1,000 real qubits</b> working together in a grid." },
+  "4_10_9": { q: "Which organization recently achieved a milestone in 'Logical Qubits' using neutral atoms?", options: ["Apple", "Harvard/QuEra/MIT", "Disney", "NASA"], answer: 1, explanation: "2023-2024 milestone for scaled QEC.", clue: "<b>Atom Breakthrough</b>: In 2024, teams like <b>QuEra and Harvard</b> showed a massive leap by creating dozens of logical qubits using 'Neutral Atoms' moved by lasers." },
+  "4_10_10": { q: "Why is QEC the 'end-game' for quantum computing?", options: ["Because qubits are free", "Because it allows scaling to 1,000,000+ qubits and solving real-world problems", "Because it's easy", "Because software is done"], answer: 1, explanation: "Scaling beyond NISQ requires QEC.", clue: "<b>The Final Frontier</b>: <b>Error Correction</b> is what takes us from 'scientific toys' to <b>Useful Tools</b>. It is the bridge between current research and the future of science." },
+
+  // Week 1, Video 1: Algorithms towards Quantum Advantage
+
+
+
+  "1_11_1": { q: "What is the primary goal of achieving 'Quantum Advantage'?", options: ["Using less electricity", "Solving a practical problem faster than classical algorithms", "Making computers smaller", "Running classical software"], answer: 1, explanation: "Quantum Advantage is solving a practical problem significantly faster than classical methods.", clue: "<b>Quantum Advantage</b>: The milestone where a quantum computer solves a <i>practical</i>, real-world problem significantly better than any known classical algorithm." },
+  "1_11_2": { q: "Quantum Supremacy refers to performing a task that is:", options: ["Easier for classical computers", "Practically impossible for classical computers", "Only possible in space", "Done without electricity"], answer: 1, explanation: "Quantum Supremacy is reaching a milestone where a quantum device does what classical devices effectively cannot.", clue: "<b>Quantum Supremacy</b>: A proof-of-concept milestone (like Google's 2019 Sycamore experiment) where a quantum device performs a task practically impossible for classical systems." },
+  "1_11_3": { q: "How does the computational space grow as more qubits are added?", options: ["Linearly", "Quadratically", "Exponentially (2^n)", "It stays the same"], answer: 2, explanation: "Each qubit doubles the state space, leading to exponential growth.", clue: "<b>State Space Scaling</b>: Each additional qubit doubles the number of possible states. For <b>n</b> qubits, the system explores <b>2^n</b> states simultaneously." },
+  "1_11_4": { q: "What does NISQ stand for?", options: ["New Intelligent Super Quantum", "Noisy Intermediate-Scale Quantum", "Next Industrial System Quantum", "Navigational Integrated Subsurface Quantum"], answer: 1, explanation: "NISQ describes the current era of noisy, medium-sized quantum processors.", clue: "<b>NISQ Era</b>: Stands for <b>Noisy Intermediate-Scale Quantum</b>. These are today's devices: enough qubits (50-200) to be useful but too 'noisy' for long calculations. " },
+  "1_11_5": { q: "Which feature is used to cancel 'wrong' amplitudes in quantum algorithms?", options: ["Decoherence", "Interference", "Friction", "Resistance"], answer: 1, explanation: "Constructive and destructive interference allow the correct answer to be boosted while canceling wrong ones.", clue: "<b>Interference</b>: Quantum waves can be <b>constructive</b> (matching peaks boost probability) or <b>destructive</b> (opposite peaks cancel), filtering out wrong answers." },
+  "1_11_6": { q: "Why did Feynman suggest building quantum computers?", options: ["To play games", "To simulate nature efficiently", "To replace all CPUs", "To study thermodynamics"], answer: 1, explanation: "Feynman noted that simulating nature (which is quantum) requires quantum hardware.", clue: "<b>Feynman's Vision</b>: Richard Feynman argued in 1981 that since nature is quantum at its root, simulating it on classical computers is inefficient. We need <b>quantum hardware</b>." },
+  "1_11_7": { q: "Quantum Volume measures what aspect of a quantum computer?", options: ["Number of qubits only", "Its physical size", "Overall processing quality and capability", "Power consumption"], answer: 2, explanation: "Quantum Volume accounts for qubits, error rates, and connectivity.", clue: "<b>Quantum Volume</b>: A metric developed by IBM that considers qubit count, gate errors, crosstalk, and connectivity to measure the 'true' power of a computer." },
+  "1_11_8": { q: "Modular Quantum Computing refers to:", options: ["One giant chip", "Connecting several small processors", "Using modular arithmetic", "Replacing pieces of the computer"], answer: 1, explanation: "It involves scaling by linking smaller quantum units together.", clue: "<b>Modularity</b>: Scaling up by linking multiple smaller quantum processors (modules) using photonic or microwave interconnects rather than building one massive monolith." },
+  "1_11_9": { q: "Which industry benefits most from optimization speedups?", options: ["Logistics", "Photography", "Audio playback", "Word processing"], answer: 0, explanation: "Route and supply chain optimization are classical hard problems well-suited for quantum.", clue: "<b>Optimization</b>: Industries like logistics rely on finding the 'shortest path' among billions of options, a task where quantum search algorithms excel." },
+  "1_11_10": { q: "The ability of quantum computers to be in multiple states simultaneously is:", options: ["Entanglement", "Superposition", "Decoherence", "Phase shift"], answer: 1, explanation: "Superposition allows the qubit to represent 0 and 1 at the same time.", clue: "<b>Superposition</b>: The core property where a qubit exists in a linear combination of |0⟩ and |1⟩ until measured, allowing parallel computations." },
+
+  // Week 1, Video 2: Application of Quantum - Introduction
+  "1_12_1": { q: "Which chemical simulation is key for fertilizer production?", options: ["Oxidation", "Nitrogen Fixation", "Carbon capture", "Silver mining"], answer: 1, explanation: "Nitrogenase simulation could revolutionize industrial fertilizer energy use.", clue: "<b>Nitrogen Fixation</b>: Currently, 1-2% of global energy is spent on the Haber-Bosch process. Quantum computers could simulate the <b>Nitrogenase enzyme</b> to find low-energy alternatives." },
+  "1_12_2": { q: "Portfolio Optimization in finance aims to:", options: ["Buy every stock", "Maximize return while minimizing risk", "Hide data", "Sell fast"], answer: 1, explanation: "It finds the best asset balance in a complex risk-return landscape.", clue: "<b>Finance Optimization</b>: Finding the perfect mix of thousands of assets to balance <b>Risk vs. Return</b> is a 'combinatorial explosion' problem ideal for quantum heuristics." },
+  "1_12_3": { q: "Quantum computers simulate molecules better because:", options: ["They are cold", "They use the same quantum laws as the molecules", "They have more bits", "They use classical AI"], answer: 1, explanation: "Molecules are quantum systems, making them natural targets for quantum simulation.", clue: "<b>Molecular Simulation</b>: Classical computers approximate molecules. Quantum computers use <b>mapping</b> (qubit for electron) to simulate the <i>true</i> physics of the system." },
+  "1_12_4": { q: "What is an 'Ansatz' in a variational algorithm?", options: ["Final result", "A trial circuit with tunable parameters", "A cooling unit", "An input bit"], answer: 1, explanation: "The Ansatz is the structural 'guess' that a classical optimizer refines.", clue: "<b>Ansatz</b>: A starting 'guess' or circuit template with adjustable parameters. It's like a scientific hypothesis that is refined by a classical optimizer in a loop." },
+  "1_12_5": { q: "In drug discovery, the focus is on modeling:", options: ["Pharmacy traffic", "Protein-ligand binding", "Medicine bottle shape", "Doctor names"], answer: 1, explanation: "Understanding how molecules bind to proteins requires quantum-level detail.", clue: "<b>Drug Discovery</b>: Modeling how a small drug molecule (ligand) fits into a 'pocket' of a protein. This requires precise <b>binding energy</b> calculations." },
+  "1_12_6": { q: "A hybrid algorithm uses:", options: ["Only quantum bits", "A mix of quantum and classical processing", "Two types of quantum chips", "Cloud and local storage"], answer: 1, explanation: "Hybrid algorithms use classical computers to optimize quantum parameters.", clue: "<b>Hybrid Framework</b>: The quantum computer computes the hard state, while a <b>classical CPU</b> handles the optimization loop and updates the parameters." },
+  "1_12_7": { q: "What does QML stand for in an application context?", options: ["Quick Math Logic", "Quantum Machine Learning", "Quiet Mode Linking", "Quality Memory Line"], answer: 1, explanation: "Quantum Machine Learning uses quantum circuits to improve data models.", clue: "<b>Quantum ML</b>: Harnessing high-dimensional quantum states to classify data or detect patterns faster or more accurately than classical <b>neural networks</b>." },
+  "1_12_8": { q: "Option pricing in finance can be accelerated using:", options: ["Faster internet", "Quantum Amplitude Estimation", "Larger screens", "Bitcoin"], answer: 1, explanation: "Amplitude estimation provides a quadratic speedup over Monte Carlo simulations.", clue: "<b>Quantum Finance</b>: Algorithms like <b>Amplitude Estimation</b> can price complex financial derivatives (options) with fewer samples than classical methods." },
+  "1_12_9": { q: "Which material simulation could help with electric vehicles?", options: ["Better plastics", "Battery cathode chemistry", "Glass transparency", "Tire pressure"], answer: 1, explanation: "Quantum computers can model lithium-sulfur or other battery chemistries in detail.", clue: "<b>Material Science</b>: Designing next-gen <b>EV Batteries</b> by simulating the chemical reactions inside the cathode at the atomic level to increase energy density." },
+  "1_12_10": { q: "Quantum Advantage in optimization involves:", options: ["Traveling Salesman problem", "Sorting a short list", "Checking spelling", "Adding two numbers"], answer: 0, explanation: "TSP is a classic NP-hard optimization problem targeted by quantum annealing.", clue: "<b>NP-Hard Problems</b>: The <b>Traveling Salesman Problem (TSP)</b> is a benchmark. As cities increase, the number of routes grows exponentially; quantum search narrows this down." },
+
+  // Week 1, Video 3: Quantum Computing Basics
+  "1_13_1": { q: "A qubit's state is represented by a vector in:", options: ["Real 2D space", "Complex Hilbert Space", "3D Euclidean space", "Scalar space"], answer: 1, explanation: "Quantum states live in a complex vector space known as Hilbert space.", clue: "<b>Hilbert Space</b>: The mathematical arena of quantum mechanics. It's a <b>complex vector space</b> where the state vector |ψ⟩ 'lives' and rotates." },
+  "1_13_2": { q: "What does |ψ⟩ signify in Dirac notation?", options: ["A Bra", "A Ket (column vector)", "A Matrix", "An Operator"], answer: 1, explanation: "The ket represents the state vector as a column vector.", clue: "<b>Ket Vector</b>: Written as <b>|ψ⟩</b>. It is the standard way to represent a quantum state as a column vector in a multi-dimensional basis." },
+  "1_13_3": { q: "The probability of measuring |0⟩ for state α|0⟩ + β|1⟩ is:", options: ["α", "α^2", "|α|^2", "2α"], answer: 2, explanation: "The probability is the square of the absolute value of the coefficient.", clue: "<b>Born's Rule</b>: The probability is not the coefficient itself, but the <b>square of the absolute magnitude</b> of the amplitude (i.e., $|α|^2$)." },
+  "1_13_4": { q: "Basis states |0⟩ and |1⟩ must be:", options: ["Parallel", "Orthogonal (inner product 0)", "Identical", "Equal to 1"], answer: 1, explanation: "Basis states are distinguishable, meaning they are orthogonal.", clue: "<b>Orthogonality</b>: To be distinguishable, the basis states |0⟩ and |1⟩ must have an inner product of <b>0</b>. They are 'mutually exclusive' outcomes." },
+  "1_13_5": { q: "What is the normalization condition for α|0⟩ + β|1⟩?", options: ["α + β = 1", "|α|^2 + |β|^2 = 1", "α = β", "α * β = 0"], answer: 1, explanation: "Total probability must be 1.", clue: "<b>Normalization</b>: Total probability must be 100%. Therefore, the sum of the squared magnitudes <b>$|α|^2 + |β|^2$</b> must strictly equal 1." },
+  "1_13_6": { q: "The conjugate transpose of a Ket |ψ⟩ is:", options: ["Another Ket", "A Bra ⟨ψ|", "A Scalar", "A Gate"], answer: 1, explanation: "The Bra is the row vector version of the state.", clue: "<b>Bra Vector</b>: Written as <b>⟨ψ|</b>. It is the complex conjugate transpose of the Ket, representing the state as a row vector for inner products." },
+  "1_13_7": { q: "Linear algebra in quantum computing uses:", options: ["Integers", "Complex Numbers", "Boolean logic only", "ASCII characters"], answer: 1, explanation: "Amplitudes are complex numbers.", clue: "<b>Complex Amplitudes</b>: Amplitudes ($α, β$) can be negative or <b>imaginary</b>. This is why quantum computers can use interference (unlike classical probability)." },
+  "1_13_8": { q: "A qubit at the North Pole of the Bloch sphere is:", options: ["|1⟩", "|+⟩", "|0⟩", "|-⟩"], answer: 2, explanation: "North Pole is defined as the |0⟩ basis state.", clue: "<b>Bloch Poles</b>: The North Pole is assigned to the state <b>|0⟩</b>, while the South Pole is the state <b>|1⟩</b> along the vertical Z-axis." },
+  "1_13_9": { q: "The inner product ⟨ψ|φ⟩ measures:", options: ["The sum of states", "The overlap between states", "The distance in meters", "The speed of gates"], answer: 1, explanation: "It tells us how 'similar' two quantum states are.", clue: "<b>Overlap</b>: The inner product <b>⟨ψ|φ⟩</b> returns a scalar that tells us how much the two vectors 'project' onto each other or overlap in space." },
+  "1_13_10": { q: "Superposition allows a qubit to be:", options: ["Only 0", "Only 1", "In both states simultaneously", "Neither"], answer: 2, explanation: "It is a linear combination of basis states.", clue: "<b>Superposition</b>: Unlike a bit (0 <i>or</i> 1), a qubit can be a <b>linear combination</b> of both, exploring all possibilities at once until it is forced to choose (collapse)." },
+
+  // Week 1, Video 4: Postulates I
+  "1_14_1": { q: "Postulate 1 defines the system's:", options: ["Evolution", "State Space", "Measurement", "Composition"], answer: 1, explanation: "The first postulate establishes the Hilbert space for the system.", clue: "<b>Postulate 1</b>: Every isolated physical system is associated with a complex inner product space (Hilbert space) known as its <b>State Space</b>." },
+  "1_14_2": { q: "A 'State' is a unit vector in which space?", options: ["Phase space", "Hilbert Space", "Real plane", "Energy well"], answer: 1, explanation: "Quantum states are normalized vectors in Hilbert space.", clue: "<b>Quantum State</b>: Mathematically, a state is a <b>unit vector</b> (length 1) in the system's Hilbert space, representing all its information." },
+  "1_14_3": { q: "What identifies the dimensionality of a single qubit's state space?", options: ["1", "2", "Infinity", "Measured bits"], answer: 1, explanation: "A single qubit has a 2-dimensional complex state space.", clue: "<b>Qubit Dimension</b>: A single qubit lives in a <b>2-dimensional</b> complex space, with basis vectors typically denoted as |0⟩ and |1⟩." },
+  "1_14_4": { q: "The state vector |ψ⟩ is technically a:", options: ["Ray in Hilbert space", "Pixel", "Classical bit", "Force"], answer: 0, explanation: "States are rays because phase doesn't change measurement probability.", clue: "<b>Rays</b>: Because global phase (multiplying by $e^{iθ}$) doesn't change measurement probabilities, states are technically <b>rays</b> in Hilbert space." },
+  "1_14_5": { q: "Postulate 1 requires vectors to be 'Normalized'. This means:", options: ["Length is 0", "Length is 1", "They are perpendicular", "They are real"], answer: 1, explanation: "The norm of the vector must be 1 for valid probabilities.", clue: "<b>Normalization</b>: To ensure total probability sums to 1.0, the inner product <b>⟨ψ|ψ⟩</b> (the squared length) must always equal <b>1</b>." },
+  "1_14_6": { q: "Composite systems are described using:", options: ["Addition", "Subtraction", "Tensor Product", "Division"], answer: 2, explanation: "Combining systems (qubits) uses the tensor product operation.", clue: "<b>Tensor Products</b>: The state space of a combined system (e.g., 2 qubits) is the <b>tensor product</b> ($H_1 \\otimes H_2$) of the individual spaces." },
+
+
+
+
+
+  // Week 1, Video 6: Quantum Measurements
+  "1_16_1": { q: "Postulate 3 describes the process of:", options: ["Superposition", "Measurement", "Teleportation", "Coding"], answer: 1, explanation: "The third postulate details how we extract info from qubits.", clue: "<b>Measurement</b>: Postulate 3 details how we obtain <b>classical outcomes</b> from quantum states, involving a set of operators {$M_m$}." },
+  "1_16_2": { q: "When measured, a quantum system:", options: ["Stays the same", "Collapses to an eigenstate", "Explodes", "Becomes twice as large"], answer: 1, explanation: "The 'Collapse' reduces many possibilities to one outcome.", clue: "<b>Collapse</b>: Measuring a system in superposition forces it to instantly 'collapse' into one of the <b>eigenstates</b> of the measurement operator." },
+  "1_16_3": { q: "The probability of an outcome is calculated using:", options: ["Ohm's Law", "Born's Rule", "Coulomb's Law", "Hooke's Law"], answer: 1, explanation: "Born's rule relates state amplitudes to probabilities.", clue: "<b>Born's Rule</b>: The probability of outcome <i>m</i> is given by <b>$p(m) = ⟨ψ|M_m^†M_m|ψ⟩$</b>, linking math to experimental results." },
+  "1_16_4": { q: "The set of measurement operators {Mm} must satisfy:", options: ["Mm = 0", "Sum of Mm†Mm = I", "Mm = I", "Mm = -1"], answer: 1, explanation: "The completeness relation ensures total probability is 1.", clue: "<b>Completeness</b>: To ensure probabilities sum to 1.0, the operators must satisfy <b>$\\sum M_m^†M_m = I$</b>." },
+  "1_16_5": { q: "If you measure a qubit twice in very rapid succession:", options: ["You get different results", "You get the same result (it's collapsed)", "The computer resets", "It burns out"], answer: 1, explanation: "Once collapsed by the first measurement, the state stays there.", clue: "<b>Persistence of Collapse</b>: Once measured, the state becomes the resulting eigenstate. A second measurement immediately after will yield the <b>same result</b>." },
+  "1_16_6": { q: "Wait, what happens to information during measurement?", options: ["It is amplified", "It is partially lost (the state collapses)", "It is backed up", "It is encrypted"], answer: 1, explanation: "Measurement is non-unitary and non-reversible; you lose the superposition.", clue: "<b>Irreversibility</b>: Unlike unitary gates, measurement is generally <b>non-reversible</b>; the original superposition info is destroyed during the collapse." },
+  "1_16_7": { q: "Projective measurements are a special case where:", options: ["The results are random", "Operators are orthogonal projectors", "You don't need qubits", "You use cameras"], answer: 1, explanation: "Standard measurements in QC are usually projective (P² = P).", clue: "<b>Projectors</b>: Most measurements in QC use <b>orthogonal projectors</b> ($P^2 = P$) as the operators, simplifying the math from general POVMs." },
+  "1_16_8": { q: "The Expectation Value (⟨H⟩) represents:", options: ["The minimum value", "The maximum value", "The average result over many trials", "The most beautiful state"], answer: 2, explanation: "It is the statistical mean of taking many measurements.", clue: "<b>Expectation Value</b>: The statistical <b>average</b> of the measurement results obtained from repeating the same experiment many times on identical states." },
+  "1_16_9": { q: "Measurement is always performed with respect to a:", options: ["Computer screen", "Computational Basis", "Cloud server", "User's intent"], answer: 1, explanation: "We measure 'along' an axis (usually Z-axis |0⟩/|1⟩).", clue: "<b>Basis Choice</b>: We must choose an 'axis' to measure. The standard is the <b>Computational Basis</b> (|0⟩ and |1⟩), but we can measure in any basis." },
+  "1_16_10": { q: "Can we 'look' at a qubit without disturbing it?", options: ["Yes, always", "No, measurement always affects the state", "Only on Sundays", "Only in simulators"], answer: 1, explanation: "Quantum measurement is intrusive by nature.", clue: "<b>Invasive Nature</b>: There is no 'passive' observation in quantum mechanics. Interacting with the system to gain info <b>always disturbs</b> its state." },
+
+  // Week 1, Video 7: Quantum Gates and Circuits - Part 1
+  "1_17_1": { q: "The X-gate is equivalent to which classical gate?", options: ["AND", "OR", "NOT (bit flip)", "XOR"], answer: 2, explanation: "X flips |0⟩ to |1⟩ and vice versa.", clue: "<b>Pauli-X Gate</b>: The quantum version of the classical <b>NOT gate</b>. It maps $|0⟩ → |1⟩$ and $|1⟩ → |0⟩$." },
+  "1_17_2": { q: "The Hadamard (H) gate creates:", options: ["Entanglement", "Superposition", "Measurement", "Errors"], answer: 1, explanation: "H takes a basis state to an equal superposition.", clue: "<b>Hadamard (H)</b>: The essential 'superposition' gate. It maps $|0⟩ → |+⟩$ and $|1⟩ → |-⟩$, creating an <b>equal blend</b> of both basis states." },
+  "1_17_3": { q: "Which gate rotates the state by 180 degrees around the Z-axis?", options: ["X", "Y", "Z", "H"], answer: 2, explanation: "Z-gate flips the phase of |1⟩.", clue: "<b>Pauli-Z Gate</b>: A phase-flip gate. It leaves $|0⟩$ alone but adds a <b>-1 phase</b> to $|1⟩$, effectively rotating it 180° around the Z-axis." },
+  "1_17_4": { q: "The state |+⟩ is obtained by applying H to:", options: ["|1⟩", "|0⟩", "|i⟩", "|-⟩"], answer: 1, explanation: "H|0⟩ = ( |0⟩ + |1⟩ ) / √2 = |+⟩.", clue: "<b>Basis Conversion</b>: Applying the Hadamard gate to the <b>|0⟩ state</b> results in the $|+⟩$ state on the X-axis of the Bloch sphere." },
+  "1_17_5": { q: "The state |-⟩ is obtained by applying H to:", options: ["|0⟩", "|1⟩", "|+⟩", "|-⟩"], answer: 1, explanation: "H|1⟩ = ( |0⟩ - |1⟩ ) / √2 = |-⟩.", clue: "<b>Basis Conversion</b>: Applying the Hadamard gate to the <b>|1⟩ state</b> results in the $|-⟩$ state (the negative X-axis)." },
+  "1_17_6": { q: "S-gate applies a phase of:", options: ["45 deg", "90 deg (π/2)", "180 deg (π)", "360 deg"], answer: 1, explanation: "S is the square root of Z.", clue: "<b>S-Gate</b>: Also known as the $Phase$ gate. It is the <b>square root of Z</b>, applying a 90° rotation around the Z-axis." },
+  "1_17_7": { q: "T-gate applies a phase of:", options: ["π/4 (45 deg)", "π/2", "π", "0"], answer: 0, explanation: "T is the square root of S (fourth root of Z).", clue: "<b>T-Gate</b>: The π/8 gate (though it shifts phase by π/4). It is the <b>square root of S</b> and is critical for fault-tolerant computing." },
+  "1_17_8": { q: "A universal gate set allows us to build:", options: ["Only simple circuits", "Any possible unitary operation", "Only classical gates", "Only Z-gates"], answer: 1, explanation: "Universality means any quantum algorithm can be approximated.", clue: "<b>Universality</b>: A set of gates that can approximate <b>any unitary operation</b> to arbitrary precision, allowing us to run any quantum algorithm." },
+  "1_17_9": { q: "Single qubit gates can be visualized as rotations on:", options: ["A cube", "The Bloch Sphere", "A flat map", "A spiral"], answer: 1, explanation: "Unitary matrices map to points on the sphere's surface.", clue: "<b>Visualizing Gates</b>: Every 1-qubit unitary gate corresponds to a <b>rotation</b> on the surface of the <b>Bloch Sphere</b>." },
+  "1_17_10": { q: "The Y-gate is a combination of which flips?", options: ["Bit and Phase", "Only Bit", "Only Phase", "Color and Spin"], answer: 0, explanation: "Y = iXZ; it involves both flipping the state and the phase.", clue: "<b>Pauli-Y Gate</b>: A complex operator that combines both a <b>Bit-Flip</b> and a <b>Phase-Flip</b> simultaneously." },
+
+  // Week 1, Video 8: Quantum Gates and Circuits - Part 2
+  "1_18_1": { q: "What does CNOT stands for?", options: ["Complex NOT", "Controlled-NOT", "Circular NOT", "Classic NOT"], answer: 1, explanation: "The target flips only if the control is 1.", clue: "<b>CNOT</b>: Stands for <b>Controlled-NOT</b>. It is the fundamental 2-qubit gate where one qubit controls the action on another." },
+  "1_18_2": { q: "In a CNOT gate, if control is 0, the target:", options: ["Flips", "Stays the same", "Becomes 1", "Randomizes"], answer: 1, explanation: "The 'Control' does nothing when it is in state |0⟩.", clue: "<b>Logic Gate</b>: If the control qubit is <b>|0⟩</b>, the target qubit's state is left completely unchanged." },
+  "1_18_3": { q: "The CNOT gate is primarily used to create:", options: ["Superposition", "Entanglement", "Heat", "Single bits"], answer: 1, explanation: "Linking two qubits' fates creates entanglement.", clue: "<b>Entanglement</b>: By applying a CNOT to qubits in different bases, we create <b>non-separable states</b> where the individual qubits no longer have independent values." },
+  "1_18_4": { q: "The SWAP gate does what?", options: ["Flips a bit", "Exchanges the states of two qubits", "Deletes data", "Inverts phase"], answer: 1, explanation: "It swaps the contents of two quantum registers.", clue: "<b>SWAP Gate</b>: A 2-qubit operation that literally <b>exchanges</b> the quantum states between the two qubits." },
+  "1_18_5": { q: "How many qubits does the Toffoli (CCNOT) gate act on?", options: ["1", "2", "3", "All"], answer: 2, explanation: "It is a double-controlled NOT gate.", clue: "<b>Toffoli Gate</b>: A 3-qubit gate (Controlled-Controlled-NOT) where the target flips <i>only</i> if both control qubits are |1⟩." },
+  "1_18_6": { q: "The Toffoli gate is universal for which type of computing?", options: ["Classical logic", "Only Quantum", "Analog", "None"], answer: 0, explanation: "Toffoli + superposition is universal for quantum, but Toffoli alone is universal for classical.", clue: "<b>Classical Universality</b>: The Toffoli gate can be used to build <b>NAND gates</b>, making it universal for all classical computations." },
+  "1_18_7": { q: "Entanglement is a phenomenon where:", options: ["Qubits move fast", "States are inseparable", "One qubit is hot", "Qubits are independent"], answer: 1, explanation: "The state of one qubit cannot be described without the other.", clue: "<b>Entanglement</b>: A uniquely quantum correlation where qubits become <b>spookily linked</b>, such that measuring one instantly influences the state of the other." },
+  "1_18_8": { q: "The Bell State ( |00⟩ + |11⟩ ) / √2 is created using:", options: ["H then CNOT", "CNOT then H", "X then Z", "Two H gates"], answer: 0, explanation: "Apply H to qubit 1, then CNOT(1->2).", clue: "<b>Building Bell States</b>: To create the $\\Phi^+$ state, you apply a <b>Hadamard gate</b> to the first qubit followed by a <b>CNOT</b> targeting the second." },
+  "1_18_9": { q: "The 'Control' qubit in a gate is represented by:", options: ["A cross", "A solid bullet", "An arrow", "A square"], answer: 1, explanation: "Standard notation uses a dot for the control and ⊕ for target.", clue: "<b>Circuit Symbols</b>: In diagrams, the control qubit is marked with a <b>closed dot (●)</b>, while the target operation (like X) is marked with ⊕." },
+  "1_18_10": { q: "Wait, can a 2-qubit gate always be decomposed into single-qubit gates?", options: ["Yes, always", "Only if there's no entanglement", "Only using CNOT and single-qubit gates", "Never"], answer: 2, explanation: "CNOT + Single-qubit gates form a universal set.", clue: "<b>Universal Construction</b>: Any complex multi-qubit unitary can be broken down into a sequence of <b>Single-Qubit gates</b> and <b>CNOT gates</b>." },
+
+
+  // Week 2, Video 1: Introduction to Qiskit
+  "2_11_1": { q: "Qiskit is primarily used for:", options: ["Web development", "Programming quantum computers", "Graphic design", "Video editing"], answer: 1, explanation: "Qiskit is the open-source SDK for quantum information science.", clue: "<b>Qiskit SDK</b>: An open-source Python framework developed by IBM for creating, manipulating, and running quantum circuits on real hardware and simulators." },
+  "2_11_2": { q: "Which organization developed Qiskit?", options: ["Google", "Microsoft", "IBM", "Intel"], answer: 2, explanation: "IBM Research is the primary developer of Qiskit.", clue: "<b>History</b>: Qiskit was originally created by researchers at <b>IBM</b> (International Business Machines) and is now maintained as a global open-source project." },
+  "2_11_3": { q: "The two main ways to program on IBM Quantum are:", options: ["C++ and Java", "Quantum Composer and Qiskit SDK", "Python and R", "Excel and Word"], answer: 1, explanation: "IBM offers the GUI-based Composer and the Python-based Qiskit SDK.", clue: "<b>Programming Paths</b>: Users can use the <b>Quantum Composer</b> (drag-and-drop GUI) for quick experiments or the <b>Qiskit SDK</b> (Python library) for advanced development." },
+  "2_11_4": { q: "A 'Quantum Ambassador' or 'Qiskit Advocate' is someone who:", options: ["Cleans the lab", "Promotes and contributes to the Qiskit community", "Only uses classical computers", "Has never heard of qubits"], answer: 1, explanation: "Advocates are individuals recognized for their expertise and contributions to the ecosystem.", clue: "<b>Community</b>: The Qiskit ecosystem relies on <b>Advocates</b>—volunteers and experts who provide mentorship, create tutorials, and grow the global quantum community." },
+  "2_11_5": { q: "Is Qiskit open-source?", options: ["Yes", "No", "Only for IBM employees", "Only for paid users"], answer: 0, explanation: "Qiskit is released under the Apache 2.0 license.", clue: "<b>Licensing</b>: Qiskit is <b>100% open-source</b> (Apache 2.0 license), meaning anyone can inspect the code, contribute features, or use it for research and education." },
+  "2_11_6": { q: "To use Qiskit, you typically use which programming language?", options: ["C#", "JavaScript", "Python", "Swift"], answer: 2, explanation: "Qiskit is built on Python.", clue: "<b>Language</b>: Qiskit is a <b>Python-based</b> library, making it accessible to scientists and developers familiar with Python's data science ecosystem (NumPy, SciPy)." },
+  "2_11_7": { q: "The 'Quantum Composer' allows you to build circuits by:", options: ["Writing long code", "Dragging and dropping gate symbols", "Speaking to a microphone", "Using a VR headset"], answer: 1, explanation: "It is a visual drag-and-drop interface for circuit design.", clue: "<b>Composer</b>: A web-based <b>visual editor</b> where you can build quantum circuits by dragging representations of gates onto qubit wires in real-time." },
+  "2_11_8": { q: "The primary module in Qiskit for circuit construction is:", options: ["qiskit.circuit", "qiskit.math", "qiskit.web", "qiskit.gpu"], answer: 0, explanation: "QuantumCircuit class is found in the circuit module.", clue: "<b>Core Modules</b>: To build gates or define registers, you primarily interact with the <b>`qiskit.circuit`</b> module, which houses the `QuantumCircuit` class." },
+  "2_11_9": { q: "IBM Quantum Lab provides:", options: ["A physical laboratory in your house", "A cloud-based Jupyter notebook environment", "A video game", "A hardware repair kit"], answer: 1, explanation: "It allows running Qiskit code in the browser without local installation.", clue: "<b>Quantum Lab</b>: A cloud environment with pre-installed Qiskit and <b>Jupyter Notebooks</b>, allowing you to run code on IBM Quantum systems from any web browser." },
+  "2_11_10": { q: "What does API stand for in the context of connecting to quantum hardware?", options: ["Apple Programming Inc", "Application Programming Interface", "Advanced Physics Institute", "Always Playing Intervals"], answer: 1, explanation: "The API allows your local Python code to communicate with remote quantum chips.", clue: "<b>API Connectivity</b>: To send jobs to remote hardware, Qiskit uses an <b>API (Application Programming Interface)</b> to authenticate your IBM Quantum account and transmit circuit data." },
+
+
+  // Week 2, Video 2: Quantum States and Operations
+  "2_12_1": { q: "Which property allows a qubit to be in states |0⟩ and |1⟩ at once?", options: ["Entanglement", "Superposition", "Interference", "Decoherence"], answer: 1, explanation: "Superposition is the ability to exist in multiple basis states simultaneously.", clue: "<b>Superposition</b>: The ability of a quantum system to exist in a linear combination of all possible computational basis states until a measurement is made." },
+  "2_12_2": { q: "Entanglement means the state of one qubit:", options: ["Is always 0", "Is always 1", "Depends on the state of another qubit", "Is completely random"], answer: 2, explanation: "Entangled qubits have correlated outcomes that cannot be described individually.", clue: "<b>Entanglement</b>: A uniquely quantum correlation where the state of one qubit is <b>intrinsically linked</b> to the state of another, even across large distances." },
+  "2_12_3": { q: "Interference in quantum computing is used to:", options: ["Block the internet", "Adjust probabilities of measurement outcomes", "Cool the computer", "Slow down the gates"], answer: 1, explanation: "Algorithms use constructive/destructive interference to favor the correct answer.", clue: "<b>Interference</b>: Exploiting wave-like properties to create <b>constructive peaks</b> for correct answers and <b>destructive nulls</b> for incorrect ones." },
+  "2_12_4": { q: "The state vector of a single qubit is a pair of:", options: ["Integers", "Complex numbers", "Booleans", "Characters"], answer: 1, explanation: "α and β are complex probability amplitudes.", clue: "<b>State Amplitudes</b>: The mathematical description of a qubit state $|ψ⟩ = α|0⟩ + β|1⟩$, where $α$ and $β$ are <b>complex probability amplitudes</b>." },
+  "2_12_5": { q: "What is the result of applying an X-gate to |0⟩ in Qiskit?", options: ["|0⟩", "|1⟩", "|+⟩", "|-⟩"], answer: 1, explanation: "X is the NOT gate; it flips 0 to 1.", clue: "<b>X Gate</b>: Also known as the NOT gate, it performs a <b>bit-flip</b> operation, mapping $|0⟩$ to $|1⟩$." },
+  "2_12_6": { q: "The Hadamard (H) gate transforms |0⟩ into:", options: ["|1⟩", "(|0⟩ + |1⟩)/√2", "(|0⟩ - |1⟩)/√2", "|i⟩"], answer: 1, explanation: "H creates an equal superposition known as the |+⟩ state.", clue: "<b>H Gate</b>: The fundamental tool for creating <b>superposition</b>. When applied to $|0⟩$, it creates an equal 50/50 mix of basis states." },
+  "2_12_7": { q: "Which gate is used to create entanglement in a 2-qubit circuit?", options: ["X", "H", "CNOT", "Z"], answer: 2, explanation: "Conditional gates like CNOT link the states of two qubits.", clue: "<b>Conditional Logic</b>: The <b>CNOT</b> (Controlled-NOT) gate flips the target qubit dependent on the control qubit, forging a quantum link between them." },
+  "2_12_8": { q: "Aer is the Qiskit element dedicated to:", options: ["User interface", "Simulations", "Hardware drivers", "Error correction"], answer: 1, explanation: "Aer provides high-performance simulators for local testing.", clue: "<b>Aer Module</b>: Qiskit's core <b>simulator</b> framework, providing backends like `qasm_simulator` and `statevector_simulator` for local testing." },
+  "2_12_9": { q: "A 'shot' in Qiskit refers to:", options: ["A picture", "A single execution of the circuit", "An error", "A qubit"], answer: 1, explanation: "Multiple shots are needed to build a probability distribution of outcomes.", clue: "<b>Sampling</b>: Since quantum results are probabilistic, a <b>shot</b> is a single run of the experiment. We repeat many times to find the distribution." },
+  "2_12_10": { q: "What happens to the amplitudes after a measurement?", options: ["They all stay", "They collapse to 1 for the observed state and 0 for others", "They double", "They become real numbers"], answer: 1, explanation: "Measurement causes the wavefunction to collapse into one basis state.", clue: "<b>Wavefunction Collapse</b>: The process where a qubit in superposition instantly 'chooses' one of the <b>basis states</b> $|0⟩$ or $|1⟩$ upon being observed." },
+
+
+  // Week 2, Video 3: Measurement and Visualization
+  "2_13_1": { q: "In the Alice and Bob teleportation scenario, what is Bob's task?", options: ["To measure Alice's qubit", "To apply the correct transformation to recover Alice's state", "To create a new qubit", "To send classical bits"], answer: 1, explanation: "Bob uses results from Alice's measurement to transform his part of the entangled pair.", clue: "<b>Teleportation Protocol</b>: Bob holds one half of an entangled pair. After Alice measures her qubits, Bob must apply specific <b>unitary corrections</b> to recover the state." },
+  "2_13_2": { q: "If Alice measures 00, what transformation does Bob need to do?", options: ["X", "Z", "Nothing (Identity)", "H"], answer: 2, explanation: "In 00 case, the state at Bob's end already matches Alice's initial state.", clue: "<b>Information Mapping</b>: If the classical bits received are <b>'00'</b>, the state Bob already holds perfectly matches Alice's intended input state vector." },
+  "2_13_3": { q: "The 'Statevector' visualization shows:", options: ["Only the 0/1 bits", "Complex amplitudes of all basis states", "The physical chip layout", "The temperature"], answer: 1, explanation: "It provides the full mathematical description of the state.", clue: "<b>Visualizing State</b>: A statevector plot provides the <b>complex magnitudes</b> and phases for every possible outcome in the computational basis." },
+  "2_13_4": { q: "A 'City Plot' in Qiskit represents:", options: ["The location of IBM labs", "The real and imaginary parts of a density matrix", "Street maps", "Classical probabilities"], answer: 1, explanation: "City plots are a 3D bar chart visualization for quantum states.", clue: "<b>Density Matrix City</b>: A 3D bar chart where the heights represent the <b>Real</b> and <b>Imaginary</b> components of a quantum system's density matrix." },
+  "2_13_5": { q: "Which tool allows viewing the qubit state on the Bloch Sphere?", options: ["plot_bloch_multivector", "plot_histogram", "plot_city", "plot_state_qsphere"], answer: 0, explanation: "This function plots the state vectors of qubits on the Bloch sphere.", clue: "<b>Spherical Mapping</b>: Use <b>`plot_bloch_multivector`</b> to see the state vector as a point/arrow on the surface of the 3D unit sphere." },
+  "2_13_6": { q: "A QSphere visualization is better than a Bloch sphere because:", options: ["It's colorful", "It can represent multi-qubit entanglement", "It shows the memory usage", "It runs faster"], answer: 1, explanation: "QSpheres can show correlations and amplitudes for multi-qubit systems.", clue: "<b>Advanced Visualization</b>: Unlike the Bloch Sphere (1 qubit), the <b>QSphere</b> can represent multi-qubit systems and the correlations between them." },
+  "2_13_7": { q: "The histogram plot shows:", options: ["Exact amplitudes", "Measurement frequencies (probabilities)", "The code history", "Gate sequence"], answer: 1, explanation: "Histograms display the results of running a circuit many times (shots).", clue: "<b>Histogram</b>: The most common way to view Qiskit results, showing the <b>frequency</b> of each binary outcome across all shots." },
+  "2_13_8": { q: "If Alice's measurement result is '01', Bob applies which gate?", options: ["X", "Z", "H", "Identity"], answer: 0, explanation: "Depending on the protocol variant, 01 often requires an X flip.", clue: "<b>Bit-Flip Correction</b>: According to the protocol, receiving classical bit '1' from Alice's source measurement requires Bob to apply an <b>X gate</b>." },
+  "2_13_9": { q: "Visualization helps in 'debugging' by:", options: ["Deleting the code", "Showing the state evolution between gates", "Making the UI pretty", "Increasing qubit count"], answer: 1, explanation: "Checking statevectors at different steps verifies if gates worked as intended.", clue: "<b>Analysis</b>: Viewing the statevector at <b>intermediate steps</b> in a circuit allows developers to verify if the quantum operations produced the expected amplitudes." },
+  "2_13_10": { q: "The term 'Basis State' refers to:", options: ["Any possible state", "The standard |0⟩ and |1⟩ states", "A broken qubit", "The ground floor of the lab"], answer: 1, explanation: "Basis states are the mutually exclusive states used to define the computational space.", clue: "<b>Computational Basis</b>: The standard reference vectors ($|0⟩$ and $|1⟩$) used to span the system's Hilbert space and define bit values." },
+
+
+  // Week 2, Video 4: Building Quantum Circuits
+  "2_14_1": { q: "The 'Circuit Composer' generates what behind the scenes?", options: ["C++ code", "QASM or Python code", "A PDF report", "An image only"], answer: 1, explanation: "Drag-and-drop actions are converted into underlying quantum assembly or Python code.", clue: "<b>Code Translation</b>: When you build a circuit graphically in the <b>Composer</b>, it automatically generates the corresponding <b>OpenQASM</b> and <b>Qiskit (Python)</b> code." },
+  "2_14_2": { q: "To add a qubit to a circuit in Qiskit code, you use:", options: ["qc.add_bit()", "QuantumRegister()", "new Qubit()", "bit.create()"], answer: 1, explanation: "Qubits are managed via QuantumRegister objects.", clue: "<b>Defining Registers</b>: A quantum circuit is typically initialized with <b>`QuantumRegister(n)`</b> to specify the number of qubits you need to manipulate." },
+  "2_14_3": { q: "How do you draw a circuit in a Jupyter notebook?", options: ["qc.view()", "qc.draw('mpl')", "print(qc)", "draw(window)"], answer: 1, explanation: "qc.draw() with 'mpl' (matplotlib) creates a clean visual diagram.", clue: "<b>Visualization</b>: Use the <b>`qc.draw('mpl')`</b> command to render high-quality circuit diagrams using the Matplotlib library within your notebook." },
+  "2_14_4": { q: "Which Qiskit class is the main entry point for defining gates and measurements?", options: ["QuantumGate", "QuantumCircuit", "Simulator", "QubitManager"], answer: 1, explanation: "QuantumCircuit holds the sequence of instructions.", clue: "<b>The Core Class</b>: Everything from gate application to measurement is done within an instance of <b>`QuantumCircuit`</b>." },
+  "2_14_5": { q: "The command `qc.h(0)` applies what to qubit 0?", options: ["Halt", "Hadamard gate", "Heating", "History"], answer: 1, explanation: "The 'h' method applies the Hadamard gate.", clue: "<b>Gate Execution</b>: Calling <b>`.h(0)`</b> on a circuit object applies the Hadamard operation to the first qubit (index 0) in the register." },
+  "2_14_6": { q: "To measure all qubits into classical bits, you use:", options: ["qc.look_all()", "qc.measure_all()", "qc.collapse()", "qc.read()"], answer: 1, explanation: "This convenient method adds measurements and a classical register to help with quick testing.", clue: "<b>Readout Logic</b>: The <b>`qc.measure_all()`</b> method is a shortcut that automatically adds a classical register and maps every qubit to it." },
+  "2_14_7": { q: "In Qiskit, instructions are executed from:", options: ["Right to Left", "Left to Right", "Top to Bottom", "Bottom to Top"], answer: 1, explanation: "Computation flows forward in time across the qubit wires.", clue: "<b>Computational Flow</b>: Similar to standard music notation, a quantum circuit is read <b>Left to Right</b>, following the timeline of each qubit." },
+  "2_14_8": { q: "To flip a qubit (bit-flip), which gate command is used?", options: ["qc.x()", "qc.z()", "qc.y()", "qc.flip()"], answer: 0, explanation: "The 'x' method applies the Pauli-X (NOT) gate.", clue: "<b>Standard Gates</b>: Use <b>`qc.x(q)`</b> to apply a Bit-Flip operation to qubit 'q', mirroring the classical NOT operation." },
+  "2_14_9": { q: "A CNOT gate command `qc.cx(0, 1)` uses which qubit as control?", options: ["0", "1", "Both", "Neither"], answer: 0, explanation: "The first argument is the control, the second is the target.", clue: "<b>Control/Target</b>: In the command <b>`qc.cx(control, target)`</b>, the first integer specifies the source qubit that controls the flip." },
+  "2_14_10": { q: "The instruction `qc.measure_all()`:", options: ["Measures only the first qubit", "Adds measurement gates to all qubits in the circuit", "Deletes all measurements", "Prints all qubit names"], answer: 1, explanation: "It is a convenient way to measure every qubit into a classical register.", clue: "<b>Complete Readout</b>: <b>`measure_all()`</b> ensures that the state of every qubit is captured and stored into a classical bit for later analysis." },
+
+
+  // Week 3, Video 1: Deutsch-Jozsa Algorithm
+  "3_11_1": { q: "The Deutsch-Jozsa algorithm determines if a function is:", options: ["Linear or Quadratic", "Constant or Balanced", "Even or Odd", "Real or Complex"], answer: 1, explanation: "DJ algorithm distinguishes between these two global properties of a function.", clue: "<b>Deutsch-Jozsa</b>: A benchmark algorithm that determines if a hidden function $f(x)$ is <b>Constant</b> (always 0 or always 1) or <b>Balanced</b> (0 for half inputs, 1 for the other half)." },
+  "3_11_2": { q: "A 'Balanced' function returns 0 for:", options: ["All inputs", "None of the inputs", "Exactly half of the inputs", "Only the first input"], answer: 2, explanation: "Balanced means 0 and 1 are returned with equal frequency.", clue: "<b>Balanced Logic</b>: A function is balanced if it outputs <b>exactly 50% zeros and 50% ones</b> over its entire input range." },
+  "3_11_3": { q: "Classically, how many queries are needed for an n-bit function in the worst case?", options: ["1", "n", "2^(n-1) + 1", "2^n"], answer: 2, explanation: "To be 100% sure the function isn't constant, you might need one more than half the evaluations.", clue: "<b>Classical Limit</b>: To be absolutely certain a function isn't constant, a classical computer must check <b>one more than half</b> the total possibilities ($2^{n-1} + 1$)." },
+  "3_11_4": { q: "How many queries does the DJ algorithm use?", options: ["Exactly 1", "Exactly 2", "n", "log(n)"], answer: 0, explanation: "The DJ algorithm solves the problem in a single query.", clue: "<b>Quantum Speedup</b>: The DJ algorithm achieves an exponential speedup by solving this problem with <b>exactly 1</b> evaluation of the oracle, regardless of $n$." },
+  "3_11_5": { q: "Which gate creates the initial superposition for the DJ algorithm?", options: ["X", "Z", "H", "CNOT"], answer: 2, explanation: "H gates are applied to all input qubits.", clue: "<b>Parallelism</b>: By applying <b>Hadamard (H)</b> gates to all $n$ input qubits, we prepare an equal superposition of all possible inputs to be processed simultaneously." },
+  "3_11_6": { q: "The target qubit in DJ is often initialized to:", options: ["|00⟩", "|1⟩", "|+⟩", "|-⟩"], answer: 3, explanation: "Using the |-⟩ state allows for phase kickback.", clue: "<b>Phase Kickback</b>: By initializing the target (ancilla) qubit to state <b>$|-⟩$</b> (using X then H), the oracle's bit-flip is converted into a phase sign on the input state." },
+  "3_11_7": { q: "DJ algorithm is an example of 'Quantum Speedup' that is:", options: ["Quadratic", "Exponential (compared to deterministic classical)", "Linear", "Logarithmic"], answer: 1, explanation: "The gap between 1 and 2^(n-1)+1 is exponential.", clue: "<b>Mathematical Gap</b>: Comparing 1 query to $2^{n-1}+1$ queries represents an <b>exponential speedup</b> in terms of computational complexity." },
+  "3_11_8": { q: "If the measurement result in DJ is all zeros, the function is:", options: ["Balanced", "Constant", "Random", "Error"], answer: 1, explanation: "Constructive interference at the zero state indicates a constant function.", clue: "<b>Interference Outcome</b>: Measuring the state <b>'00...0'</b> indicates that the function is <b>Constant</b>, as all the superposition waves added up constructively at zero." },
+  "3_11_9": { q: "If any measurement bit is 1 in DJ, the function is:", options: ["Balanced", "Constant", "Identity", "Zero"], answer: 0, explanation: "Destructive interference at the zero state means the function is balanced.", clue: "<b>Interference Outcome</b>: If <b>any bit</b> in the final measurement is 1, the interference pattern proves the function is <b>Balanced</b>." },
+  "3_11_10": { q: "The DJ algorithm utilizes which quantum principle?", options: ["Decoherence", "Interference", "Gravity", "Classical logic"], answer: 1, explanation: "It uses interference to amplify the constant vs balanced signal.", clue: "<b>Wave Logic</b>: DJ is a beautiful application of <b>Quantum Interference</b>, where the 'Balanced' nature of a function causes its waves to cancel out at the zero state." },
+
+
+  // Week 3, Video 2: Bernstein-Vazirani
+  "3_12_1": { q: "Bernstein-Vazirani is designed to find a hidden:", options: ["Treasure", "Bitstring 's'", "Prime factor", "Color"], answer: 1, explanation: "The algorithm finds a secret string $s$ used in a dot product oracle.", clue: "<b>Bernstein-Vazirani</b>: A variant of DJ that finds a <b>hidden bitstring 's'</b> that defines a dot-product function $f(x) = s \\cdot x \\pmod 2$." },
+  "3_12_2": { q: "The oracle in BV evaluates which operation?", options: ["$f(x) = s \\cdot x \\pmod 2$", "$f(x) = s + x$", "$f(x) = s^x$", "$f(x) = \\sin(x)$"], answer: 0, explanation: "It computes the inner product modulo 2 of input and secret string.", clue: "<b>Oracle Function</b>: The algorithm queries a black box that computes the <b>dot product</b> between the input $x$ and the secret string $s$." },
+  "3_12_3": { q: "A classical computer finds 's' in how many queries?", options: ["1", "n", "s", "2^n"], answer: 1, explanation: "Classically, you must query bit by bit to find $s$.", clue: "<b>Classical Limit</b>: A classical algorithm must query the oracle <b>n times</b> (once for each bit position: 1, 2, 4...) to reconstruct the full string $s$." },
+  "3_12_4": { q: "The BV algorithm finds 's' in how many quantum queries?", options: ["1", "n", "log(n)", "2"], answer: 0, explanation: "Like DJ, it requires only 1 evaluation of the oracle.", clue: "<b>One-Shot Success</b>: The BV algorithm famously extracts the <b>entire secret string</b> in exactly <b>1 query</b>, a linear-to-constant speedup." },
+  "3_12_5": { q: "After the second set of H-gates in BV, the register state is:", options: ["Random", "|s⟩", "|0⟩", "|+⟩"], answer: 1, explanation: "The interference pattern maps the phase result directly to the computational state $|s\\rangle$.", clue: "<b>Direct Output</b>: Due to the way the phase kickback is structured, the final measurement of the register gives you the <b>secret string |s⟩</b> directly." },
+  "3_12_6": { q: "BV algorithm is essentially a variation of:", options: ["Shor's", "Deutsch-Jozsa", "Grover's", "VQE"], answer: 1, explanation: "It follows the same H-Oracle-H pattern as DJ.", clue: "<b>Algorithm Family</b>: BV belongs to the <b>Deutsch-Jozsa family</b>, sharing the same basic H-Oracle-H structure." },
+  "3_12_7": { q: "In the BV circuit, the target qubit is set to state:", options: ["|00⟩", "|1⟩", "|-⟩", "|i⟩"], answer: 2, explanation: "The |-⟩ state is used to 'kick back' the oracle's phase.", clue: "<b>Helper Qubit</b>: Similar to DJ, we use an ancilla in the <b>$|-⟩$ state</b> to transform the bit flip into a phase factor." },
+  "3_12_8": { q: "The 's' in BV is a string of length:", options: ["1", "n (number of qubits)", "Infinity", "8"], answer: 1, explanation: "The string length matches the input dimension.", clue: "<b>Bitstring Width</b>: The length of the secret string $s$ is equal to the <b>number of input qubits (n)</b> being queried." },
+  "3_12_9": { q: "If the secret string s is '000', the BV oracle does:", options: ["Flips everything", "Nothing", "Flips only the first bit", "Crashes"], answer: 1, explanation: "The dot product with 0 is always 0, resulting in no phase change.", clue: "<b>Zero Effect</b>: If $s$ is all zeros, the dot product is always 0, meaning the oracle <b>never flips the target</b> and the phase remains unchanged." },
+  "3_12_10": { q: "BV provides a speedup that is:", options: ["None", "Polynomial (n vs 1)", "Exponential", "Quadratic"], answer: 1, explanation: "It reduces n classical queries to 1 quantum query.", clue: "<b>Complexity</b>: BV provides a <b>Polynomial speedup</b> (O(n) classical vs O(1) quantum) in the number of oracle calls required." },
+
+
+  // Week 3, Video 3: Grover Search Theory
+  "3_13_1": { q: "Grover's algorithm searches for elements in an:", options: ["Ordered list", "Unstructured database", "Binary tree", "Stack"], answer: 1, explanation: "It is designed for databases with no prior sorting.", clue: "<b>Grover's Algorithm</b>: A fundamental search tool for <b>unstructured databases</b> where there is no specific order or index to help find the target." },
+  "3_13_2": { q: "The classical complexity of searching N elements is:", options: ["O(1)", "O(log N)", "O(N)", "O(N^2)"], answer: 2, explanation: "In an unstructured list, you must check every item on average.", clue: "<b>Linear Search</b>: To find 1 item out of $N$ classically, you must check <b>$O(N)$</b> items on average (at least half of them)." },
+  "3_13_3": { q: "Grover's algorithm complexity is:", options: ["O(1)", "O(√N)", "O(N)", "O(log N)"], answer: 1, explanation: "Grover provides a quadratic speedup.", clue: "<b>Quadratic Speedup</b>: Grover's algorithm reduced the search time to <b>$O(\\sqrt{N})$</b>, making it exponentially faster than classical search for large datasets." },
+  "3_13_4": { q: "The 'Oracle' in Grover's algorithm marks the solution by:", options: ["Deleting other states", "Flipping its phase", "Changing its bit value", "Stopping the computer"], answer: 1, explanation: "It applies a -1 phase factor to the target state.", clue: "<b>Phase Marking</b>: The Oracle marks the target state $|w⟩$ by <b>flipping its sign</b> ($|w⟩ → -|w⟩$), making it mathematically distinct from other states." },
+  "3_13_5": { q: "The second part of the Grover iteration is called the:", options: ["Oracle", "Diffuser (Inversion about the mean)", "Measurement", "Hadamard transform"], answer: 1, explanation: "The diffuser amplifies the marked state's amplitude.", clue: "<b>Amplitude Amplification</b>: The <b>Diffuser</b> (or Inversion about the Mean) is the second step that boosts the amplitude of the marked state while suppressing others." },
+  "3_13_6": { q: "The 'Inversion about the mean' increases the amplitude of states that are:", options: ["Above the average", "Below the average (negative)", "Exactly equal to average", "Zero"], answer: 1, explanation: "Since the target state was flipped negative, it is far below the mean, leading to a large positive boost after reflection.", clue: "<b>Boost Logic</b>: Because the target was made <b>negative</b>, it is far below the average amplitude; reflecting it about the mean 'throws' it to a very high positive value." },
+  "3_13_7": { q: "The optimal number of Grover iterations is approximately:", options: ["N", "√N", "(π/4)√N", "log N"], answer: 2, explanation: "Repeating the iteration roughly this many times maximizes solution probability.", clue: "<b>Number of Steps</b>: To maximize success, you should repeat the Grover iteration approximately <b>$\\frac{π}{4}\\sqrt{N}$</b> times." },
+  "3_13_8": { q: "What happens if you perform too many Grover iterations?", options: ["It gets even better", "The success probability decreases (over-rotation)", "The computer runs out of memory", "Nothing"], answer: 1, explanation: "The state rotates past the target solution, reducing the overlap.", clue: "<b>Over-rotation</b>: Just like rotating a needle on a compass, if you rotate too much, you'll <b>point away</b> from the target, and the probability of success will drop." },
+  "3_13_9": { q: "Grover's algorithm is useful for:", options: ["Cracking AES keys", "Factorizing numbers", "Simulating molecules", "Sorting a list"], answer: 0, explanation: "It provides a quadratic speedup for brute-force searches like key cracking.", clue: "<b>Application</b>: Grover can be used to search for <b>cryptographic keys</b> twice as fast (square root of the key space), significantly weakening symmetric encryption." },
+  "3_13_10": { q: "Can Grover's algorithm find multiple solutions?", options: ["No, only one", "Yes, it works but iterations count changes", "Only in simulators", "Only if N is small"], answer: 1, explanation: "Grover can handle $M$ solutions, with optimal iterations being $\\approx (\\pi/4)\\sqrt{N/M}$.", clue: "<b>Multiple Targets</b>: If there are $M$ solutions, Grover finds one of them even faster, in <b>$O(\\sqrt{N/M})$</b> iterations." },
+
+
+  // Week 3, Video 4: Grover Implementation
+  "3_14_1": { q: "To search 16 elements (indices 0-15), how many qubits are needed?", options: ["2", "4", "8", "16"], answer: 1, explanation: "2^4 = 16 basis states available.", clue: "2^4." },
+  "3_14_2": { q: "The Grover implementation script in Qiskit often uses which simulator?", options: ["qasm_simulator", "statevector_simulator", "pulse_simulator", "unit_simulator"], answer: 0, explanation: "Qasm simulator is used to see the histogram of measurement results.", clue: "Histogram source." },
+  "3_14_3": { q: "In the implementation, the initial state is prepared with:", options: ["X gates", "H gates on all qubits", "Z gates", "CNOT gates"], answer: 1, explanation: "All qubits start in an equal superposition of all indices.", clue: "Start everywhere." },
+  "3_14_4": { q: "A 4-qubit Grover search for index '1010' would mark which state?", options: ["7", "10", "15", "0"], answer: 1, explanation: "Binary 1010 is 10 decimal.", clue: "Binary to decimal." },
+  "3_14_5": { q: "The 'Diffuser' circuit template in Qiskit usually involves:", options: ["Only H gates", "H gates, X gates, and a multi-controlled Z gate", "Only measurements", "A loop"], answer: 1, explanation: "The diffuser is implemented as $H X (MCZ) X H$.", clue: "H-X-MCZ-X-H." },
+  "3_14_6": { q: "How many iterations are roughly needed for N=16?", options: ["1", "3", "8", "16"], answer: 1, explanation: "$(\\pi/4)\\sqrt{16} \\approx 3.14$.", clue: "Approx 3." },
+  "3_14_7": { q: "The measurement histogram should show a 'peak' at:", options: ["The center", "The searched index", "All indices equally", "Zero"], answer: 1, explanation: "The algorithm amplifies the probability of the target index.", clue: "The winner." },
+  "3_14_8": { q: "If the peak in the histogram is small, it might mean:", options: ["The computer is too slow", "Incorrect number of iterations", "Wrong color theme", "Qiskit is broken"], answer: 1, explanation: "Under or over-rotating will leave high probability in wrong states.", clue: "Timing issue." },
+  "3_14_9": { q: "Multi-controlled gates act as:", options: ["Fast switches", "Logical 'AND' for many controls", "Randomizers", "Heat sinks"], answer: 1, explanation: "They execute only if all control qubits are 1.", clue: "Big AND." },
+  "3_14_10": { q: "Can Grover's algorithm be used for machine learning?", options: ["No", "Yes, for searching model parameters", "Only if the data is small", "Only for linear regression"], answer: 1, explanation: "Grover's search can be adapted to various optimization and sampling tasks in ML.", clue: "Parameter search." },
+
+  // Week 4, Video 1: Variational Quantum Algorithms
+  "4_11_1": { q: "NISQ computers are limited by:", options: ["Low storage", "Noise and limited qubit counts", "Too many users", "Software bugs"], answer: 1, explanation: "NISQ era devices are prone to errors and have small scales.", clue: "<b>NISQ Era</b>: Stands for <b>Noisy Intermediate-Scale Quantum</b>, describing current hardware that is too noisy for long calculations but large enough for early experiments." },
+  "4_11_2": { q: "Variational algorithms are 'Hybrid', meaning they use:", options: ["Two quantum chips", "Quantum hardware + Classical optimizer", "Water and Electricity", "Python and C++"], answer: 1, explanation: "They offload optimization tasks to classical hardware.", clue: "<b>Hybrid Framework</b>: These algorithms use a <b>Quantum Computer</b> to calculate the 'hard' state and a <b>Classical CPU</b> to optimize the parameters in a feedback loop." },
+  "4_11_3": { q: "What is a 'Modern' or 'NISQ-era' algorithm?", options: ["Shor's", "VQE", "Deutsch", "Simon's"], answer: 1, explanation: "VQE is designed to work on near-term noisy devices.", clue: "<b>Practical Algorithms</b>: Unlike Shor's (which needs perfect qubits), <b>VQE</b> is a near-term algorithm designed to work on the imperfect hardware we have today." },
+  "4_11_4": { q: "The goal of a variational algorithm is usually to find the:", options: ["Largest eigenvalue", "Minimum value (ground state) of a cost function", "Average time", "Number of qubits"], answer: 1, explanation: "Optimization typically searches for the global minimum.", clue: "<b>Cost Minimization</b>: The hardware computes a value (energy), and the goal is to shift parameters until you find the <b>global minimum</b> or ground state." },
+  "4_11_5": { q: "In VQA, the quantum circuit used is called an:", options: ["Answer", "Ansatz", "Assembly", "Architecture"], answer: 1, explanation: "The Ansatz is the parameterized trial wavefunction.", clue: "<b>Trial Wavefunction</b>: The <b>Ansatz</b> is a specific circuit 'template' with adjustable gate angles that 'guesses' what the final solution state might look like." },
+  "4_11_6": { q: "The 'parameters' in a variational circuit are typically:", options: ["Gate colors", "Rotation angles of gates", "Number of qubits", "User IDs"], answer: 1, explanation: "Gates like Rx, Ry, Rz use tunable angles.", clue: "<b>Tunable Gates</b>: We adjust the <b>rotation angles</b> ($θ, φ$) in gates like $R_x(θ)$ or $R_y(φ)$ to explore different configurations of the quantum state." },
+  "4_11_7": { q: "Variation algorithms are useful for which type of problems?", options: ["Sorting", "Optimization and Chemistry", "Watching videos", "Printing"], answer: 1, explanation: "They excel at finding ground state energies.", clue: "<b>Core Applications</b>: VQAs are ideal for <b>Combinatorial Optimization</b> (finding best routes) and <b>Quantum Chemistry</b> (finding stable molecular shapes)." },
+  "4_11_8": { q: "The classical optimizer updates parameters based on:", options: ["Random luck", "Measured results from the quantum computer", "The humidity", "The current year"], answer: 1, explanation: "The quantum hardware computes the cost, the classical loop updates the guess.", clue: "<b>Feedback Loop</b>: After each quantum run, the classical computer looks at the results and uses a <b>mathematical strategy</b> (like Gradient Descent) to pick better angles for the next run." },
+  "4_11_9": { q: "Why are VQAs preferred over Shor's currently?", options: ["Shor's is boring", "Shor's requires too many error-corrected qubits", "VQA is faster for factoring", "VQA uses no qubits"], answer: 1, explanation: "Shor's is too complex for noisy machines.", clue: "<b>Error Tolerance</b>: Shor's algorithm requires millions of <b>Fault-Tolerant</b> qubits. VQA is 'noise-resilient' enough to run on current, smaller, noisier systems." },
+  "4_11_10": { q: "Who leads the NISQ algorithms discussion at IBM (from transcript)?", options: ["Einstein", "Shesha Raghunathan", "Bill Gates", "Alan Turing"], answer: 1, explanation: "The transcript mentions Shesha as an IBM Quantum ambassador.", clue: "<b>Course Perspective</b>: This lecture segment is presented by <b>Shesha Raghunathan</b>, an expert and IBM Quantum ambassador who specializes in algorithm scalability." },
+
+
+  // Week 4, Video 2: VQE Framework
+  "4_12_1": { q: "VQE stands for:", options: ["Very Quick Execution", "Variational Quantum Eigensolver", "Visual Quantum Editor", "Variable Quality Error"], answer: 1, explanation: "It is used to find eigenvalues by varying parameters.", clue: "<b>VQE</b>: Short for <b>Variational Quantum Eigensolver</b>. A cornerstone hybrid algorithm used to approximate the eigenvalues (eigenenergies) of large matricies." },
+  "4_12_2": { q: "The 'Hamiltonian' H in VQE represents:", options: ["The name of the computer", "The total energy operator of the system", "The memory size", "A type of gate"], answer: 1, explanation: "H describes the physics/energy of the problem.", clue: "<b> Hamiltonians</b>: In physics, the <b>Hamiltonian (H)</b> is the mathematical operator that describes the <b>total energy</b> (potential and kinetic) of the system." },
+  "4_12_3": { q: "VQE is based on the 'Variational Principle' which states:", options: ["E_trial >= E_ground", "E_trial < E_ground", "E = mc^2", "P = 1"], answer: 0, explanation: "Any trial energy is higher than or equal to the true minimum energy.", clue: "<b>The Principle</b>: The Variational Principle guarantees that the expectation value of energy for <i>any</i> trial state will be <b>greater than or equal to</b> the actual ground state energy." },
+  "4_12_4": { q: "A 'Classical Optimizer' could be:", options: ["Hardware", "SPSA, COBYLA, or Gradient Descent", "A human", "A monitor"], answer: 1, explanation: "These are mathematical methods to find the minimum of a function.", clue: "<b>Optimizer Tools</b>: In VQE, we use classical algorithms like <b>SPSA, COBYLA</b>, or Nelder-Mead to systematically navigate the energy 'landscape' for the lowest point." },
+  "4_12_5": { q: "What is 'Energy Minimization' in VQE?", options: ["Turning off the lights", "Tuning Ansatz angles to find the lowest possible expectation value", "Deleting qubits", "Scaling the chip"], answer: 1, explanation: "The loop iterates until the minimum energy is reached.", clue: "<b>Minimization</b>: The process of iteratively 'tightening' the parameters until the measured <b>Expectation Value</b> reaches its absolute bottom point." },
+  "4_12_6": { q: "VQE is a 'Static' calculation, often used for:", options: ["Moving particles", "Fixed molecular configurations (ground state)", "Live streaming", "Predicting weather"], answer: 1, explanation: "It typically solves for the equilibrium state of a system.", clue: "<b>Static Properties</b>: VQE is primarily used for 'frozen' properties, like the <b>ground state energy</b> of a molecule at a specific fixed geometry." },
+  "4_12_7": { q: "The measurement in VQE results in an:", options: ["Exact number", "Expectation value (average over shots)", "Image", "Sound"], answer: 1, explanation: "Statistical sampling is needed to estimate the energy.", clue: "<b>Expectation Value</b>: We cannot get energy from one shot; we take many measurements and calculate the <b>statistical average</b> (⟨ψ|H|ψ⟩) to represent the energy." },
+  "4_12_8": { q: "Barren Plateaus in VQE are:", options: ["Mountains in India", "Flat regions in optimization where gradients disappear", "Successful results", "Types of screens"], answer: 1, explanation: "A major challenge where the optimizer gets 'stuck'.", clue: "<b>Barren Plateaus</b>: A nightmare for optimizers where the 'cost landscape' becomes <b>extremely flat</b>, making it impossible to tell which way to move to find lower energy." },
+  "4_12_9": { q: "What is 'Hardware-Efficient Ansatz'?", options: ["Ansatz using only native gates of the device", "An expensive circuit", "A trial state using no gates", "A fast loop"], answer: 0, explanation: "Optimizing the Ansatz for the specific chip reduces errors.", clue: "<b>Hardware Optimization</b>: A strategy where the circuit structure is tailored to the <b>native gates and connectivity</b> of the specific physical chip being used." },
+  "4_12_10": { q: "Can VQE be used on actual IBM devices today?", options: ["No, only simulators", "Yes, and it's a primary use case", "Only on Sundays", "Only for IBM staff"], answer: 1, explanation: "VQE is one of the most widely tested algorithms on real hardware.", clue: "<b>Current Capability</b>: VQE is already being used by researchers to simulate <b>small molecules</b> on IBM's actual public-access quantum systems." },
+
+
+  // Week 4, Video 3: VQE for Quantum Chemistry
+  "4_13_1": { q: "Quantum Chemistry focuses on defining the:", options: ["Weight of molecules", "Electronic structure and energies", "Color of liquids", "Speed of light"], answer: 1, explanation: "It studies how electrons behave in potential wells.", clue: "<b>Electronic Structure</b>: The primary goal of <b>Quantum Chemistry</b> is determining how electrons are distributed around atoms to predict stability and reactivity." },
+  "4_13_2": { q: "Which molecule is a common benchmark for VQE?", options: ["Gold", "Lithium Hydride (LiH) or Hydrogen (H2)", "PVC", "Stone"], answer: 1, explanation: "Small molecules are used for early-stage validation.", clue: "<b>Benchmark Molecules</b>: Molecular <b>Hydrogen ($H_2$)</b> and <b>Lithium Hydride (LiH)</b> are standard testing targets because they are small enough for exact verification." },
+  "4_13_3": { q: "Mapping an electronic problem to qubits requires:", options: ["A camera", "Fermionic mapping (like Jordan-Wigner)", "Removing electrons", "Using only X gates"], answer: 1, explanation: "Mapping translates electron spin to qubit states.", clue: "<b>Encoding Electrons</b>: We must map 'Fermionic' behavior to 'Qubit' behavior. Techniques like <b>Jordan-Wigner</b> or <b>Bravyi-Kitaev</b> mapping are used to do this." },
+  "4_13_4": { q: "The 'Ground State' energy of a molecule is:", options: ["The highest possible energy", "The lowest energy configuration", "The temperature of the ground", "Zero"], answer: 1, explanation: "Molecules naturally prefer the lowest energy state.", clue: "<b>Stability</b>: The <b>Ground State</b> energy is the lowest possible energy a chemical system can have, representing its most stable 'natural' form." },
+  "4_13_5": { q: "VQE replaces which classically hard task in chemistry?", options: ["Listing elements", "Full Configuration Interaction (FCI)", "Mixing chemicals", "Measuring weight"], answer: 1, explanation: "Classical FCI scales exponentially.", clue: "<b>Classical Limit</b>: Classical computers struggle with <b>FCI (Full Configuration Interaction)</b> because the complexity grows exponentially as orbitals are added." },
+  "4_13_6": { q: "A 'PES' in chemistry stands for:", options: ["Physical Energy System", "Potential Energy Surface", "Primary Electron Shift", "Portable Expert Solution"], answer: 1, explanation: "PES shows how energy changes as inter-atomic distances vary.", clue: "<b>Energy Mapping</b>: A <b>Potential Energy Surface (PES)</b> is a graph showing how a molecule's energy fluctuates as the distances between its atoms change." },
+  "4_13_7": { q: "Simulating Nitrogenase (for fertilizer) involves:", options: ["1 qubit", "Scaling to 100+ logical qubits", "Using only classical AI", "Nothing special"], answer: 1, explanation: "Large complex molecules are the long-term goal.", clue: "<b>Industrial Impact</b>: Simulating complex enzymes like <b>Nitrogenase</b> could solve global fertilizer energy issues, but requires far more qubits than we have today." },
+  "4_13_8": { q: "Quantum systems are 'naturally' efficient at chemistry because:", options: ["They use liquid nitrogen", "Both are governed by quantum mechanics", "They are made of metal", "They are faster to build"], answer: 1, explanation: "Nature is quantum.", clue: "<b>Nature’s Machine</b>: As Feynman said, 'Nature isn’t classical.' Since molecules are quantum, using <b>quantum hardware</b> to model them is much more efficient." },
+  "4_13_9": { q: "The accuracy needed for chemistry is often called:", options: ["High accuracy", "Chemical Accuracy (1 kcal/mol)", "Random accuracy", "Double precision"], answer: 1, explanation: "This precision is required for useful predictions.", clue: "<b>Chemical Accuracy</b>: The 'holy grail' is to be within <b>1 kcal/mol</b> of target energy, which is needed to provide scientifically useful predictions of reactions." },
+  "4_13_10": { q: "VQE can calculate the bond length by finding the:", options: ["Longest distance", "Minimum point on the Potential Energy Surface", "Start of the circuit", "Number of gates"], answer: 1, explanation: "The point where energy is lowest indicates the stable bond distance.", clue: "<b>Bonding Distance</b>: By plotting the energy surface, we identify the exact distance between nuclei where the energy is at its <b>lowest</b> point—this is the bond length." },
+
+
+  // Week 4, Video 4: Finance (QGANs)
+  "4_14_1": { q: "What does QGAN stand for?", options: ["Quick Game Asset Node", "Quantum Generative Adversarial Network", "Quality Global Access Network", "Quark Gate Analog"], answer: 1, explanation: "A framework to generate data distributions.", clue: "<b>Machine Learning</b>: Quantum <b>Generative Adversarial Networks (QGANs)</b> use quantum circuits to generate data distributions that mimic real financial datasets." },
+  "4_14_2": { q: "In a GAN, the 'Generator' tries to:", options: ["Tell the truth", "Create fake data that looks real", "Delete results", "Measure the chip"], answer: 1, explanation: "It generates data to fool the Discriminator.", clue: "<b>The Forge</b>: The Generator is a neural network (or circuit) that learns to create <b>synthetic samples</b> that look like they came from the real dataset." },
+  "4_14_3": { q: "The 'Discriminator' in a GAN tries to:", options: ["Support the generator", "Distinguish between real and fake data", "Generate its own data", "Randomize bits"], answer: 1, explanation: "It is the 'judge'.", clue: "<b>The Judge</b>: The Discriminator's job is to look at a piece of data and decide if it is <b>Real</b> or if it was created by the <b>Generator</b>." },
+  "4_14_4": { q: "In finance, QGANs are used for:", options: ["ATM repairs", "Option Pricing and risk management", "Counting coins", "Reading news"], answer: 1, explanation: "They help model complex price distributions.", clue: "<b>Financial Modeling</b>: QGANs excel at learning the 'shape' of <b>Stock Price Distributions</b>, which is critical for accurate risk analysis and option pricing." },
+  "4_14_5": { q: "What is 'Option Pricing'?", options: ["Setting the price of a computer", "Estimating the value of a financial derivative", "Asking for a discount", "Buying stocks"], answer: 1, explanation: "A core task in finance.", clue: "<b>Derivative Math</b>: An 'Option' is a contract whose value is 'derived' from an underlying asset. Pricing it correctly requires complex <b>stochastic math</b>." },
+  "4_14_6": { q: "Quantum Amplitude Estimation (QAE) provides:", options: ["Exponential speedup", "Quadratic speedup", "Linear speedup", "None"], answer: 1, explanation: "QAE is the key to faster financial calculations.", clue: "<b>Estimation Power</b>: Similar to Grover search, <b>Amplitude Estimation</b> provides a <b>Quadratic speedup</b> ($O(1/ε)$ vs $O(1/ε^2)$) for estimating expected values." },
+  "4_14_7": { q: "Why use Quantum for risk analysis?", options: ["It's more secure", "It can handle high-dimensional distributions faster", "It uses less paper", "It's newer"], answer: 1, explanation: "Quantum algorithms need fewer samples.", clue: "<b>Data Dimensionality</b>: Financial markets have thousands of variables. Quantum computers can model these <b>high-dimensional correlation matrices</b> more natively." },
+  "4_14_8": { q: "The training of a QGAN is:", options: ["Purely quantum", "Hybrid (Quantum Generator, Classical Discriminator)", "Purely classical", "Manual"], answer: 1, explanation: "States are quantum, weights are classical.", clue: "<b>Adversarial Loop</b>: In a QGAN, the <b>Generator is Quantum</b> but the <b>Discriminator is Classical</b>, training together to improve accuracy." },
+  "4_14_9": { q: "Monte Carlo methods are used to:", options: ["Play chess", "Simulate stochastic processes", "Speed up CPU clocks", "Manage hardware"], answer: 1, explanation: "Stochastic modeling is standard for markets.", clue: "<b>Probability Modeling</b>: Standard <b>Monte Carlo</b> simulation involves running thousands of random trials to estimate outcomes; quantum methods do this with fewer samples." },
+  "4_14_10": { q: "Finance applications are considered:", options: ["Impossible", "Near-term and high potential", "Already obsolete", "Only for games"], answer: 1, explanation: "Finance sees early quantum interest.", clue: "<b>Market Prediction</b>: Major banks like JPMorgan and Goldman Sachs are actively researching quantum to gain an edge in <b>High-Frequency Trading</b>." },
+
+
+  // Week 4, Video 5: QEC Intro
+  "4_15_1": { q: "What is the key challenge in building large quantum computers?", options: ["Not enough electricity", "Qubit errors and decoherence", "Slow internet", "Small screens"], answer: 1, explanation: "Noise destroys sensitive quantum states.", clue: "<b>The Noise Barrier</b>: Quantum states are extremely fragile. Interaction with the environment causes <b>Decoherence</b>, destroying the stored information." },
+  "4_15_2": { q: "QEC stands for:", options: ["Quantum Energy Center", "Quantum Error Correction", "Quick Execution Command", "Quality Entry Control"], answer: 1, explanation: "Active methods to protect quantum info.", clue: "<b>Quantum Error Correction</b>: Special protocols designed to detect and fix errors in quantum states <b>without</b> measuring (and thus collapsing) the data itself." },
+  "4_15_3": { q: "Unlike classical bits (0 to 1), qubits can have errors in:", options: ["Only 0 to 1", "Both Bit-flip and Phase-flip", "Only phase", "Only color"], answer: 1, explanation: "The quantum nature allows X and Z errors.", clue: "<b>Two Types of Noise</b>: Qubits suffer from <b>Bit-Flips</b> ($|0⟩ \\leftrightarrow |1⟩$) AND <b>Phase-Flips</b> ($|+⟩ \\leftrightarrow |-⟩$), doubling the difficulty of correction." },
+  "4_15_4": { q: "To protect info, QEC involves:", options: ["Deleting qubits", "Encoding one logical qubit into many physical qubits", "Using high voltage", "Cooling to zero"], answer: 1, explanation: "Redundancy detects individual qubit failures.", clue: "<b>Encoding</b>: We distribute the information of <b>one Logical bit</b> across <b>many Physical qubits</b>, so if one fails, the others still hold the state." },
+  "4_15_5": { q: "Decoherence is similar to:", options: ["A file being copied", "Data being corrupted over time", "A fast gate", "A good measurement"], answer: 1, explanation: "Loss of info to the environment.", clue: "<b>Information Leakage</b>: <b>Decoherence</b> is the process where a quantum system loses its 'quantumness' by interacting with the environment, effectively 'accidentally' being measured." },
+  "4_15_6": { q: "Can we use classical redundancy (3 votes) directly for qubits?", options: ["Yes", "No, because of No-Cloning Theorem", "Only for |0⟩", "Only on IBM chips"], answer: 1, explanation: "We cannot 'copy' an unknown state.", clue: "<b>Theoretical Limit</b>: We cannot simply 'copy' a qubit 3 times to vote on it, because quantum mechanics <b>forbids cloning</b> unknown states." },
+  "4_15_7": { q: "The No-Cloning Theorem states:", options: ["Qubits can be cloned", "Unknown quantum states cannot be duplicated perfectly", "Only 1 qubit can exist", "Simulators are fake"], answer: 1, explanation: "A fundamental limit of quantum mechanics.", clue: "<b>No Cloning</b>: It is mathematically impossible to create an <b>identical copy</b> of an arbitrary, unknown quantum state $|ψ⟩$." },
+  "4_15_8": { q: "A 'Logical Qubit' is:", options: ["A mathematical idea", "A protected group of physical qubits", "A faster qubit", "A classical bit"], answer: 1, explanation: "The error-free unit.", clue: "<b>The Logical Unit</b>: A <b>Logical Qubit</b> is an abstract unit of information that remains stable and error-free even if its underlying physical components are noisy." },
+  "4_15_9": { q: "Physical qubits are usually:", options: ["Perfect", "Noisy and prone to error", "Extremely large", "Free"], answer: 1, explanation: "Current hardware is noisy.", clue: "<b>Hardware Reality</b>: <b>Physical Qubits</b> are the actual superconducting loops or trapped ions on a chip, each having a limited 'lifetime' before an error occurs." },
+  "4_15_10": { q: "Fault-tolerant computing means:", options: ["The computer never fails", "Operations still work correctly despite errors", "Turning it off and on", "Ignoring all errors"], answer: 1, explanation: "Robustness through active correction.", clue: "<b>Fault-Tolerance</b>: A design where gates and circuits are structured so that <b>any single error</b> is automatically caught and fixed before it can spread." },
+
+
+  // Week 4, Video 6: Bit-Flip Code
+  "4_16_1": { q: "The simplest Bit-Flip code uses how many physical qubits?", options: ["1", "2", "3", "7"], answer: 2, explanation: "The 3-qubit code protects against a single bit-flip.", clue: "<b>3-Qubit Code</b>: The simplest repetition code that uses <b>three physical qubits</b> to protect one logical qubit against a single Bit-Flip ($X$) error." },
+  "4_16_2": { q: "How is |0⟩ encoded in the 3-qubit code?", options: ["|0⟩", "|001⟩", "|000⟩", "|111⟩"], answer: 2, explanation: "Logical zero is 000.", clue: "<b>Logical Zero</b>: In the repetition code, the logical state <b>$|0⟩_L$</b> is represented by the physical state <b>$|000⟩$</b>." },
+  "4_16_3": { q: "How is |1⟩ encoded in the 3-qubit code?", options: ["|1⟩", "|111⟩", "|000⟩", "|101⟩"], answer: 1, explanation: "Logical one is 111.", clue: "<b>Logical One</b>: In the repetition code, the logical state <b>$|1⟩_L$</b> is represented by the physical state <b>$|111⟩$</b>." },
+  "4_16_4": { q: "A bit-flip error is equivalent to which gate?", options: ["X", "Z", "H", "S"], answer: 0, explanation: "X gate flips the bit.", clue: "<b>Bit-Flip Operator</b>: In quantum nomenclature, an unplanned <b>X gate</b> occurring on a qubit is what we define as a bit-flip error." },
+  "4_16_5": { q: "What happens if qubit 1 flips in state |000⟩?", options: ["It becomes |100⟩", "It becomes |111⟩", "It stays |000⟩", "Nothing"], answer: 0, explanation: "First bit inverts.", clue: "<b>Error Result</b>: A bit-flip on the first qubit would transform the logical $|000⟩$ into the state <b>$|100⟩$</b>." },
+  "4_16_6": { q: "Can the 3-qubit bit-flip code correct a phase flip?", options: ["Yes", "No", "Only if it happens twice", "Always"], answer: 1, explanation: "It only corrects bit-flips.", clue: "<b>Specific Defense</b>: The 3-qubit Bit-Flip code is <b>blind to Z-errors</b> (phase flips); it cannot detect or fix them at all." },
+  "4_16_7": { q: "Entanglement used in encoding is created via:", options: ["X gates", "CNOT gates", "Z gates", "Measurements"], answer: 1, explanation: "CNOTs spread info.", clue: "<b>Encoding Circuit</b>: We use <b>CNOT gates</b> to 'copy' the information from the first physical qubit to the other two without measuring them." },
+  "4_16_8": { q: "If we find state |101⟩, which qubit likely flipped?", options: ["Qubit 1", "Qubit 2", "Qubit 3", "None"], answer: 1, explanation: "Middle bit is divergent.", clue: "<b>Error Location</b>: If we see 1-0-1, the middle qubit (the 0) is the <b>outlier</b>, suggesting it is the one that likely failed or remained while others flipped." },
+  "4_16_9": { q: "Strictly speaking, the 3-qubit code corrects:", options: ["Up to 1 error", "Up to 2 errors", "All errors", "No errors"], answer: 0, explanation: "Handles single error.", clue: "<b>Threshold</b>: The 3-qubit code works only if <b>exactly one</b> error occurs. If two qubits flip, majority voting will pick the wrong answer!" },
+  "4_16_10": { q: "Majority voting is the base logic for:", options: ["Phase correction", "Bit-flip correction", "Amplitude amplification", "VQE"], answer: 1, explanation: "Comparing bits.", clue: "<b>Logic Check</b>: Just like in classical computing, the 3-qubit code relies on the <b>Majority Rule</b> (2-out-of-3) to decide which bit-value is correct." },
+
+
+  // Week 4, Video 7: Error Detection & Syndromes
+  "4_17_1": { q: "How do we detect an error without 'collapsing' the state?", options: ["We don't", "By measuring 'Parity' or 'Syndromes'", "By looking", "Microscope"], answer: 1, explanation: "Indirect measurement preserves superposition.", clue: "<b>Syndrome Measurement</b>: We use auxiliary 'ancilla' qubits and CNOTs to measure <b>Parity</b> (whether qubits match or not) without seeing their actual values." },
+  "4_17_2": { q: "An 'Ancilla' qubit in QEC is used to:", options: ["Store final answers", "Extract error info (syndromes)", "Speed up gates", "Cool the chip"], answer: 1, explanation: "Ancillas are probes.", clue: "<b>Helper Qubits</b>: <b>Ancillas</b> are temporary 'scratchpad' qubits that interact with the data qubits to extract error info and are then measured." },
+  "4_17_3": { q: "A 'Syndrome' is:", options: ["Result", "A bit pattern indicating the error type", "Disease", "Type of gate"], answer: 1, explanation: "Signature of the error.", clue: "<b>Error Signature</b>: The <b>Syndrome</b> is a classical bitstring readout that acts as a 'diagnostic map', telling the computer which qubits need flipping." },
+  "4_17_4": { q: "If the syndrome measurement is all zeros, it means:", options: ["Everything failed", "No detectable error", "State collapsed", "Memory full"], answer: 1, explanation: "Zeros = clear.", clue: "<b>Clear Status</b>: If the syndrome readout is all zeros, it means the parity checks match the code space and <b>no error</b> has been detected." },
+  "4_17_5": { q: "To measure parity (Z1Z2), we use:", options: ["Only X gates", "Two CNOTs targeting an ancilla", "Camera", "Wire"], answer: 1, explanation: "CNOTs map parity.", clue: "<b>Parity Circuit</b>: By applying <b>two CNOTs</b> from the data qubits to an ancilla, we map the XOR sum (parity) onto the ancilla for measurement." },
+  "4_17_6": { q: "The term 'Stablizer' refers to:", options: ["Battery", "Operator that preserves the code space", "Weight", "Slow gate"], answer: 1, explanation: "Stabilizers define valid states.", clue: "<b>Stabilizers</b>: Mathematical operators that 'keep the state in place'. If we measure a stabilizer and get -1, we know an <b>error has occurred</b>." },
+  "4_17_7": { q: "Error detection must be done:", options: ["At end", "Repeatedly", "Once a day", "Never"], answer: 1, explanation: "Continuous monitoring.", clue: "<b>Continuous Check</b>: Errors can happen at any time, so we must <b>regularly cycle</b> through syndrome measurements throughout the computation." },
+  "4_17_8": { q: "To fix a detected bit-flip error, we apply:", options: ["Reset", "An X gate", "Nothing", "New qubit"], answer: 1, explanation: "Un-flip the bit.", clue: "<b>Inverse Action</b>: If the syndrome tells us qubit 1 is flipped, we simply apply an <b>X gate</b> to qubit 1 to restore it to the correct state." },
+
+  "4_17_9": { q: "One major QEC code that fixes BOTH bit and phase flips is:", options: ["3-qubit code", "Shor's 9-qubit code", "XOR gate", "Hadamard"], answer: 1, explanation: "9-qubit code handles both.", clue: "<b>Complete Protection</b>: Peter Shor's <b>9-Qubit Code</b> was the first to prove we can protect against both X and Z errors simultaneously." },
+  "4_17_10": { q: "Surface Code is popular for hardware because:", options: ["Few qubits", "Nearest-neighbor connectivity", "Easy to build", "Avoids math"], answer: 1, explanation: "Favors physical layout.", clue: "<b>Hardware Advantage</b>: The <b>Surface Code</b> is a 2D lattice that only requires qubits to talk to their <b>immediate neighbors</b>, making it ideal for the physical layout of chips." },
+
+
+
+
+  // --- INJECTED OCT EXTRACTED QUIZZES ---
+  // Week 1 - Assignment 1 (Set 21)
+  "1_21_1": { q: "Recall the Bloch sphere (geometric) representation of a qubit system, where the state of a qubit is parameterized by two angles $\\theta$ and $\\phi$, as $$ | \\psi \\rangle = \\left(\\cos \\frac {\\theta}{2}\\right) | 0 \\rangle + e ^ {i \\phi} \\left(\\sin \\frac {\\theta}{2}\\right) | 1 \\rangle$$ What are the values of the angles $\\theta$ and $\\phi$ for the state $|\\psi \\rangle = \\binom{(1 + i) / \\sqrt{2}}{(1 - i) / \\sqrt{2}}$?", options: ["$\\theta = \\pi /2$ and $\\phi = \\pi /2$", "$\\theta = \\pi /2$ and $\\phi = 3\\pi /2$", "$\\theta = \\pi$ and $\\phi = \\pi /4$", "$\\theta = \\pi /4$ and $\\phi = \\pi /2$"], answer: 0, explanation: "$\\theta = \\pi /2$ and $\\phi = 3\\pi /2$", clue: "From NPTEL Assignment 1 Week 1" },
+  "1_21_2": { q: "The state $|\\phi \\rangle = \\left(\\frac{1 + i}{4}\\right)|0\\rangle +\\left(\\frac{3 - i}{4}\\right)|1\\rangle$ is measured in the $\\\\{|+\\rangle ,|- \\rangle \\\\}$ basis (also called the Hadamard basis). What is the probability of obtaining $| + \\rangle$ as the measurement result?", options: ["1/3", "2/3", "$\\sqrt{2/3}$", "1/2"], answer: 1, explanation: "To find the probability, express $|\\phi\\rangle$ in the Hadamard basis: $|+\\rangle$ component is $\\langle +|\\phi\\rangle$. Probability = $|\\langle +|\\phi\\rangle|^2 = 2/3$.", clue: "From NPTEL Assignment 1 Week 1" },
+  "1_21_3": { q: "Which of the following gate sequences adds a relative phase of $\\pi$ between $|0\\rangle$ and $|1\\rangle$?", options: ["X gate", "Y gate", "Z gate", "H gate"], answer: 2, explanation: "The Pauli-Z gate maps $|1\\rangle$ to $-|1\\rangle = e^{i\\pi}|1\\rangle$, effectively adding a relative phase of $\\pi$.", clue: "From NPTEL Assignment 1 Week 1" },
+  "1_21_4": { q: "Suppose the state $| + \\rangle = \\frac{|0\\rangle + |1\\rangle}{\\sqrt{2}}$ is transformed via a quantum gate of the form $P = |0\\rangle \\langle 0| + e^{i\\phi}|1\\rangle \\langle 1|$. Find the angle $\\phi$ such that, after the action of the gate, the probability of obtaining $| + \\rangle$ is $1 / 2$.", options: ["$\\phi = 0$", "$\\phi = \\pi / 2$", "$\\phi = \\pi / 4$", "$\\phi = \\pi$"], answer: 1, explanation: "$$", clue: "From NPTEL Assignment 1 Week 1" },
+  "1_21_5": { q: "Which of the circuits below implement the following permutation operation? $O = \\begin{pmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1 \\end{pmatrix}$", options: ["CNOT with control q[0], target q[1]", "CNOT with control q[1], target q[0]", "SWAP gate", "X gate on q[0]"], answer: 1, explanation: "The matrix represents a CNOT where the first qubit is flipped if the second is $|1\\rangle$, but looking at the matrix indices (01 <-> 10 swapping), it corresponds to a CNOT where q[1] is the control and q[0] is the target.", clue: "From NPTEL Assignment 1 Week 1" },
+  "1_21_6": { q: "Which of these are valid quantum gates?", options: ["$\\left( \\begin{array}{cc} 1 & 0 \\\\ 0 & e^{i\\pi / 2} \\end{array} \\right)$", "$\\left( \\begin{array}{cc} 1 & 0 \\\\ 0 & e^{i\\pi / 4} \\end{array} \\right)$", "$\\left( \\begin{array}{cc} \\frac{1}{\\sqrt{2}} & -\\frac{i}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{i}{\\sqrt{2}} \\end{array} \\right)$", "$\\left( \\begin{array}{cc} e^{-i\\pi / 3} & 0 \\\\ 0 & e^{i\\pi / 3} \\end{array} \\right)$"], answer: 2, explanation: "Valid quantum gates must be unitary ($U^\\dagger U = I$). The third matrix is unitary.", clue: "From NPTEL Assignment 1 Week 1" },
+  "1_21_7": { q: "Which of these circuits implement the transformation $|00\\rangle \\rightarrow \\frac{1}{\\sqrt{2}} |00\\rangle -\\frac{1}{\\sqrt{2}} |11\\rangle$?", options: ["H on q[0], then CNOT(0,1)", "X on q[0], H on q[0], then CNOT(0,1)", "H on q[1], then CNOT(1,0)", "Z on q[0], H on q[0], then CNOT(0,1)"], answer: 1, explanation: "Applying X to $|00\\rangle$ gives $|10\\rangle$. Applying H to the first qubit gives $(|0\\rangle - |1\\rangle)|0\\rangle / \\sqrt{2}$. CNOT then results in $(|00\\rangle - |11\\rangle) / \\sqrt{2}$.", clue: "From NPTEL Assignment 1 Week 1" },
+  "1_21_8": { q: "Which of the following pairs of quantum states can be perfectly distinguished?", options: ["$(|0\\rangle, |0\\rangle)$", "$(|0\\rangle, |1\\rangle)$", "$(\\frac{|0\\rangle + |1\\rangle}{\\sqrt{2}}, \\frac{|0\\rangle - |1\\rangle}{\\sqrt{2}})$", "Both (b) and (c)"], answer: 3, explanation: "Orthogonal states can be perfectly distinguished. Both $|0\\rangle, |1\\rangle$ and $|+\\rangle, |-\\rangle$ are orthogonal pairs.", clue: "From NPTEL Assignment 1 Week 1" },
+  "1_21_9": { q: "Which of the following states are equivalent to $|\\psi \\rangle = \\cos \\frac{\\pi}{4} |0\\rangle + e^{i\\pi /3}\\sin \\frac{\\pi}{4} |1\\rangle$ physically?", options: ["$e^{i\\pi/2}(\\cos \\frac{\\pi}{4} |0\\rangle + e^{i\\pi/3}\\sin \\frac{\\pi}{4} |1\\rangle)$", "$\\cos \\frac{\\pi}{4} |0\\rangle + e^{i4\\pi/3}\\sin \\frac{\\pi}{4} |1\\rangle$", "$-(\\cos \\frac{\\pi}{4} |0\\rangle + e^{i\\pi/3}\\sin \\frac{\\pi}{4} |1\\rangle)$", "Both (a) and (c)"], answer: 3, explanation: "Global phases do not affect the physical state. Options (a) and (c) differ only by a global phase from the origin state.", clue: "From NPTEL Assignment 1 Week 1" },
+  "1_21_10": { q: "The Hadamard gate can be realized as a sequence of gates: $H = e^{i\\pi /2}R_z(\\pi/2)R_x(\\pi/2)R_z(\\pi/2)$. Identify the Euler angles $(\\alpha, \\beta, \\gamma)$ for the general rotation $R_z(\\alpha)R_y(\\beta)R_z(\\gamma)$ that represents H.", options: ["$(\\pi, \\pi/2, 0)$", "$(0, \\pi/2, \\pi)$", "$(\\pi/2, \\pi/2, \\pi/2)$", "Direct Sequence $R_z R_x R_z$"], answer: 0, explanation: "A common decomposition for H is $R_z(\\pi)R_y(\\pi/2)$.", clue: "From NPTEL Assignment 1 Week 1" },
+  // Week 1 - Set 2: Solution Logic (Set 22)
+  "1_22_1": { q: "In the normalization of the state vector $|\\psi\\rangle = \\binom{(1+i)/\\sqrt{2}}{(1-i)/\\sqrt{2}}$, what is the calculated value of $|(1+i)/\\sqrt{2}|^2 + |(1-i)/\\sqrt{2}|^2$ before re-normalization?", options: ["1", "2", "1/2", "4"], answer: 1, explanation: "As per the solution, $|1+i|^2/2 + |1-i|^2/2 = 2/2 + 2/2 = 2$. Since this is not 1, a further normalization factor of $1/\\sqrt{2}$ is needed.", clue: "From NPTEL Set 2: Solution Logic Week 1" },
+  "1_22_2": { q: "What is the normalization factor applied to the state $(\\frac{1+i}{4})|0\\rangle + (\\frac{3-i}{4})|1\\rangle$ to make it a unit vector?", options: ["$\\sqrt{3}/2$", "$\\sqrt{3/4}$", "$2/\\sqrt{3}$", "$1/\\sqrt{2}$"], answer: 2, explanation: "The sum of absolute squares is $6/8 = 3/4$. The normalization factor is the inverse of the square root of this sum, which is $\\sqrt{4/3} = 2/\\sqrt{3}$.", clue: "From NPTEL Set 2: Solution Logic Week 1" },
+  "1_22_3": { q: "A Pauli-Z gate maps the input state $\\alpha|0\\rangle + \\beta|1\\rangle$ to which output state?", options: ["$\\alpha|0\\rangle + \\beta|1\\rangle$", "$\\alpha|1\\rangle + \\beta|0\\rangle$", "$\\alpha|0\\rangle - \\beta|1\\rangle$", "$-\\alpha|0\\rangle + \\beta|1\\rangle$"], answer: 2, explanation: "The Z gate adds a relative phase of $\\pi$ ($e^{i\\pi} = -1$) to the $|1\\rangle$ component: $Z|0\\rangle = |0\\rangle$ and $Z|1\\rangle = -|1\\rangle$.", clue: "From NPTEL Set 2: Solution Logic Week 1" },
+  "1_22_4": { q: "Which property of a matrix identifies it as a valid quantum gate representing a single-qubit transformation?", options: ["It must be Hermitian ($U=U^\\dagger$)", "It must be Unitary ($U^\\dagger U = I$)", "It must have real eigenvalues", "It must be diagonal"], answer: 1, explanation: "As per Postulate 3 and general gate definitions, all quantum gates must be Unitary to preserve the normalization of the state vector.", clue: "From NPTEL Set 2: Solution Logic Week 1" },
+  "1_22_5": { q: "To implement the transformation $|00\\rangle \\to \\frac{1}{\\sqrt{2}}(|00\\rangle - |11\\rangle)$, what is the first gate applied to the first qubit in the standard circuit shown in the solutions?", options: ["Hadamard (H)", "Pauli-X (NOT)", "Pauli-Z", "CNOT"], answer: 1, explanation: "The circuit starts with an X gate on the first qubit to change $|00\\rangle$ to $|10\\rangle$, followed by an H gate and then a CNOT.", clue: "From NPTEL Set 2: Solution Logic Week 1" },
+  // Week 1 - Set 3: Quantum Postulates (Set 23)
+  "1_23_1": { q: "According to Postulate 1, the state of a quantum system is represented as what in a Hilbert space?", options: ["A real vector", "A unit vector (state vector)", "A scalar value", "A probability distribution"], answer: 1, explanation: "Postulate 1 specifies that a quantum state is a unit vector in a complex inner product space (Hilbert space).", clue: "From NPTEL Set 3: Quantum Postulates Week 1" },
+  "1_23_2": { q: "Which postulate addresses the physical quantities (position, momentum, spin) obtained by making measurements on a system?", options: ["Postulate 1", "Postulate 2", "Postulate 3", "Postulate 4"], answer: 1, explanation: "Postulate 2 states that observables are described by Hermitian operators on the quantum state space.", clue: "From NPTEL Set 3: Quantum Postulates Week 1" },
+  "1_23_3": { q: "Time evolution of a closed quantum system is described by which type of operator according to Postulate 3?", options: ["Hermitian operator", "Unitary operator", "Stochastic operator", "Projection operator"], answer: 1, explanation: "Postulate 3 (and the Schrödinger equation) implies that the time evolution is governed by a Unitary operator, which preserves the norm.", clue: "From NPTEL Set 3: Quantum Postulates Week 1" },
+  "1_23_4": { q: "If |0⟩ and |1⟩ are orthogonal basis states, what is the value of the inner product ⟨0|1⟩?", options: ["1", "0", "i", "-1"], answer: 1, explanation: "Orthogonal states have an inner product of 0 by definition.", clue: "From NPTEL Set 3: Quantum Postulates Week 1" },
+  "1_23_5": { q: "What is the range of the polar angle θ and the azimuthal angle φ for a state represented on the Bloch sphere?", options: ["θ ∈ [0, π], φ ∈ [0, π]", "θ ∈ [0, 2π], φ ∈ [0, π]", "θ ∈ [0, π], φ ∈ [0, 2π]", "θ ∈ [0, π/2], φ ∈ [0, 2π]"], answer: 2, explanation: "As per the recap on Qubit state space, θ ranges from 0 to π, and φ ranges from 0 to 2π.", clue: "From NPTEL Set 3: Quantum Postulates Week 1" },
+  // Week 1 - Set 4: Advanced Concepts (Set 24)
+  "1_24_1": { q: "According to Postulate 1, the state of a quantum system is represented as what in a Hilbert space?", options: ["A real vector", "A unit vector (state vector)", "A scalar value", "A probability distribution"], answer: 1, explanation: "Postulate 1 specifies that a quantum state is a unit vector in a complex inner product space (Hilbert space).", clue: "From NPTEL Set 4: Advanced Concepts Week 1" },
+  "1_24_2": { q: "Which postulate addresses the physical quantities (position, momentum, spin) obtained by making measurements on a system?", options: ["Postulate 1", "Postulate 2", "Postulate 3", "Postulate 4"], answer: 1, explanation: "Postulate 2 states that observables are described by Hermitian operators on the quantum state space.", clue: "From NPTEL Set 4: Advanced Concepts Week 1" },
+  "1_24_3": { q: "Time evolution of a closed quantum system is described by which type of operator according to Postulate 3?", options: ["Hermitian operator", "Unitary operator", "Stochastic operator", "Projection operator"], answer: 1, explanation: "Postulate 3 (and the Schrödinger equation) implies that the time evolution is governed by a Unitary operator, which preserves the norm.", clue: "From NPTEL Set 4: Advanced Concepts Week 1" },
+  "1_24_4": { q: "In the normalization of the state vector $|\\psi\\rangle = \\binom{(1+i)/\\sqrt{2}}{(1-i)/\\sqrt{2}}$, what is the calculated value of $|(1+i)/\\sqrt{2}|^2 + |(1-i)/\\sqrt{2}|^2$ before re-normalization?", options: ["1", "2", "1/2", "4"], answer: 1, explanation: "As per the solution, $|1+i|^2/2 + |1-i|^2/2 = 2/2 + 2/2 = 2$. Since this is not 1, a further normalization factor of $1/\\sqrt{2}$ is needed.", clue: "From NPTEL Set 4: Advanced Concepts Week 1" },
+  "1_24_5": { q: "What is the normalization factor applied to the state $(\\frac{1+i}{4})|0\\rangle + (\\frac{3-i}{4})|1\\rangle$ to make it a unit vector?", options: ["$\\sqrt{3}/2$", "$\\sqrt{3/4}$", "$2/\\sqrt{3}$", "$1/\\sqrt{2}$"], answer: 2, explanation: "The sum of absolute squares is $6/8 = 3/4$. The normalization factor is the inverse of the square root of this sum, which is $\\sqrt{4/3} = 2/\\sqrt{3}$.", clue: "From NPTEL Set 4: Advanced Concepts Week 1" },
+  // Week 1 - Set 5: Mastery Review (Set 25)
+  "1_25_1": { q: "In the normalization of the state vector $|\\psi\\rangle = \\binom{(1+i)/\\sqrt{2}}{(1-i)/\\sqrt{2}}$, what is the calculated value of $|(1+i)/\\sqrt{2}|^2 + |(1-i)/\\sqrt{2}|^2$ before re-normalization?", options: ["1", "2", "1/2", "4"], answer: 1, explanation: "As per the solution, $|1+i|^2/2 + |1-i|^2/2 = 2/2 + 2/2 = 2$. Since this is not 1, a further normalization factor of $1/\\sqrt{2}$ is needed.", clue: "From NPTEL Set 5: Mastery Review Week 1" },
+  "1_25_2": { q: "What is the normalization factor applied to the state $(\\frac{1+i}{4})|0\\rangle + (\\frac{3-i}{4})|1\\rangle$ to make it a unit vector?", options: ["$\\sqrt{3}/2$", "$\\sqrt{3/4}$", "$2/\\sqrt{3}$", "$1/\\sqrt{2}$"], answer: 2, explanation: "The sum of absolute squares is $6/8 = 3/4$. The normalization factor is the inverse of the square root of this sum, which is $\\sqrt{4/3} = 2/\\sqrt{3}$.", clue: "From NPTEL Set 5: Mastery Review Week 1" },
+  "1_25_3": { q: "A Pauli-Z gate maps the input state $\\alpha|0\\rangle + \\beta|1\\rangle$ to which output state?", options: ["$\\alpha|0\\rangle + \\beta|1\\rangle$", "$\\alpha|1\\rangle + \\beta|0\\rangle$", "$\\alpha|0\\rangle - \\beta|1\\rangle$", "$-\\alpha|0\\rangle + \\beta|1\\rangle$"], answer: 2, explanation: "The Z gate adds a relative phase of $\\pi$ ($e^{i\\pi} = -1$) to the $|1\\rangle$ component: $Z|0\\rangle = |0\\rangle$ and $Z|1\\rangle = -|1\\rangle$.", clue: "From NPTEL Set 5: Mastery Review Week 1" },
+  "1_25_4": { q: "According to Postulate 1, the state of a quantum system is represented as what in a Hilbert space?", options: ["A real vector", "A unit vector (state vector)", "A scalar value", "A probability distribution"], answer: 1, explanation: "Postulate 1 specifies that a quantum state is a unit vector in a complex inner product space (Hilbert space).", clue: "From NPTEL Set 5: Mastery Review Week 1" },
+  "1_25_5": { q: "Which postulate addresses the physical quantities (position, momentum, spin) obtained by making measurements on a system?", options: ["Postulate 1", "Postulate 2", "Postulate 3", "Postulate 4"], answer: 1, explanation: "Postulate 2 states that observables are described by Hermitian operators on the quantum state space.", clue: "From NPTEL Set 5: Mastery Review Week 1" },
+  // Week 2 - Assignment 2 (Set 21)
+  "2_21_1": { q: "Which of the following are Qiskit Runtime primitives currently available on the IBM Quantum Platform?", options: ["Sampler", "Estimator", "Circuit-Runner", "Executor", "Experience and Circuit Composer", "Quantum Computing Concepts: Entanglement and Interference - Part 1", "Quantum Computing Concepts: Entanglement and Interference - Part 2", "Programming with Qiskit", "● Downloadable Notes"], answer: 0, explanation: "Sampler Estimator", clue: "From NPTEL Assignment 2 Week 2" },
+  "2_21_2": { q: "According to the IBM Quantum Composer documentation, which version of OpenQASM is currently supported for writing quantum circuits in the code editor?", options: ["OpenQASM 1.0", "OpenQASM 2.0", "OpenQASM 3.0", "OpenQASM 2.5"], answer: 1, explanation: "OpenQASM 2.0", clue: "From NPTEL Assignment 2 Week 2" },
+  "2_21_3": { q: "Which statement correctly describes the difference between the Sampler and Estimator primitives in Qiskit?", options: ["Sampler returns measurement outcome distributions from a circuit, while Estimator returns expectation values of specified observables", "Sampler is used for variational algorithms, while Estimator is used only for circuit execution", "Sampler requires observables as input, while Estimator does not", "Estimator returns raw bitstrings, while Sampler returns expectation values"], answer: 0, explanation: "Sampler returns measurement outcome distributions from a circuit, while Estimator returns expectation values of specified observables", clue: "From NPTEL Assignment 2 Week 2" },
+  "2_21_4": { q: "In the transpilation process, which of the following steps are NOT performed to prepare a quantum circuit for execution on real quantum hardware?", options: ["Decomposing multi-qubit gates into basis gates supported by the backend", "Mapping logical qubits to physical qubits based on the hardware topology", "Optimizing circuit depth to reduce gate count", "Converting all gates to Hadamard and CNOT gates only"], answer: 3, explanation: "Converting all gates to Hadamard and CNOT gates only", clue: "From NPTEL Assignment 2 Week 2" },
+  "2_21_5": { q: "Using IBM Quantum Composer, create a 3-qubit circuit starting in state $|000\\rangle$ . Apply a rotation gate $R_{y}\\left(\\frac{\\pi}{3}\\right)$ to the first qubit $(q[0])$ . After running the circuit and viewing the statever visualization, which of the following images correctly represents the resulting quantum state? - - Week 2: Solution", options: ["No options extracted"], answer: 0, explanation: "", clue: "From NPTEL Assignment 2 Week 2" },
+  "2_21_6": { q: "Create a 3-qubit GHZ state by applying a Hadamard gate to q[0], followed by CNOT gates from q[0] to q[1] and q[0] to q[2]. Visualize the density matrix using the state city representation. Which of the following images correctly shows the real and imaginary components of the density matrix?", options: ["No options extracted"], answer: 0, explanation: "", clue: "From NPTEL Assignment 2 Week 2" },
+  "2_21_7": { q: "Starting with the initial state $|\\psi \\rangle = \\frac{1}{2} (|00\\rangle + |01\\rangle + |10\\rangle + |11\\rangle)$ , apply a CNOT gate with control qubit q[0] and target qubit q[1], followed by a Hadamard gate on q[0]. What is the resulting quantum state? $$ \\begin{array}{l} \\frac {1}{2} \\left(| 0 0 \\rangle + | 0 1 \\rangle + | 1 0 \\rangle - | 1 1 \\rangle\\right) \\\\ \\frac {\\sqrt {2}}{2} \\left(| 0 0 \\rangle + | 1 0 \\rangle\\right) \\\\ \\left| 0 0 \\right\\rangle \\\\ \\end{array} $$ $$ \\frac{1}{2} (|00\\rangle + |01\\rangle - |10\\rangle + |11\\rangle) $$", options: ["\\frac{\\sqrt{2}}{2} (|00\\rangle + |10\\rangle)"], answer: 0, explanation: "$$", clue: "From NPTEL Assignment 2 Week 2" },
+  "2_21_8": { q: "Apply a rotation gate $R_y\\left(\\frac{2\\pi}{3}\\right)$ to the first qubit of state $|000\\rangle$, followed by a CNOT from qubit 0 to qubit 1. What is the resulting quantum state? $$ \\begin{array}{l} \\odot \\\\ \\frac{1}{2} |000\\rangle + \\frac{\\sqrt{3}}{2} |011\\rangle \\\\ \\odot \\\\ \\frac{\\sqrt{3}}{2} |000\\rangle + \\frac{1}{2} |011\\rangle \\\\ \\odot \\\\ \\frac{1}{2} |000\\rangle + \\frac{\\sqrt{3}}{2} |110\\rangle \\\\ \\odot \\\\ \\frac{1}{2} |000\\rangle - \\frac{\\sqrt{3}}{2} |011\\rangle \\\\ \\end{array} $$", options: ["\\frac{1}{2} |000\\rangle + \\frac{\\sqrt{3}}{2} |011\\rangle"], answer: 0, explanation: "$$", clue: "From NPTEL Assignment 2 Week 2" },
+  "2_21_9": { q: "In a quantum teleportation protocol, Bob applies correction gates based on the 2-bit classical message from Alice. If Bob\\\\'s gate sequences in four trials are: (I, I), (Z, I), (X, I), and (XZ, I), what are the corresponding 2-bit messages Alice sent?", options: ["00, 01, 10, 11", "00, 10, 01, 11", "11, 10, 01, 00", "10, 00, 11, 01 00, 01, 10, 11"], answer: 0, explanation: "00, 01, 10, 11", clue: "From NPTEL Assignment 2 Week 2" },
+  "2_21_10": { q: "Alice and Bob share an entangled state $\\frac{1}{\\sqrt{2}}(|01\\rangle + |10\\rangle)$. If Alice measures her qubit in the computational basis and obtains result $|0\\rangle$, what is the state of Bob\\\\'s qubit after Alice\\\\'s measurement?", options: ["$\\frac{1}{\\sqrt{2}}(|0\\rangle + |1\\rangle)$", "\\frac {1}{\\sqrt {2}} (| 0 \\rangle - | 1 \\rangle)", "|1&gt;"], answer: 0, explanation: "|1&gt;", clue: "From NPTEL Assignment 2 Week 2" },
+  // Week 2 - Set 2: Conceptual Review (Set 22)
+  "2_22_1": { q: "Which Qiskit class is used to create a quantum circuit object?", options: ["QuantumCircuit", "QuantumRegister", "ClassicalRegister", "GateSet"], answer: 0, explanation: "In Qiskit, `QuantumCircuit` is the main class used to define and manipulate quantum circuits.", clue: "From NPTEL Set 2: Conceptual Review Week 2" },
+  "2_22_2": { q: "What does the `qc.draw(\\\\'mpl\\\\')` command do in a Jupyter notebook?", options: ["Executes the circuit", "Visualizes the circuit using Matplotlib", "Prints the circuit in LaTeX", "Saves the circuit as a JSON file"], answer: 1, explanation: "The `draw(\\\\'mpl\\\\')` method uses Matplotlib to create a high-quality visualization of the quantum circuit.", clue: "From NPTEL Set 2: Conceptual Review Week 2" },
+  "2_22_3": { q: "In the transpilation process, what is the \\\\'basis gates\\\\' set?", options: ["The set of all possible gates", "The set of gates natively supported by the physical hardware", "Only H and CNOT gates", "A set of classical gates"], answer: 1, explanation: "Basis gates are the fundamental operations that a specific quantum processor can execute directly. Transpilation converts target gates into these basis gates.", clue: "From NPTEL Set 2: Conceptual Review Week 2" },
+  "2_22_4": { q: "Which primitive is optimized for computing the expectation value of an operator?", options: ["Sampler", "Estimator", "Executor", "Runner"], answer: 1, explanation: "The `Estimator` primitive is specifically designed to calculate the expectation value of observables (like energy in VQE) efficiently.", clue: "From NPTEL Set 2: Conceptual Review Week 2" },
+  "2_22_5": { q: "What is the purpose of \\\\'shots\\\\' in the `execute` or `run` command?", options: ["To speed up the calculation", "To specify the number of times the circuit is measured to get statistics", "To add noise to the circuit", "To reset the qubits"], answer: 1, explanation: "Quantum results are probabilistic. \\\\'Shots\\\\' define how many times the experiment is repeated to build a probability distribution (histogram) of outcomes.", clue: "From NPTEL Set 2: Conceptual Review Week 2" },
+  // Week 2 - Set 3: Advanced Topics (Set 23)
+  "2_23_1": { q: "Which of the following describes a Bell State?", options: ["A state of 1 qubit", "A maximally entangled state of 2 qubits", "A state where qubits are completely independent", "A classical bit pair"], answer: 1, explanation: "Bell States are the four specific states of two qubits that represent the maximum possible entanglement between them.", clue: "From NPTEL Set 3: Advanced Topics Week 2" },
+  "2_23_2": { q: "To create the Bell state $(|00\\rangle + |11\\rangle)/\\sqrt{2}$, which gates are applied and in what order?", options: ["X then CNOT", "H then CNOT", "CNOT then H", "H then X"], answer: 1, explanation: "Applying a Hadamard on the first qubit ($H \\otimes I$) followed by a CNOT from the first to the second qubit generates this Bell state.", clue: "From NPTEL Set 3: Advanced Topics Week 2" },
+  "2_23_3": { q: "In Quantum Teleportation, how many classical bits does Alice send to Bob?", options: ["1", "2", "3", "0"], answer: 1, explanation: "Alice sends two classical bits (resulting from her Bell measurement) to Bob so he can apply the correct recovery gates.", clue: "From NPTEL Set 3: Advanced Topics Week 2" },
+  "2_23_4": { q: "The No-Cloning Theorem states that:", options: ["Qubits cannot be measured", "An unknown quantum state cannot be perfectly duplicated", "CNOT gates are impossible", "Classical bits are superior to qubits"], answer: 1, explanation: "The No-Cloning Theorem is a fundamental result in quantum mechanics that prevents the creation of an identical copy of an arbitrary unknown quantum state.", clue: "From NPTEL Set 3: Advanced Topics Week 2" },
+  "2_23_5": { q: "What happens if you measure one qubit of a Bell state $(|00\\rangle + |11\\rangle)/\\sqrt{2}$ and get $|0\\rangle$?", options: ["The other qubit remains in superposition", "The other qubit immediately collapses to $|0\\rangle$", "The other qubit collapses to $|1\\rangle$", "The entanglement is preserved"], answer: 1, explanation: "In an entangled state like this, measuring one qubit instantly determines the state of the other. If the first is $|0\\rangle$, the second must also be $|0\\rangle$ due to the correlation.", clue: "From NPTEL Set 3: Advanced Topics Week 2" },
+  // Week 2 - Set 4: Mastery Challenge (Set 24)
+  "2_24_1": { q: "Which of the following describes a Bell State?", options: ["A state of 1 qubit", "A maximally entangled state of 2 qubits", "A state where qubits are completely independent", "A classical bit pair"], answer: 1, explanation: "Bell States are the four specific states of two qubits that represent the maximum possible entanglement between them.", clue: "From NPTEL Set 4: Mastery Challenge Week 2" },
+  "2_24_2": { q: "To create the Bell state $(|00\\rangle + |11\\rangle)/\\sqrt{2}$, which gates are applied and in what order?", options: ["X then CNOT", "H then CNOT", "CNOT then H", "H then X"], answer: 1, explanation: "Applying a Hadamard on the first qubit ($H \\otimes I$) followed by a CNOT from the first to the second qubit generates this Bell state.", clue: "From NPTEL Set 4: Mastery Challenge Week 2" },
+  "2_24_3": { q: "In Quantum Teleportation, how many classical bits does Alice send to Bob?", options: ["1", "2", "3", "0"], answer: 1, explanation: "Alice sends two classical bits (resulting from her Bell measurement) to Bob so he can apply the correct recovery gates.", clue: "From NPTEL Set 4: Mastery Challenge Week 2" },
+  "2_24_4": { q: "Which Qiskit class is used to create a quantum circuit object?", options: ["QuantumCircuit", "QuantumRegister", "ClassicalRegister", "GateSet"], answer: 0, explanation: "In Qiskit, `QuantumCircuit` is the main class used to define and manipulate quantum circuits.", clue: "From NPTEL Set 4: Mastery Challenge Week 2" },
+  "2_24_5": { q: "What does the `qc.draw(\\\\'mpl\\\\')` command do in a Jupyter notebook?", options: ["Executes the circuit", "Visualizes the circuit using Matplotlib", "Prints the circuit in LaTeX", "Saves the circuit as a JSON file"], answer: 1, explanation: "The `draw(\\\\'mpl\\\\')` method uses Matplotlib to create a high-quality visualization of the quantum circuit.", clue: "From NPTEL Set 4: Mastery Challenge Week 2" },
+  // Week 2 - Set 5: Comprehensive Review (Set 25)
+  "2_25_1": { q: "Which Qiskit class is used to create a quantum circuit object?", options: ["QuantumCircuit", "QuantumRegister", "ClassicalRegister", "GateSet"], answer: 0, explanation: "In Qiskit, `QuantumCircuit` is the main class used to define and manipulate quantum circuits.", clue: "From NPTEL Set 5: Comprehensive Review Week 2" },
+  "2_25_2": { q: "What does the `qc.draw(\\\\'mpl\\\\')` command do in a Jupyter notebook?", options: ["Executes the circuit", "Visualizes the circuit using Matplotlib", "Prints the circuit in LaTeX", "Saves the circuit as a JSON file"], answer: 1, explanation: "The `draw(\\\\'mpl\\\\')` method uses Matplotlib to create a high-quality visualization of the quantum circuit.", clue: "From NPTEL Set 5: Comprehensive Review Week 2" },
+  "2_25_3": { q: "In the transpilation process, what is the \\\\'basis gates\\\\' set?", options: ["The set of all possible gates", "The set of gates natively supported by the physical hardware", "Only H and CNOT gates", "A set of classical gates"], answer: 1, explanation: "Basis gates are the fundamental operations that a specific quantum processor can execute directly. Transpilation converts target gates into these basis gates.", clue: "From NPTEL Set 5: Comprehensive Review Week 2" },
+  "2_25_4": { q: "Which of the following describes a Bell State?", options: ["A state of 1 qubit", "A maximally entangled state of 2 qubits", "A state where qubits are completely independent", "A classical bit pair"], answer: 1, explanation: "Bell States are the four specific states of two qubits that represent the maximum possible entanglement between them.", clue: "From NPTEL Set 5: Comprehensive Review Week 2" },
+  "2_25_5": { q: "To create the Bell state $(|00\\rangle + |11\\rangle)/\\sqrt{2}$, which gates are applied and in what order?", options: ["X then CNOT", "H then CNOT", "CNOT then H", "H then X"], answer: 1, explanation: "Applying a Hadamard on the first qubit ($H \\otimes I$) followed by a CNOT from the first to the second qubit generates this Bell state.", clue: "From NPTEL Set 5: Comprehensive Review Week 2" },
+  // Week 3 - Assignment 3 (Set 21)
+  "3_21_1": { q: "Consider $|X\\rangle = |X_{N - 1}X_{N - 2}\\ldots X_1X_0\\rangle$, a N-qubit state, is there a simple unitary $\\hat{U}$ such that: $$ \\hat {U} | X \\rangle = | \\psi \\rangle = \\frac {1}{\\sqrt {2 ^ {N}}} \\sum_ {Y \\in \\\\{0, 1 \\\\} ^ {N}} (- 1) ^ {X \\cdot Y} | Y \\rangle $$ where $X\\cdot Y$ denotes the mod 2 bitwise inner product $X\\cdot Y = (X_{N - 1}\\cdot Y_{N - 1})\\oplus (X_{N - 2}\\cdot Y_{N - 2})\\oplus \\dots \\oplus (X_1\\cdot Y_1)\\oplus (X_0\\cdot Y_0)$ Starting from the state $|\\psi \\rangle$, can one get complete information of $X$ by applying some unitary gates followed by measurement?", options: ["$\\hat{U} = \\hat{S}^{\\otimes N}$, Yes we can get information about $X$ starting from $|\\psi \\rangle$ by using $\\hat{S}^{\\otimes N}$ followed by measurement.", "Such a unitary cannot be achieved.", "$\\hat{U} = \\hat{H}^{\\otimes N}$, Yes we can get information about $X$ starting from $|\\psi \\rangle$ by using $\\hat{H}^{\\otimes N}$ followed by measurement.", "\\hat{U} = \\hat{T}^{\\otimes N}, \\text{ We cannot infer } X \\text{ from } |\\psi\\rangle.", "\\hat{U} = \\hat{H}^{\\otimes N}, \\text{ Yes we can get information about } X \\text{ starting from } |\\psi\\rangle \\text{ by using } \\hat{H}^{\\otimes N} \\text{ followed by measurement.}"], answer: 3, explanation: "$$", clue: "From NPTEL Assignment 3 Week 3" },
+  "3_21_2": { q: "In the Deutsch-Jozsa problem, what is the minimum number of queries a classical deterministic algorithm must make to determine with 100% certainty whether a function of input size $n$ is constant or balanced? $$ $$", options: ["2^{n-1} + 1"], answer: 1, explanation: "$$", clue: "From NPTEL Assignment 3 Week 3" },
+  "3_21_3": { q: "What are the possible outputs when the first 3 qubits are measured at the end of the circuit? Follow qiskit ordering $$ \\begin{array}{c} \\\\ \\\\ \\boxed{101} \\\\ \\boxed{010} \\\\ \\boxed{110} \\\\ \\boxed{110} \\\\ \\boxed{110} \\\\ \\boxed{110} \\end{array} $$", options: ["\\begin{array}{c}", "\\boxed{010} \\\\", "\\boxed{110} \\\\", "\\boxed{110} \\\\", "\\boxed{110} \\\\", "\\boxed{110} \\\\", "\\boxed{110} \\\\", "\\box", "\\end{array}"], answer: 0, explanation: "$$", clue: "From NPTEL Assignment 3 Week 3" },
+  "3_21_4": { q: "Which properties of a quantum mechanical system are exploited by both the Deutsch- Jozsa and Bernstein-Vazirani algorithms to encode the function\\\\'s output $f(x)$ onto the phase of the input state?", options: ["Uncertainty Principle", "Phase Kickback", "Superposition", "All the above Phase Kickback Superposition"], answer: 1, explanation: "Phase Kickback", clue: "From NPTEL Assignment 3 Week 3" },
+  "3_21_5": { q: "What is the expected output when the qubits are measured at the end of the circuit 010&gt; 110&gt; 001&gt; 000&gt;", options: ["None of these 000&gt;"], answer: 0, explanation: "000&gt;", clue: "From NPTEL Assignment 3 Week 3" },
+  "3_21_6": { q: "What is the probability for all the first 4 wires to output 0 when measured at the end of the following circuit? 1/4 1/16 0 1", options: ["None of these 3/5 0"], answer: 0, explanation: "0", clue: "From NPTEL Assignment 3 Week 3" },
+  "3_21_7": { q: "How does the quantum circuit for the Bernstein-Vazirani algorithm fundamentally compare to the circuit for the Deutsch-Jozsa algorithm? It requires n repetitions of the Deutsch-Jozsa circuit to find each bit of the secret string. It is completely different, using a new set of gates and a novel structure. It replaces all Hadamard gates with CNOT gates to determine the secret string. It is identical in structure, differing only in the function implemented by the oracle.", options: ["It is identical in structure, differing only in the function implemented by the oracle."], answer: 0, explanation: "It is identical in structure, differing only in the function implemented by the oracle.", clue: "From NPTEL Assignment 3 Week 3" },
+  "3_21_8": { q: "How is the reflection about the uniform superposition state $|u\\rangle$ (the Grover diffuser) constructed? By transforming $|u\\rangle$ to $|0\\ldots 0\\rangle$ with Hadamard gates, reflecting about $|0\\ldots 0\\rangle$ , and transforming back It is implemented by a different oracle designed to mark the state $|u\\rangle$ It is a fundamental quantum gate that can be applied directly. By applying the oracle in reverse on the state $|u\\rangle$", options: ["By transforming $|u\\rangle$ to $|0\\ldots 0\\rangle$ with Hadamard gates, reflecting about $|0\\ldots 0\\rangle$ , and transforming back"], answer: 0, explanation: "By transforming $|u\\rangle$ to $|0\\ldots 0\\rangle$ with Hadamard gates, reflecting about $|0\\ldots 0\\rangle$ , and transforming back", clue: "From NPTEL Assignment 3 Week 3" },
+  "3_21_9": { q: "What does the following quantum circuit represent? Deutsch-Jozsa with Constant Function Oracle Deutsch-Jozsa with Balanced Function Oracle Bernstein-Vazirani with hidden string 111 ## Grover\\\\'s Search", options: ["*Deutsch-Jozsa with Constant Function Oracle* **10)** The geometric interpretation of Grover’s algorithm involves a rotation within a 2D plane. Which two orthogonal basis vectors span this plane?", "The initial uniform superposition state $|u\\rangle$ and the final target state $|a\\rangle$.", "The target state $|a\\rangle$ and a uniform superposition of all non-target states, $|e\\rangle$.", "The input register state $|x\\rangle$ and the output register state $|f(x)\\rangle$.", "The all-zeros state $|0\\dots 0\\rangle$ and the all-ones state $|1\\dots 1\\rangle$.", "*The target state $|a\\rangle$ and a uniform superposition of all non-target states, $|e\\rangle*. 5/5"], answer: 5, explanation: "*The target state $|a\\rangle$ and a uniform superposition of all non-target states, $|e\\rangle*.", clue: "From NPTEL Assignment 3 Week 3" },
+  // Week 3 - Set 2: Conceptual Review (Set 22)
+  "3_22_1": { q: "What is the optimal number of iterations for Grover\\\\'s search in a database of size N with 1 solution?", options: ["O(N)", "O(√N)", "O(log N)", "O(1)"], answer: 1, explanation: "Grover\\\\'s algorithm provides a quadratic speedup, requiring approximately $(\\pi/4)\\sqrt{N}$ iterations to find a single target.", clue: "From NPTEL Set 2: Conceptual Review Week 3" },
+  "3_22_2": { q: "The Grover operator consists of two primary parts applied repeatedly. What is the second part called?", options: ["Oracle", "Diffuser (Inversion about the mean)", "Hadamard transform", "Measurement"], answer: 1, explanation: "The diffuser reflects amplitudes about their average, effectively amplifying the state marked by the oracle.", clue: "From NPTEL Set 2: Conceptual Review Week 3" },
+  "3_22_3": { q: "In the geometric interpretation of Grover\\\\'s search, each iteration rotates the state vector by which angle?", options: ["θ", "2θ", "θ/2", "π"], answer: 1, explanation: "Each Grover iteration performs a rotation of $2\\theta$ in the two-dimensional subspace spanned by the target and non-target states.", clue: "From NPTEL Set 2: Conceptual Review Week 3" },
+  "3_22_4": { q: "What happens if you run Grover\\\\'s algorithm for significantly more than the optimal number of iterations?", options: ["The probability stays at 1", "The probability of success decreases (over-rotation)", "The system crashes", "The speedup becomes exponential"], answer: 1, explanation: "Running too many iterations causes the state vector to rotate past the target state, reducing the overlap and thus the success probability.", clue: "From NPTEL Set 2: Conceptual Review Week 3" },
+  "3_22_5": { q: "How many qubits are required to search a space of N = 64 elements?", options: ["6", "8", "64", "32"], answer: 0, explanation: "Since $2^6 = 64$, a system of 6 qubits provides the 64 basis states needed for the database indices.", clue: "From NPTEL Set 2: Conceptual Review Week 3" },
+  // Week 3 - Set 3: Advanced Topics (Set 23)
+  "3_23_1": { q: "In the Deutsch-Jozsa algorithm, a \\\\'balanced\\\\' function returns \\\\'1\\\\' for exactly how many of its $2^n$ inputs?", options: ["All of them", "None of them", "Half ($2^{n-1}$)", "Just one"], answer: 2, explanation: "A balanced function is defined as having output 0 for half the inputs and 1 for the other half.", clue: "From NPTEL Set 3: Advanced Topics Week 3" },
+  "3_23_2": { q: "The Bernstein-Vazirani algorithm identifies a hidden bitstring \\\\'s\\\\' in how many queries to the oracle?", options: ["1", "n", "2^n", "√n"], answer: 0, explanation: "Unlike classical algorithms that require $n$ queries, Bernstein-Vazirani finds the secret string in a single quantum query.", clue: "From NPTEL Set 3: Advanced Topics Week 3" },
+  "3_23_3": { q: "Which quantum effect is commonly used by DJ and BV algorithms to \\\\'read\\\\' the function output into the control qubit?", options: ["Decoherence", "Phase Kickback", "Amplitude Damping", "Quantum Error Correction"], answer: 1, explanation: "Phase Kickback allows the result of an operation on a target qubit (in an eigenvector state) to be reflected as a phase change in the control qubit.", clue: "From NPTEL Set 3: Advanced Topics Week 3" },
+  "3_23_4": { q: "In Grover\\\\'s implementation, the phase oracle marks the solution $|w\\rangle$ by applying which transformation?", options: ["$|w\\rangle \\to |w\\rangle$", "$|w\\rangle \\to -|w\\rangle$", "$|w\\rangle \\to |0\\rangle$", "$|w\\rangle \\to |1\\rangle$"], answer: 1, explanation: "A phase oracle flips the sign (phase) of the target state, leaving all other states unchanged.", clue: "From NPTEL Set 3: Advanced Topics Week 3" },
+  "3_23_5": { q: "To find the secret string $s = 101$ using Bernstein-Vazirani, what will be the measurement result in the standard Z-basis?", options: ["000", "111", "101", "010"], answer: 2, explanation: "The algorithm is designed such that the secret string $s$ is exactly what appears as the measurement outcome after the final Hadamard transforms.", clue: "From NPTEL Set 3: Advanced Topics Week 3" },
+  // Week 3 - Set 4: Mastery Challenge (Set 24)
+  "3_24_1": { q: "In the Deutsch-Jozsa algorithm, a \\\\'balanced\\\\' function returns \\\\'1\\\\' for exactly how many of its $2^n$ inputs?", options: ["All of them", "None of them", "Half ($2^{n-1}$)", "Just one"], answer: 2, explanation: "A balanced function is defined as having output 0 for half the inputs and 1 for the other half.", clue: "From NPTEL Set 4: Mastery Challenge Week 3" },
+  "3_24_2": { q: "The Bernstein-Vazirani algorithm identifies a hidden bitstring \\\\'s\\\\' in how many queries to the oracle?", options: ["1", "n", "2^n", "√n"], answer: 0, explanation: "Unlike classical algorithms that require $n$ queries, Bernstein-Vazirani finds the secret string in a single quantum query.", clue: "From NPTEL Set 4: Mastery Challenge Week 3" },
+  "3_24_3": { q: "Which quantum effect is commonly used by DJ and BV algorithms to \\\\'read\\\\' the function output into the control qubit?", options: ["Decoherence", "Phase Kickback", "Amplitude Damping", "Quantum Error Correction"], answer: 1, explanation: "Phase Kickback allows the result of an operation on a target qubit (in an eigenvector state) to be reflected as a phase change in the control qubit.", clue: "From NPTEL Set 4: Mastery Challenge Week 3" },
+  "3_24_4": { q: "What is the optimal number of iterations for Grover\\\\'s search in a database of size N with 1 solution?", options: ["O(N)", "O(√N)", "O(log N)", "O(1)"], answer: 1, explanation: "Grover\\\\'s algorithm provides a quadratic speedup, requiring approximately $(\\pi/4)\\sqrt{N}$ iterations to find a single target.", clue: "From NPTEL Set 4: Mastery Challenge Week 3" },
+  "3_24_5": { q: "The Grover operator consists of two primary parts applied repeatedly. What is the second part called?", options: ["Oracle", "Diffuser (Inversion about the mean)", "Hadamard transform", "Measurement"], answer: 1, explanation: "The diffuser reflects amplitudes about their average, effectively amplifying the state marked by the oracle.", clue: "From NPTEL Set 4: Mastery Challenge Week 3" },
+  // Week 3 - Set 5: Comprehensive Review (Set 25)
+  "3_25_1": { q: "What is the optimal number of iterations for Grover\\\\'s search in a database of size N with 1 solution?", options: ["O(N)", "O(√N)", "O(log N)", "O(1)"], answer: 1, explanation: "Grover\\\\'s algorithm provides a quadratic speedup, requiring approximately $(\\pi/4)\\sqrt{N}$ iterations to find a single target.", clue: "From NPTEL Set 5: Comprehensive Review Week 3" },
+  "3_25_2": { q: "The Grover operator consists of two primary parts applied repeatedly. What is the second part called?", options: ["Oracle", "Diffuser (Inversion about the mean)", "Hadamard transform", "Measurement"], answer: 1, explanation: "The diffuser reflects amplitudes about their average, effectively amplifying the state marked by the oracle.", clue: "From NPTEL Set 5: Comprehensive Review Week 3" },
+  "3_25_3": { q: "In the geometric interpretation of Grover\\\\'s search, each iteration rotates the state vector by which angle?", options: ["θ", "2θ", "θ/2", "π"], answer: 1, explanation: "Each Grover iteration performs a rotation of $2\\theta$ in the two-dimensional subspace spanned by the target and non-target states.", clue: "From NPTEL Set 5: Comprehensive Review Week 3" },
+  "3_25_4": { q: "In the Deutsch-Jozsa algorithm, a \\\\'balanced\\\\' function returns \\\\'1\\\\' for exactly how many of its $2^n$ inputs?", options: ["All of them", "None of them", "Half ($2^{n-1}$)", "Just one"], answer: 2, explanation: "A balanced function is defined as having output 0 for half the inputs and 1 for the other half.", clue: "From NPTEL Set 5: Comprehensive Review Week 3" },
+  "3_25_5": { q: "The Bernstein-Vazirani algorithm identifies a hidden bitstring \\\\'s\\\\' in how many queries to the oracle?", options: ["1", "n", "2^n", "√n"], answer: 0, explanation: "Unlike classical algorithms that require $n$ queries, Bernstein-Vazirani finds the secret string in a single quantum query.", clue: "From NPTEL Set 5: Comprehensive Review Week 3" },
+  // Week 4 - Assignment 4 (Set 21)
+  "4_21_1": { q: "Which of the following statements regarding Variational Quantum Algorithms (VQAs) are correct? (Select all that apply)", options: ["Classical part of the VQA calculates the cost function", "A shallow and faithful cost function is desirable", "Problem-agnostic ansatz perform better than Problem-inspired ansatz", "Randomly initialized deep Quantum Circuits exhibit Barren Plateau Fig. 1 shows quantum circuit used in molecular simulations using VQE implementation by Kandala et. al.1. Answer the following questions 2 and 3, with reference to Fig. 1. #", "NISQ-era quantum algorithms", "$\\bigcirc$ Variational Quantum Algorithms", "$\\bigcirc$ Variational Quantum Eigensolver", "Quantum Generative Adversarial Networks (QGANs) Fixing quantum errors with quantum tricks: A brief introduction to Quantum Error Correction - Part 1 Fixing quantum errors with quantum tricks: A brief introduction to Quantum Error Correction - Part 2 Figure 1: Quantum circuit implementing VQE algorithm."], answer: 0, explanation: "", clue: "From NPTEL Assignment 4 Week 4" },
+  "4_21_2": { q: "Select all the statements that hold for $U_{ENT}$ and the unitaries $U^{i,j}(\\Theta_k)$. Together, $U_{ENT}$ and the unitaries $U^{i,j}(\\Theta_k)$ form the trial state. $U_{ENT}$ refers to \\\\'entangling block\\\\'. The unitaries $U^{i,j}(\\Theta_k)$ are multiqubit unitaries. The state created by these unitaries have both superposition and entanglement.", options: ["True", "False"], answer: 0, explanation: "", clue: "From NPTEL Assignment 4 Week 4" },
+  "4_21_3": { q: "The number of layers $d$ is primarily a function of $\\bigcirc$ the gates being performed the number of qubits in the system. $\\bigcirc$ both (a) and (b). the available depth or coherence time.", options: ["True", "False"], answer: 0, explanation: "", clue: "From NPTEL Assignment 4 Week 4" },
+  "4_21_4": { q: "Quantum Generative Adversarial Networks (QGANs) consists of: Encoder Generator Decoder □Discriminator", options: ["True", "False"], answer: 0, explanation: "", clue: "From NPTEL Assignment 4 Week 4" },
+  "4_21_5": { q: "Which of the following statements is an accurate description of the phenomenon of decoherence? □ Decoherence causes a pure quantum state to transform into an incoherent mixture of multiple states.", options: ["Fixing quantum errors with quantum tricks: A brief introduction to Quantum Error Correction - Part 3", "○", "Decoherence is caused when a quantum system evolves with time via a unitary transformation.", "Decoherence is caused when a quantum system is coupled to a bath or environment and the joint system evolves via a unitary transformation.", "Decoherence is a reversible process."], answer: 0, explanation: "", clue: "From NPTEL Assignment 4 Week 4" },
+  "4_21_6": { q: "Select all the options that apply to the three-qubit quantum error correcting code.", options: ["The three-qubit code assumes that the bit-flip noise occurs identically and independently on the encoded qubits.", "The encoding transforms the state $\\alpha |0\\rangle +\\beta |1\\rangle$ to $(\\alpha |0\\rangle +\\beta |1\\rangle)^{\\otimes 3}$ where $|\\alpha |^2 +|\\beta |^2 = 1$.", "The bit-flip noise flips the qubit with some probability $p$ and leaves it untouched with probability $1 - p$.", "The encoding transforms the state $\\alpha |0\\rangle +\\beta |1\\rangle$ to $(\\alpha |000\\rangle +\\beta |111\\rangle)$ where $|\\alpha |^2 +|\\beta |^2 = 1$."], answer: 0, explanation: "", clue: "From NPTEL Assignment 4 Week 4" },
+  "4_21_7": { q: "Let $S1$ and $S2$ denote the syndrome bits at the end of the 3-qubit bit-flip quantum error correction protocol. Match the syndrome bit values to their respective recovery gates. | Syndrome (S1, S2) | Recovery Gates | | --- | --- | | x. (0, 1) | i. I ⊗ I ⊗ X | | y. (1, 1) | ii. X ⊗ I ⊗ I | | z. (1, 0) | iii. I ⊗ X ⊗ I | ○ x-i, y-ii, z-iii ○ x-i, y-iii, z-ii ○ x-ii, y-iii, z-i ○ x-iii, y-i, z-ii", options: ["True", "False"], answer: 0, explanation: "", clue: "From NPTEL Assignment 4 Week 4" },
+  "4_21_8": { q: "Analyse the following 7-qubit circuit and answer the question. What is the probability for all of the first 6 wires to output 0 when measured at the end of this circuit?", options: ["1/64", "1/2", "0", "1"], answer: 0, explanation: "", clue: "From NPTEL Assignment 4 Week 4" },
+  "4_21_9": { q: "Consider the encoded (or logical) state $|\\psi_L\\rangle = \\alpha |000\\rangle +\\beta |111\\rangle$ subject to a quantum noise channel where each qubit can undergo a bit flip with probability $p$. The exact probability that the 3-qubit bit-flip quantum error correcting code fails to recover the original state is given by $x\\cdot p^{y}\\cdot (1 - p)^{z} + p^{3}$, where $p$ is the bit-flip probability and $x,y,z$ are the variables to be identified. The value of $y\\cdot x + z$ (here, $\\cdot$ denotes multiplication)", options: ["6", "7", "10", "5"], answer: 0, explanation: "", clue: "From NPTEL Assignment 4 Week 4" },
+  "4_21_10": { q: "Consider a 3-qubit state in the $\\\\{|+ \\rangle, |- \\rangle\\\\}$ basis, of the form $\\frac{1}{\\sqrt{2}} (|+ + + \\rangle + |- - - \\rangle)$. Which of the following sets of errors can be detected on this state?", options: ["$\\\\{XII, IXI, IIX\\\\}$", "$\\\\{IZI, ZIZ\\\\}$", "$\\\\{ZII, IZI, IIZ\\\\}$", "$\\\\{ZII, IZZ, ZZZ\\\\}$ You may submit any number of times before the due date. The final submission will be considered for grading. Submit Answers 5/5"], answer: 0, explanation: "", clue: "From NPTEL Assignment 4 Week 4" },
+  // Week 4 - Set 2: Conceptual Review (Set 22)
+  "4_22_1": { q: "What does VQE stand for in the context of NISQ-era algorithms?", options: ["Variational Quantum Eigensolver", "Visual Quality Estimator", "Variable Quantum Engine", "Virtual Quantum Emulator"], answer: 0, explanation: "VQE is a hybrid quantum-classical algorithm used to find the minimum eigenvalue of a Hamiltonian.", clue: "From NPTEL Set 2: Conceptual Review Week 4" },
+  "4_22_2": { q: "In VQE, the parameterized quantum circuit used to prepare the trial state is called an:", options: ["Oracle", "Ansatz", "Encoder", "Diffuser"], answer: 1, explanation: "The \\\\'Ansatz\\\\' is the specific circuit template with adjustable parameters that is optimized to find the ground state.", clue: "From NPTEL Set 2: Conceptual Review Week 4" },
+  "4_22_3": { q: "Which part of the VQE algorithm is executed on a classical computer?", options: ["State preparation", "Measurement", "Parameter optimization", "Entanglement creation"], answer: 2, explanation: "VQE is hybrid: the quantum computer measures expectation values, while the classical computer runs the optimizer to pick new parameters.", clue: "From NPTEL Set 2: Conceptual Review Week 4" },
+  "4_22_4": { q: "Potential Energy Surface (PES) in quantum chemistry represents energy as a function of:", options: ["Temperature", "Number of electrons", "Inter-atomic distances", "Qubit count"], answer: 2, explanation: "A PES shows how the total energy of a molecule changes as the nuclei are moved relative to each other.", clue: "From NPTEL Set 2: Conceptual Review Week 4" },
+  "4_22_5": { q: "What is \\\\'Chemical Accuracy\\\\' typically defined as in energy calculations?", options: ["1 eV", "1 kcal/mol", "1 Joule", "1% error"], answer: 1, explanation: "Chemical accuracy refers to a precision of ~1 kcal/mol, which is necessary to predict reaction rates correctly.", clue: "From NPTEL Set 2: Conceptual Review Week 4" },
+  // Week 4 - Set 3: Advanced Topics (Set 23)
+  "4_23_1": { q: "Which of the following is a fundamental challenge for physical qubits?", options: ["High speed", "Decoherence and noise", "Too many electrons", "Lack of cooling"], answer: 1, explanation: "Qubits are extremely sensitive to their environment, leading to loss of quantum information (decoherence) and logical errors.", clue: "From NPTEL Set 3: Advanced Topics Week 4" },
+  "4_23_2": { q: "How does the 3-qubit bit-flip code encode a logical $|0\\rangle_L$?", options: ["$|0\\rangle$", "$|000\\rangle$", "$|111\\rangle$", "$|010\\rangle$"], answer: 1, explanation: "Redundancy is used to protect against single-qubit errors; $|0\\rangle_L$ is mapped to $|000\\rangle$.", clue: "From NPTEL Set 3: Advanced Topics Week 4" },
+  "4_23_3": { q: "In QGANs (Quantum Generative Adversarial Networks), what is the goal of the Generator?", options: ["To detect errors", "To generate data distributions that mimic real data", "To price options directly", "To minimize qubit counts"], answer: 1, explanation: "The Generator\\\\'s task is to learn and reproduce the underlying probability distribution of a target dataset.", clue: "From NPTEL Set 3: Advanced Topics Week 4" },
+  "4_23_4": { q: "Quantum Amplitude Estimation (QAE) provides a speedup for which financial task?", options: ["Printing receipts", "Monte Carlo simulations for risk analysis", "Logging users", "Sorting account IDs"], answer: 1, explanation: "QAE offers a quadratic speedup over classical Monte Carlo methods, making it valuable for risk assessment and option pricing.", clue: "From NPTEL Set 3: Advanced Topics Week 4" },
+  "4_23_5": { q: "What is the primary role of an \\\\'Ancilla\\\\' qubit in error detection?", options: ["To execute gates faster", "To store measurement results without collapsing the data qubits", "To power the chip", "To replace a broken qubit"], answer: 1, explanation: "Ancilla qubits are parity probes that extract error syndromes without measuring the data qubits directly.", clue: "From NPTEL Set 3: Advanced Topics Week 4" },
+  // Week 4 - Set 4: Mastery Challenge (Set 24)
+  "4_24_1": { q: "Which of the following is a fundamental challenge for physical qubits?", options: ["High speed", "Decoherence and noise", "Too many electrons", "Lack of cooling"], answer: 1, explanation: "Qubits are extremely sensitive to their environment, leading to loss of quantum information (decoherence) and logical errors.", clue: "From NPTEL Set 4: Mastery Challenge Week 4" },
+  "4_24_2": { q: "How does the 3-qubit bit-flip code encode a logical $|0\\rangle_L$?", options: ["$|0\\rangle$", "$|000\\rangle$", "$|111\\rangle$", "$|010\\rangle$"], answer: 1, explanation: "Redundancy is used to protect against single-qubit errors; $|0\\rangle_L$ is mapped to $|000\\rangle$.", clue: "From NPTEL Set 4: Mastery Challenge Week 4" },
+  "4_24_3": { q: "In QGANs (Quantum Generative Adversarial Networks), what is the goal of the Generator?", options: ["To detect errors", "To generate data distributions that mimic real data", "To price options directly", "To minimize qubit counts"], answer: 1, explanation: "The Generator\\\\'s task is to learn and reproduce the underlying probability distribution of a target dataset.", clue: "From NPTEL Set 4: Mastery Challenge Week 4" },
+  "4_24_4": { q: "What does VQE stand for in the context of NISQ-era algorithms?", options: ["Variational Quantum Eigensolver", "Visual Quality Estimator", "Variable Quantum Engine", "Virtual Quantum Emulator"], answer: 0, explanation: "VQE is a hybrid quantum-classical algorithm used to find the minimum eigenvalue of a Hamiltonian.", clue: "From NPTEL Set 4: Mastery Challenge Week 4" },
+  "4_24_5": { q: "In VQE, the parameterized quantum circuit used to prepare the trial state is called an:", options: ["Oracle", "Ansatz", "Encoder", "Diffuser"], answer: 1, explanation: "The \\\\'Ansatz\\\\' is the specific circuit template with adjustable parameters that is optimized to find the ground state.", clue: "From NPTEL Set 4: Mastery Challenge Week 4" },
+  // Week 4 - Set 5: Comprehensive Review (Set 25)
+  "4_25_1": { q: "What does VQE stand for in the context of NISQ-era algorithms?", options: ["Variational Quantum Eigensolver", "Visual Quality Estimator", "Variable Quantum Engine", "Virtual Quantum Emulator"], answer: 0, explanation: "VQE is a hybrid quantum-classical algorithm used to find the minimum eigenvalue of a Hamiltonian.", clue: "From NPTEL Set 5: Comprehensive Review Week 4" },
+  "4_25_2": { q: "In VQE, the parameterized quantum circuit used to prepare the trial state is called an:", options: ["Oracle", "Ansatz", "Encoder", "Diffuser"], answer: 1, explanation: "The \\\\'Ansatz\\\\' is the specific circuit template with adjustable parameters that is optimized to find the ground state.", clue: "From NPTEL Set 5: Comprehensive Review Week 4" },
+  "4_25_3": { q: "Which part of the VQE algorithm is executed on a classical computer?", options: ["State preparation", "Measurement", "Parameter optimization", "Entanglement creation"], answer: 2, explanation: "VQE is hybrid: the quantum computer measures expectation values, while the classical computer runs the optimizer to pick new parameters.", clue: "From NPTEL Set 5: Comprehensive Review Week 4" },
+  "4_25_4": { q: "Which of the following is a fundamental challenge for physical qubits?", options: ["High speed", "Decoherence and noise", "Too many electrons", "Lack of cooling"], answer: 1, explanation: "Qubits are extremely sensitive to their environment, leading to loss of quantum information (decoherence) and logical errors.", clue: "From NPTEL Set 5: Comprehensive Review Week 4" },
+  "4_25_5": { q: "How does the 3-qubit bit-flip code encode a logical $|0\\rangle_L$?", options: ["$|0\\rangle$", "$|000\\rangle$", "$|111\\rangle$", "$|010\\rangle$"], answer: 1, explanation: "Redundancy is used to protect against single-qubit errors; $|0\\rangle_L$ is mapped to $|000\\rangle$.", clue: "From NPTEL Set 5: Comprehensive Review Week 4" },
+  // --- END INJECTED QUIZZES ---
+
+
+};
+
+function generateQuestion(week, setId, qNum) {
+  // Check for video-specific override
+  const overrideKey = `${week}_${setId}_${qNum}`;
+  if (videoQuestionsData[overrideKey]) {
+    const qObj = videoQuestionsData[overrideKey];
+    let label = (setId >= 21) ? "NPTEL Quiz" : (setId >= 11 ? "Video Quiz" : "Lecture Quiz");
+    return {
+      question: `${label}: ${qObj.q}`,
+      options: qObj.options,
+      answer: qObj.answer,
+      clue: qObj.clue || (setId >= 21 ? `Sourced from NPTEL Week ${week} materials.` : "Refer to the video transcript PDF for this topic."),
+      explanation: qObj.explanation
+    };
+  }
+
+  const technicalLibrary = {
+    "State Space": "The First Postulate states that an isolated physical system is associated with a complex inner product space.<br><br>• Specifically, this is a <b>Hilbert Space</b> known as the system's State Space.<br>• It contains all possible configuration vectors of the system.",
+    "Dirac Notation": "Quantum mechanics utilizes 'bra-ket' notation to represent vectors:<br><br>• A standard column vector is called a <b>Ket</b> and written as |ψ⟩.<br>• Its conjugate transpose (a row vector) is called a <b>Bra</b> and written as ⟨ψ|.",
+    "Qubits": "A Qubit is the fundamental unit of quantum information, represented by |ψ⟩ = α|0⟩ + β|1⟩.<br><br>• The sum of probabilities must always equal 100%.<br>• The normalization condition <b>$|α|^2 + |β|^2 = 1$</b> must be strictly maintained.",
+    "Bloch Sphere": "The Bloch Sphere provides a visual geometry for a single qubit state.<br><br>• <b>North     Pole</b>: The state |0⟩ is located here.<br>• <b>South Pole</b>: The state |1⟩ is located here.<br>• It maps the two 'basis' states to the vertical axis.",
+    "Postulates": "The four postulates of Quantum Mechanics provide the mathematical floor:<br><br>• <b>Postulate 1</b>    : Defines State Space (Hilbert Space).<br>• <b>Postulate 2</b>: Describes Evolution (Unitary operators).<br>• <b>Postulate 3</b>: Explains Measurement (Probability).<br>• <b>Postulate 4</b>: Defines Composite Systems (Tensor products).",
+    "Linear Algebra": "Since quantum states are vectors, operations are performed using matrices.<br><br>• Gates must be <b>Unitary matrices</b> ($U^\\dagger U = I$).<br>• This preserves the total probability (the 'norm') so it remains equal to 1.",
+    "Inner Product": "The Inner Product (⟨ψ|φ⟩) measures the overlap between two quantum states.<br><br>• It quantifies how similar two states are.<br>• If the result is <b>0</b>, the states are perfectly distinguishable and are said to be <b>Orthogonal</b>.",
+    "Measurement": "Unlike classical reading, Quantum Measurement is probabilistic.<br><br>• When measured, the system <b>collapses</b> from a superposition.<br>• It becomes one of the basis states (like |0⟩ or |1⟩) based on probability coefficients.",
+    "Unitary Gates": "A Quantum Gate is represented by a square Unitary Matrix.<br><br>• Property: <b>$U^\\dagger U = I$</b><br>• Significance: Ensures the operation is reversible and preserves the total probability of the qubit.",
+    "Probability": "Born's Rule bridges the state vector and experimental results.<br><br>• It specifies the probability of obtaining a specific result.<br>• Formula: <b>$P(m) = ⟨\\psi|M_m^\\dagger M_m|\\psi⟩$</b> for outcome 'm'.",
+    "Qiskit SDK": "Qiskit is the primary open-source SDK for IBM quantum computers.<br><br>• <b>Purpose</b>: Build and run quantum circuits.<br>• <b>Platform</b>: Python-based, connecting to real hardware and simulators.",
+    "Quantum Circuits": "A Quantum Circuit visualizes the computation flow.<br><br>• <b>Horizontal Lines</b>: Represent Qubit Timelines.<br>• <b>Symbols</b>: Represent gates acting on these qubits over time.",
+    "Gates (X,Y,Z,H)": "The Hadamard (H) gate creates superposition.<br><br>• When applied to |0⟩, it creates an equal <b>50/50 mixture</b>.<br>• Result: $(|0⟩ + |1⟩)/\\sqrt{2}$, allowing exploration of multiple paths.",
+    "CNOT / Entanglement": "The Controlled-NOT (CNOT) gate is the primary multi-qubit operator.<br><br>• <b>Logic</b>: Flips target qubit ONLY if control is |1⟩.<br>• <b>Use</b>: Fundamental building block for creating Entanglement.",
+    "Bell States": "The four Bell States represent maximum entanglement between two qubits.<br><br>• <b>Example</b>: $(|00⟩ + |11⟩)/\\sqrt{2}$<br>• <b>Creation</b>: Apply Hadamard to first qubit, then CNOT linking to the second.",
+    "Simulators": "Qiskit provides the 'Aer' module for simulating circuits.<br><br>• <b>statevector_simulator</b>: Returns exact mathematical state (complex numbers).<br>• It simulates ideal conditions without measurement noise or shots.",
+    "Statevector": "The Statevector is a list of complex numbers representing probabilities.<br><br>• It contains all possible configuration amplitudes.<br>• For 'n' qubits, it grows exponentially to size <b>$2^n$</b>.",
+    "Visualization": "The Bloch Sphere is a powerful visual tool.<br><br>• <b>Limitation</b>: Can ONLY represent <b>Exactly 1 Qubit</b>.<br>• For larger systems, use tools like 'QSphere' or 'City Plots'.",
+    "Measurements Logic": "Data is extracted from the quantum world to the classical world.<br><br>• <b>Command</b>: `qc.measure()`<br>• <b>Effect</b>: Maps the quantum state onto a classical bit register.",
+    "Register Logic": "Quantum programs are built using two types of Registers:<br><br>• <b>QuantumRegister</b>: Holds the qubits for the circuit.<br>• <b>ClassicalRegister</b>: Stores the results after measurement.",
+    "Algorithms Speedups": "Quantum algorithms offer computational advantages.<br><br>• <b>Shor's Algorithm</b>: Factors large numbers.<br>• <b>Speedup</b>: Exponential advantage over best classical methods.",
+    "Deutch Algorithm": "The Deutsch Algorithm demonstrated the first quantum advantage.<br><br>• <b>Goal</b>: Determine if a function is 'constant' or 'balanced'.<br>• <b>Efficiency</b>: Solves it in exactly <b>1 query</b> (Classical needs 2).",
+    "DJ Algorithm": "The Deutsch-Jozsa (DJ) Algorithm generalizes Deutsch's logic.<br><br>• <b>Scope</b>: Handles functions with 'n' input bits.<br>• <b>Result</b>: Determines constant/balanced in just a <b>Single Query</b>.",
+    "Bernstein Vazirani": "Designed for a specific string-matching problem.<br><br>• <b>Goal</b>: Find a Hidden Bitstring ($s$) inside an oracle.<br>• <b>Speed</b>: Identifies $s$ in a single step instead of checking bit-by-bit.",
+    "Oracles": "An Oracle is a 'black box' that encodes a problem.<br><br>• <b>Role</b>: Marks the solution state.<br>• <b>Method</b>: 'Flipping the phase' (changing sign) of the target state.",
+    "Phase Kickback": "A crucial quantum effect where logic kicks back to the control.<br><br>• <b>Occurs when</b>: Target qubit is in an eigenvector state (like |-⟩).<br>• <b>Effect</b>: The operation on the target changes the phase of the control qubit.",
+    "Balanced vs Constant": "Types of functions in quantum testing:<br><br>• <b>Constant</b>: Returns same value (all 0s or 1s) for all inputs.<br>• <b>Balanced</b>: Returns 0 for exactly half of inputs, 1 for the other half.",
+    "Query Complexity": "The standard metric for algorithm performance.<br><br>• <b>Definition</b>: Number of calls to the 'Oracle' or hidden function.<br>• <b>Goal</b>: Quantum algorithms aim to drastically reduce this number.",
+    "Hidden Bitstring": "Bernstein-Vazirani extraction mechanism:<br><br>• <b>Gates</b>: Hadamard (H) gates applied before and after oracle.<br>• <b>Result</b>: Extracts hidden bitstring directly into Z-basis for measurement.",
+    "Logic Reversibility": "Quantum evolution is Unitary and Reversible.<br><br>• <b>Challenge</b>: Classical logic (like AND) is often irreversible.<br>• <b>Solution</b>: Use extra <b>Ancilla Qubits</b> to preserve information.",
+    "Grover Search": "Searches an unstructured database of size $N$.<br><br>• <b>Classical</b>: $O(N)$ steps.<br>• <b>Quantum</b>: $O(\\sqrt{N})$ steps (Quadratic Speedup).",
+    "QFT": "Quantum Fourier Transform (QFT) is a linear map.<br><br>• <b>Transformation</b>: From Computational Basis to Fourier (Phase) Basis.<br>• <b>Use</b>: Backbone of Shor's and many high-level algorithms.",
+    "Amplitude Amplification": "The mechanism powering Grover's search.<br><br>• <b>Process</b>: Repeatedly increases probability amplitude of solution.<br>• <b>Simultaneously</b>: Shrinks amplitudes of wrong states.",
+    "Diffuser": "The Grover Diffuser is a global operation.<br><br>• <b>Also known as</b>: Inversion about the Mean.<br>• <b>Effect</b>: Reflects all amplitudes, forcing the marked solution to 'hop' upwards.",
+    "Phase Estimation": "Quantum Phase Estimation (QPE) is a fundamental primitive.<br><br>• <b>Purpose</b>: Estimate the unknown Phase ($\\theta$) of an eigenvalue.<br>• <b>Application</b>: Critical for chemistry and optimization problems.",
+    "Period Finding": "The core mathematical problem in Shor's Algorithm.<br><br>• <b>Task</b>: Find the period $r$ of function $f(x) = a^x \\pmod{N}$.<br>• <b>Tool</b>: Uses QFT to find this efficiently.",
+    "Iterations count": "Crucial for Grover's Algorithm success.<br><br>• <b>Optimal</b>: $(\\pi/4)\\sqrt{N}$ iterations.<br>• <b>Over-rotation</b>: Too many iterations cause solution probability to DROP.",
+    "Oracle types": "Grover oracles come in two main types:<br><br>• <b>Phase Oracle</b>: Marks solution by flipping Phase (sign).<br>• <b>Boolean Oracle</b>: Marks solution by flipping a target qubit.",
+    "Complexity √N": "Grover's speedup compared to classical search.<br><br>• <b>Classical</b>: Linear $O(N)$.<br>• <b>Grover</b>: Quadratic $O(\\sqrt{N})$. Globally applicable to search problems.",
+    "Phase shift": "Gates that rotate relative phase without calculating bit values.<br><br>• <b>Examples</b>: Z-gate, S-gate, Rz rotations.<br>• <b>Action</b>: Moves the state around the equator of the Bloch sphere."
+  };
+  const questionsData = {
+    "State Space": {
+      q: "Based on the first postulate, what is the type of space associated with an isolated physical system?",
+      options: ["Euclidean Space", "Hilbert Space", "Topological Space", "Affine Space"],
+      answer: 1,
+      explanation: "The First Postulate explicitly defines the state space as a <b>Hilbert Space</b>. This is a complex vector space equipped with an inner product, which is essential for calculating probabilities and defining quantum states mathematically."
+    },
+    "Dirac Notation": {
+      q: "According to Dirac notation, a column vector is represented by which symbol?",
+      options: ["⟨ψ| (Bra)", "|ψ⟩ (Ket)", "[ψ] (Bracket)", "Δψ (Delta)"],
+      answer: 1,
+      explanation: "In Dirac's 'bra-ket' notation, the state vector (a column vector) is called a <b>Ket</b> and is written as <b>|ψ⟩</b>. The conjugate transpose (row vector) is the Bra ⟨ψ|."
+    },
+    "Qubits": {
+      q: "For a qubit in the state |ψ⟩ = α|0⟩ + β|1⟩, what value must |α|² + |β|² equal?",
+      options: ["0", "0.5", "1", "2"],
+      answer: 2,
+      explanation: "The coefficients α and β represent probability amplitudes. The sum of the probabilities of all possible outcomes must always equal <b>1</b> (100%). Therefore, the normalization condition is <b>|α|² + |β|² = 1</b>."
+    },
+    "Bloch Sphere": {
+      q: "On the Bloch Sphere, which states are represented specifically by the North and South poles?",
+      options: ["|+⟩ and |-⟩", "|0⟩ and |1⟩", "Any superposition", "Only Entangled states"],
+      answer: 1,
+      explanation: "The <b>Bloch Sphere</b> maps the standard basis states to the poles. The state <b>|0⟩</b> is at the North Pole and <b>|1⟩</b> is at the South Pole. Superposition states lie on the equator or elsewhere on the surface."
+    },
+    "Postulates": {
+      q: "Which postulate of quantum mechanics describes how a closed system evolves over time?",
+      options: ["State Space", "Unitary Evolution", "Measurement", "Composite Systems"],
+      answer: 1,
+      explanation: "<b>Unitary Evolution</b> (Postulate 2) describes how a closed quantum system changes over time. It states that the evolution is governed by a <b>Unitary operator</b>, ensuring that the system allows for reversible operations and preserves probability."
+    },
+    "Linear Algebra": {
+      q: "Quantum operations are represented by matrices that preserve the norm. What are these matrices called?",
+      options: ["Orthogonal", "Hermitian", "Unitary", "Symmetric"],
+      answer: 2,
+      explanation: "Quantum gates must be <b>Unitary</b> matrices ($U^\\dagger U = I$). This property is required to preserve the total probability (the norm of the state vector) so that it remains equal to 1 after any operation."
+    },
+    "Inner Product": {
+      q: "What is the physical significance of an inner product result of 0 (⟨ψ|φ⟩ = 0) between two states?",
+      options: ["States are identical", "States are entangled", "States are orthogonal/distinguishable", "States are in superposition"],
+      answer: 2,
+      explanation: "When the inner product of two states is <b>0</b>, they are mathematically <b>Orthogonal</b>. Physically, this means the two states are perfectly distinguishable from each other with a single measurement."
+    },
+    "Measurement": {
+      q: "What happens to a quantum state immediately after a measurement is performed in a specific basis?",
+      options: ["It stays in superposition", "It collapses to one of the basis states", "It doubles its energy", "It entangles with all other qubits"],
+      answer: 1,
+      explanation: "Upon measurement, a quantum state undergoes <b>Collapse</b>. It instantly jumps from a superposition of possibilities into exactly <b>one of the basis states</b> (like |0⟩ or |1⟩) corresponding to the observed result."
+    },
+    "Unitary Gates": {
+      q: "If U is a unitary quantum gate, which of the following mathematical properties must hold true?",
+      options: ["U = U²", "U† = U", "U†U = I", "Det(U) = 0"],
+      answer: 2,
+      explanation: "A matrix is Unitary if its conjugate transpose ($U^\\dagger$) is measuring its inverse. Thus, the condition is <b>$U^\\dagger U = I$</b>. This ensures the operation is reversible and probability-conserving."
+    },
+    "Probability": {
+      q: "According to Born's Rule, if a state is |ψ⟩, the probability of outcome 'm' depends on:",
+      options: ["The color of the qubit", "The length of the vector", "The term ⟨ψ|Mm†Mm|ψ⟩", "The temperature of the chip"],
+      answer: 2,
+      explanation: "<b>Born's Rule</b> calculates the probability of measurement outcomes. For an outcome associated with measurement operator $M_m$, the probability is given by the expectation value <b>$⟨\\psi|M_m^\\dagger M_m|\\psi⟩$</b>."
+    },
+    "Qiskit SDK": {
+      q: "IBM's open-source framework for building and running quantum programs is named:",
+      options: ["TensorFlow", "Qiskit", "PyTorch", "Quil"],
+      answer: 1,
+      explanation: "<b>Qiskit</b> is the correct answer. It is the Python-based SDK developed by IBM for working with OpenQASM and running experiments on IBM Quantum processors and simulators."
+    },
+    "Quantum Circuits": {
+      q: "In a quantum circuit diagram, what do the horizontal lines typically represent?",
+      options: ["Energy levels", "Classical bits", "Qubit timelines", "Electrical wires"],
+      answer: 2,
+      explanation: "In a quantum circuit, the horizontal lines define the <b>Qubit Timelines</b>. Time flows from left to right, and gates placed on these lines act on the specific qubits as the computation proceeds."
+    },
+    "Gates (X,Y,Z,H)": {
+      q: "Which single-qubit gate is used primarily to create a 50/50 superposition from a basis state?",
+      options: ["Pauli-X", "Pauli-Z", "Hadamard (H)", "Identity (I)"],
+      answer: 2,
+      explanation: "The <b>Hadamard (H)</b> gate is the fundamental superposition gate. When applied to |0⟩, it creates the state $(|0⟩ + |1⟩)/\\sqrt{2}$, which has an equal 50% probability of being measured as 0 or 1."
+    },
+    "CNOT / Entanglement": {
+      q: "Which two-qubit gate is the standard tool for creating entanglement between a control and target qubit?",
+      options: ["SWAP", "CNOT (Controlled-NOT)", "Toffoli", "Fredkin"],
+      answer: 1,
+      explanation: "The <b>CNOT (Controlled-NOT)</b> gate is essential for entanglement. By flipping the target qubit *conditional* on the control qubit, it creates a correlation between them that cannot be described independently."
+    },
+    "Bell States": {
+      q: "The maximally entangled state (|00⟩ + |11⟩)/√2 is known as one of the:",
+      options: ["Dirac States", "Bell States", "Bloch States", "Grover States"],
+      answer: 1,
+      explanation: "The four maximally entangled two-qubit states are collectively known as <b>Bell States</b>. The specific state shown is the $\\Phi^+$ Bell state, named after John Bell."
+    },
+    "Simulators": {
+      q: "Which Qiskit simulator provides the exact mathematical state representation without measurement noise?",
+      options: ["qasm_simulator", "statevector_simulator", "pulse_simulator", "noise_simulator"],
+      answer: 1,
+      explanation: "The <b>statevector_simulator</b> calculates the ideal quantum state vector after every step. Unlike `qasm_simulator` which simulates shots and randomness, this returns the exact complex amplitudes."
+    },
+    "Statevector": {
+      q: "For a system containing 'n' qubits, how many complex amplitudes are contained in its statevector?",
+      options: ["n", "n²", "2n", "2^n"],
+      answer: 3,
+      explanation: "A quantum state space grows exponentially. For <b>n</b> qubits, the system exists in a superposition of <b>$2^n$</b> basis states, so the statevector contains <b>$2^n$</b> complex probability amplitudes."
+    },
+    "Visualization": {
+      q: "A Bloch sphere can only visualize a system containing how many qubits?",
+      options: ["Exactly 1", "Up to 3", "Any number", "Only entangled pairs"],
+      answer: 0,
+      explanation: "The <b>Bloch Sphere</b> represents a state vector in 3D space. It is mathematically valid <b>only for 1 qubit</b>. Multi-qubit states (especially entangled ones) cannot be mapped to a single sphere."
+    },
+    "Measurements Logic": {
+      q: "What is the command used in Qiskit to read out quantum data into a classical register?",
+      options: ["qc.read()", "qc.measure()", "qc.output()", "qc.collapse()"],
+      answer: 1,
+      explanation: "The command <b>`qc.measure()`</b> is used to perform a measurement. It collapses the qubit state and copies the resulting binary value (0 or 1) into a classical bit register for readout."
+    },
+    "Register Logic": {
+      q: "In Qiskit, what object holds the qubits that will be used in a building a circuit?",
+      options: ["ClassicalRegister", "QuantumRegister", "BitArray", "GateSet"],
+      answer: 1,
+      explanation: "Qubits are grouped into a <b>QuantumRegister</b>. When building a circuit, you define a `QuantumRegister` for your qubits and a `ClassicalRegister` for your measurement bits."
+    },
+    "Algorithms Speedups": {
+      q: "Shor's algorithm provides what type of speedup for factoring large numbers compared to classical methods?",
+      options: ["Linear", "Quadratic", "Exponential", "None"],
+      answer: 2,
+      explanation: "<b>Exponential Speedup</b>. While classical factoring is sub-exponential (hard), Shor's algorithm solves it in polynomial time ($O(n^3)$), which is exponentially faster for large inputs."
+    },
+    "Deutch Algorithm": {
+      q: "How many queries to the oracle does the Deutsch algorithm need to identify if a function is constant or balanced?",
+      options: ["0", "1", "2", "2^n"],
+      answer: 1,
+      explanation: "The <b>Deutsch Algorithm</b> is famous because it solves the problem with exactly <b>1 query</b>. A classical computer would need to check both inputs (2 queries) to know if the function is constant or balanced."
+    },
+    "DJ Algorithm": {
+      q: "The Deutsch-Jozsa algorithm generalizes Deutsch's logic to handle functions with how many inputs?",
+      options: ["Only 1", "Only 2", "Exactly 10", "Any number 'n'"],
+      answer: 3,
+      explanation: "The <b>Deutsch-Jozsa (DJ)</b> algorithm is an extension of Deutsch's algorithm to <b>any number 'n'</b> of input bits. It determines if an n-bit function is constant or balanced in just one query."
+    },
+    "Bernstein Vazirani": {
+      q: "What is the specific goal of the Bernstein-Vazirani algorithm?",
+      options: ["Factor integers", "Search a database", "Find a hidden bitstring 's'", "Simulate molecules"],
+      answer: 2,
+      explanation: "The <b>Bernstein-Vazirani</b> algorithm is designed to find a <b>Hidden Bitstring ($s$)</b>. By one application of the oracle sandwiched between Hadamard transforms, the string $s$ appears directly in the measurement readout."
+    },
+    "Oracles": {
+      q: "In Grover's algorithm, what is the primary role of the 'black box' oracle?",
+      options: ["Measure the system", "Flip the phase of the solution state", "Reset the qubits", "Compile the code"],
+      answer: 1,
+      explanation: "The Oracle in Grover's search identifies the target solution. It does this by <b>flipping the phase</b> (multiplying the amplitude by -1) of the correct state $|w⟩$, marking it for the diffuser to amplify later."
+    },
+    "Phase Kickback": {
+      q: "For phase kickback to occur, what must be true about the target qubit's state?",
+      options: ["It must be |0⟩", "It must be an eigenvector (like |-⟩)", "It must be |1⟩", "It must be measured"],
+      answer: 1,
+      explanation: "<b>Phase Kickback</b> happens when the target is an <b>eigenvector</b> of the operation (specifically the $|-⟩$ state for CX). The phase flipped on the target 'kicks back' to the control qubit."
+    },
+    "Balanced vs Constant": {
+      q: "A function that returns '0' for half of its possible inputs and '1' for the other half is called:",
+      options: ["Uniform", "Constant", "Balanced", "Random"],
+      answer: 2,
+      explanation: "This is the definition of a <b>Balanced</b> function. A Constant function would yield the same output (all 0s or all 1s) for every single input."
+    },
+    "Query Complexity": {
+      q: "Query complexity in quantum algorithms focus on the number of:",
+      options: ["Qubits used", "Gates in total", "Calls to the oracle", "Lines of code"],
+      answer: 2,
+      explanation: "<b>Calls to the Oracle</b>. In algorithm analysis, we count how many times we must 'ask' the black box function for an output. Quantum algorithms often reduce this number significantly."
+    },
+    "Hidden Bitstring": {
+      q: "Which gates are applied both before and after the oracle in Bernstein-Vazirani to extract the answer?",
+      options: ["Pauli-X", "Pauli-Z", "Hadamard (H)", "CNOT"],
+      answer: 2,
+      explanation: "The <b>Hadamard (H)</b> gate. Applying H to all qubits transforms the state from the computational basis to the phase basis (before oracle) and back (after oracle), allowing the interference to reveal the answer."
+    },
+    "Logic Reversibility": {
+      q: "Why are ancilla qubits often required to implement classical logic like 'AND' in quantum circuits?",
+      options: ["To speed up the gate", "To maintain reversibility (Unitary)", "To add noise", "To store the final answer"],
+      answer: 1,
+      explanation: "Classical logic gates like AND are irreversible (you can't determine inputs from output). Quantum gates must be Unitary (reversible). <b>Ancilla qubits</b> provide the extra 'space' needed to keep the information reversible."
+    },
+    "Grover Search": {
+      q: "What is the time complexity of Grover's search for a single target in a database of size N?",
+      options: ["O(log N)", "O(\\sqrt{N})", "O(N)", "O(N²)"],
+      answer: 1,
+      explanation: "Grover's Algorithm provides a quadratic speedup. While classical search takes $O(N)$, Grover takes <b>$O(\\sqrt{N})$</b>, which is significantly faster for large databases."
+    },
+    "QFT": {
+      q: "The Quantum Fourier Transform is a linear map between which two representations?",
+      options: ["Bits and Qubits", "Basis states and phase states", "Input and Output", "Real and Imaginary"],
+      answer: 1,
+      explanation: "The <b>QFT</b> maps a vector from the computational basis (states like $|0⟩, |1⟩$) to the <b>Fourier (or Phase) basis</b>. It encodes the information into the relative phases of the qubits."
+    },
+    "Amplitude Amplification": {
+      q: "What is the primary effect of amplitude amplification on the solution state in Grover's algorithm?",
+      options: ["It makes it negative", "It reduces its probability", "It increases its probability amplitude", "It entangles it with 0"],
+      answer: 2,
+      explanation: "<b>Amplitude Amplification</b> is the process where constructive interference increases the <b>probability amplitude</b> (and thus likelihood of measurement) of the correct solution, while destructive interference cancels out the wrong ones."
+    },
+    "Diffuser": {
+      q: "The Grover Diffuser operator is mathematically equivalent to which operation?",
+      options: ["Measurement", "Inversion about the mean", "Bit flip", "Random walk"],
+      answer: 1,
+      explanation: "The Diffuser performs an <b>Inversion about the Mean</b>. It reflects every amplitude across the average amplitude of the whole system, effectively boosting the 'marked' negative state to be a large positive one."
+    },
+    "Phase Estimation": {
+      q: "Quantum Phase Estimation is a key primitive used to estimate what property of a unitary operator?",
+      options: ["Its size", "Its eigenvalues (phases)", "Its determinant", "Its rank"],
+      answer: 1,
+      explanation: "QPE is designed to estimate the <b>Eigenvalues</b> (specifically the phase component $\\theta$) of a Unitary operator $U$, given one of its eigenvectors."
+    },
+    "Period Finding": {
+      q: "Period finding is the core mathematical problem solved (via QFT) in which famous algorithm?",
+      options: ["Grover's", "DJ", "Shor's", "Deutsch"],
+      answer: 2,
+      explanation: "<b>Shor's Algorithm</b> relies entirely on Period Finding. It reduces the problem of factoring an integer $N$ to the problem of finding the period $r$ of the function $f(x) = a^x \\pmod{N}$."
+    },
+    "Iterations count": {
+      q: "What happens if you run too many iterations of Grover's search algorithm?",
+      options: ["The computer crashes", "The solution becomes perfect", "Over-rotation reduces success probability", "The qubits melt"],
+      answer: 2,
+      explanation: "Grover's involves rotation. If you rotate too far (too many iterations), you pas the target state. This <b>Over-rotation</b> causes the probability of measuring the correct answer to <b>decrease</b>."
+    },
+    "Oracle types": {
+      q: "In Grover's search, a phase oracle marks the solution by changing its:",
+      options: ["Color", "Magnitude", "Phase (sign)", "Register"],
+      answer: 2,
+      explanation: "A <b>Phase Oracle</b> identifies the solution $|w⟩$ by analyzing it and flipping its <b>Phase</b> (multiplying by -1). It does not flip the bit value (0 to 1), but changes the quantum sign."
+    },
+    "Complexity √N": {
+      q: "Compared to a classical search (O(N)), Grover's O(\\sqrt{N}) speedup is considered:",
+      options: ["Linear", "Quadratic", "Exponential", "Logarithmic"],
+      answer: 1,
+      explanation: "Since mathematically $\\sqrt{N} = N^{1/2}$, the speedup related to the square root is called a <b>Quadratic</b> speedup. It is substantial, though not as dramatic as the exponential speedup of Shor's."
+    },
+    "Phase shift": {
+      q: "Gates like Rz(θ) or the S-gate are types of:",
+      options: ["Bit flips", "Phase shifts", "Measurements", "Resets"],
+      answer: 1,
+      explanation: "These are <b>Phase Shift</b> gates. They leave the |0⟩ component alone but change the phase of the |1⟩ component by some angle $\\theta$ (e.g., $e^{i\\theta}$), rotating the state around the Z-axis."
+    }
+  };
+
+  const topics = [
+    ["State Space", "Dirac Notation", "Qubits", "Bloch Sphere", "Postulates", "Linear Algebra", "Inner Product", "Measurement", "Unitary Gates", "Probability"],
+    ["Qiskit SDK", "Quantum Circuits", "Gates (X,Y,Z,H)", "CNOT / Entanglement", "Bell States", "Simulators", "Statevector", "Visualization", "Measurements Logic", "Register Logic"],
+    ["Algorithms Speedups", "Deutch Algorithm", "DJ Algorithm", "Bernstein Vazirani", "Oracles", "Phase Kickback", "Balanced vs Constant", "Query Complexity", "Hidden Bitstring", "Logic Reversibility"],
+    ["Grover Search", "QFT", "Amplitude Amplification", "Diffuser", "Phase Estimation", "Period Finding", "Iterations count", "Oracle types", "Complexity √N", "Phase shift"]
+  ];
+
+  const topicName = topics[week - 1][(qNum - 1) % 10];
+  const technicalExtract = technicalLibrary[topicName];
+  const qInfo = questionsData[topicName];
+
+  return {
+    question: `Challenge ${qNum}: ${qInfo.q}`,
+    options: qInfo.options,
+    answer: qInfo.answer,
+    clue: technicalExtract,
+    explanation: qInfo.explanation
+  };
+}
+
+const LOCATION_DATA = {
+  "Andhra Pradesh": [
+    "Adarsh College of Engineering, Chebrolu",
+    "Aditya College of Engineering & Technology, Surampalem",
+    "Aditya College of Engineering, Madanapalle",
+    "Aditya College of Engineering, Surampalem",
+    "Aditya Institute of Technology and Management (AITAM), Tekkali",
+    "Amrita Sai Institute of Science and Technology, Paritala",
+    "Anantha Lakshmi Institute of Technology & Sciences, Anantapur",
+    "Andhra Loyola Institute of Engineering and Technology, Vijayawada",
+    "Andhra University College of Engineering (AU), Visakhapatnam",
+    "Andhra University College of Engineering for Women, Visakhapatnam",
+    "Anil Neerukonda Institute of Technology and Sciences (ANITS), Visakhapatnam",
+    "Annamacharya Institute of Technology & Sciences, Rajampet",
+    "Annamacharya Institute of Technology & Sciences, Tirupati",
+    "ANU College of Engineering & Technology, Guntur",
+    "Audisankara College of Engineering & Technology, Gudur",
+    "Bapatla Engineering College, Bapatla",
+    "Bonam Venkata Chalamayya Engineering College, Odalarevu",
+    "Chadalawada Ramanamma Engineering College (CREC), Tirupati",
+    "Chalapathi Institute of Engineering and Technology, Guntur",
+    "D.N.R. College of Engineering & Technology, Bhimavaram",
+    "Devineni Venkata Ramana & Dr. Hima Sekhar MIC College of Technology",
+    "G. Pulla Reddy Engineering College (GPREC), Kurnool",
+    "G. Pullaiah College of Engineering and Technology, Kurnool",
+    "Gayatri Vidya Parishad College of Engineering (GVPCE), Visakhapatnam",
+    "Gayatri Vidya Parishad College of Engineering Wait for Degree and PG Courses",
+    "Geeanjali Institute of Science and Technology, Nellore",
+    "GITAM Institute of Technology, Visakhapatnam",
+    "Gudlavalleru Engineering College, Gudlavalleru",
+    "GVP College of Engineering for Women, Visakhapatnam",
+    "Helapuri Institute of Technology and Science, Eluru",
+    "IIITDM Kurnool",
+    "IIT Tirupati",
+    "Jawaharlal Nehru Technological University College of Engineering, Kakinada",
+    "JNTUA College of Engineering, Anantapuramu",
+    "JNTUA College of Engineering, Kalikiri",
+    "JNTUA College of Engineering, Pulivendula",
+    "JNTUK College of Engineering, Narasaraopeta",
+    "JNTUK College of Engineering, Vizianagaram",
+    "K Lakshmaiah Education Foundation (KL University), Guntur",
+    "Kakinada Institute of Engineering & Technology (KIET), Kakinada",
+    "Kallam Haranadhareddy Institute of Technology, Guntur",
+    "KL College of Engineering, Vijayawada",
+    "Laki Reddy Bali Reddy College of Engineering (LBRCE), Mylavaram",
+    "Lendi Institute of Engineering and Technology, Vizianagaram",
+    "Madanapalle Institute of Technology and Science (MITS), Madanapalle",
+    "Maharaj Vijayaram Gajapathi Raj (MVGR) College of Engineering, Vizianagaram",
+    "Nallamala Reddy Engineering College, Ghatkesar",
+    "Narasaraopeta Engineering College, Narasaraopet",
+    "National Institute of Technology (NIT), Tadepalligudem",
+    "NBKR Institute of Science and Technology, Vidyanagar",
+    "NRI Institute of Technology (NRIIT), Agiripalli",
+    "NTR University College of Engineering, Vizianagaram",
+    "P.B.R. Visvodaya Institute of Technology & Science, Kavali",
+    "Pace Institute of Technology and Sciences, Ongole",
+    "Pragati Engineering College, Surampalem",
+    "Prasad V. Potluri Siddhartha Institute of Technology (PVPSIT), Vijayawada",
+    "QIS College of Engineering and Technology, Ongole",
+    "R.V.R. & J.C. College of Engineering, Guntur",
+    "Raghu Engineering College, Visakhapatnam",
+    "Rajeev Gandhi Memorial College of Engineering and Technology (RGMCET), Nandyal",
+    "Ramachandra College of Engineering (Autonomous), Eluru",
+    "Sagi Rama Krishnam Raju (SRKR) Engineering College, Bhimavaram",
+    "Santhiram Engineering College, Nandyal",
+    "Sree Vahini Institute of Science & Technology (SVIST), Tiruvuru",
+    "Sree Vidyanikethan Engineering College, Tirupati",
+    "Sri Padmavati Mahila Visvavidyalayam (Women's University), Tirupati",
+    "Sri Venkateswara College of Engineering (SVCE), Tirupati",
+    "Sri Venkateswara University College of Engineering (SVUCE), Tirupati",
+    "SRM University-AP, Amaravati",
+    "University College of Engineering JNTUK, Narasaraopet",
+    "Vasireddy Venkatadri Institute of Technology (VVIT), Guntur",
+    "Velagapudi Ramakrishna Siddhartha Engineering College (VRSEC), Vijayawada",
+    "Vignan's Foundation for Science, Technology and Research (Vignan University), Guntur",
+    "Vignan's Institute of Information Technology (VIIT), Visakhapatnam",
+    "Vignan's Lara Institute of Technology & Science, Guntur",
+    "Vishnu Institute of Technology, Bhimavaram",
+    "VIT-AP University, Amaravati",
+    "Other (Not Listed)"
+  ],
+  "Telangana": [
+    "AAR Mahaveer Engineering College, Hyderabad",
+    "ACE Engineering Academy, Hyderabad",
+    "Aizza College of Engineering and Technology",
+    "Al-Habeeb College of Engineering and Technology, Hyderabad",
+    "Anjamma Agi Reddy Engineering College for Women, Hyderabad",
+    "Annamacharya Institute of Technology and Science, Hyderabad",
+    "Anurag University (Anurag Group of Institutions), Ghatkesar",
+    "Aurora's Engineering College, Bhongir",
+    "Aurora's Scientific Technological and Research Academy, Hyderabad",
+    "Aurora's Technological and Research Institute, Hyderabad",
+    "B V Raju Institute of Technology (BVRIT), Narsapur",
+    "Bharat Institute of Engineering and Technology (BIET), Hyderabad",
+    "BITS Pilani - Hyderabad Campus",
+    "BVRIT Hyderabad College of Engineering for Women",
+    "Chaitanya Bharathi Institute of Technology (CBIT), Gandipet",
+    "CMR College of Engineering & Technology (CMRCET), Medchal",
+    "CMR Institute of Technology (CMRIT), Hyderabad",
+    "CMR Technical Campus, Hyderabad",
+    "CVR College of Engineering, Ibrahimpatan",
+    "Dr. Paul Raj's Engineering College, Bhadrachalam",
+    "DVR College of Engineering and Technology, Hyderabad",
+    "G. Narayanamma Institute of Technology and Science (GNITS) for Women, Hyderabad",
+    "Geethanjali College of Engineering and Technology, Cheeryal",
+    "Gokaraju Rangaraju Institute of Engineering and Technology (GRIET), Hyderabad",
+    "Guru Nanak Institute of Technology (GNIT), Ibrahimpatan",
+    "Guru Nanak Institutions Technical Campus (GNITC), Hyderabad",
+    "Hyderabad Institute of Technology and Management (HITAM)",
+    "IIIT Hyderabad (International Institute of Information Technology)",
+    "IIT Hyderabad (Indian Institute of Technology)",
+    "Institute of Aeronautical Engineering (IARE), Dundigal",
+    "J.B. Institute of Engineering and Technology (JBIET), Hyderabad",
+    "JNTUH College of Engineering, Hyderabad (Kukatpally)",
+    "JNTUH College of Engineering, Jagtial",
+    "JNTUH College of Engineering, Manthani",
+    "JNTUH College of Engineering, Sultanpur",
+    "Kakatiya Institute of Technology and Science (KITS), Warangal",
+    "Kakatiya University College of Engineering (KUCE), Kothagudem",
+    "Keshav Memorial Institute of Technology (KMIT), Narayanguda",
+    "Kshatriya College of Engineering (KCEA), Nizamabad",
+    "Lords Institute of Engineering & Technology, Hyderabad",
+    "Mahatma Gandhi Institute of Technology (MGIT), Gandipet",
+    "Mahindra University, Hyderabad",
+    "Malla Reddy College of Engineering and Technology (MRCET), Hyderabad",
+    "Malla Reddy Engineering College (MREC), Medchal",
+    "Malla Reddy Engineering College for Women, Hyderabad",
+    "Malla Reddy Institute of Technology and Science (MRITS)",
+    "Matrusri Engineering College, Saidabad",
+    "Matrusri Institute of Post Graduate Studies, Hyderabad",
+    "Methodist College of Engineering and Technology, Abids",
+    "MLR Institute of Technology (MLRIT), Dundigal",
+    "Muffakham Jah College of Engineering and Technology (MJCET), Hyderabad",
+    "MVSR Engineering College, Nadergul",
+    "Nalla Narasimha Reddy Education Society's Group of Institutions, Ghatkesar",
+    "National Institute of Technology (NIT), Warangal",
+    "Neil Gogte Institute of Technology (NGIT), Uppal",
+    "Netaji Institute of Engineering and Technology, Hyderabad",
+    "Osmania University College of Engineering (OUCE), Hyderabad",
+    "Osmania University College of Technology, Hyderabad",
+    "Palla Reddy Engineering College, Hyderabad",
+    "Pulipati Prasad Institute of Technology and Science",
+    "Rajiv Gandhi University of Knowledge Technologies (RGUKT), Basar",
+    "Sreenidhi Institute of Science and Technology (SNIST), Ghatkesar",
+    "SRI Indu College of Engineering and Technology, Ibrahimpatan",
+    "Sri Vishweswaraya Institute of Technology and Science, Mahabubnagar",
+    "St. Martin's Engineering College, Dhulapally",
+    "St. Mary's Engineering College, Hyderabad",
+    "St. Mary's Group of Institutions, Deshmukhi",
+    "Swami Ramananda Tirtha Institute of Science & Technology, Nalgonda",
+    "Swami Vivekananda Institute of Technology (SVIT), Secunderabad",
+    "TKR College of Engineering and Technology, Meerpet",
+    "TRR College of Engineering and Technology, Medak",
+    "Vagdevi College of Engineering, Warangal",
+    "Vardhaman College of Engineering (VCE), Shamshabad",
+    "Vasavi College of Engineering (VCE), Ibrahimbagh",
+    "Vignan Institute of Technology and Science, Deshmukhi",
+    "Vignan's Institute of Management and Technology for Women, Ghatkesar",
+    "Vijay Rural Engineering College, Nizamabad",
+    "VNR Vignana Jyothi Institute of Engineering and Technology (VNRVJIET), Bachupally",
+    "Woxsen University, Hyderabad",
+    "Other (Not Listed)"
+  ],
+  "Tamil Nadu": [
+    "IIT Madras", "Anna University, Chennai", "VIT Vellore", "SRM University, Kattankulathur",
+    "PSG College of Technology", "SSN College of Engineering", "Saveetha Engineering College",
+    "Kamaraj College of Engineering", "Muthayammal Engineering College", "Thiagarajar College",
+    "St. Joseph's College of Engineering", "Velammal Engineering College", "Bharathiar University",
+    "Amrita Vishwa Vidyapeetham", "Sastra University", "Other (Not Listed)"
+  ],
+  "Karnataka": [
+    "IISc Bangalore", "NIT Surathkal", "PES University", "RV College of Engineering",
+    "M S Ramaiah Institute", "Sahyadri College", "Gogte Institute of Technology",
+    "Manipal Institute of Technology", "BMS College of Engineering", "Siddaganga Institute",
+    "Vidyavardhaka College", "Bangalore Institute of Technology", "Other (Not Listed)"
+  ],
+  "Maharashtra": [
+    "IIT Bombay", "COEP Pune", "VNIT Nagpur", "VJTI Mumbai", "Sardar Patel Institute (SPIT)",
+    "MIT World Peace University", "G. H. Raisoni College", "A. G. Patil Institute",
+    "College of Engineering Pune", "Pune Institute of Computer Technology (PICT)",
+    "Vishwakarma Institute (VIT)", "Vidyalankar Institute", "Other (Not Listed)"
+  ],
+  "Uttar Pradesh": [
+    "IIT Kanpur", "IIT BHU Varanasi", "Amity University", "BBD University",
+    "Ajay Kumar Garg Engineering College", "KIET Group of Institutions", "ABES Engineering College",
+    "Noida Institute of Engineering", "United College of Engineering", "Other (Not Listed)"
+  ],
+  "West Bengal": [
+    "IIT Kharagpur", "Jadavpur University", "Techno India University", "Heritage Institute",
+    "Government College of Engineering", "Future Institute of Technology", "Other (Not Listed)"
+  ]
+};
+
+const TRANSLATIONS = {
+  en: {
+    home: "Home", dashboard: "Dashboard", downloads: "Downloads", login: "Login", signup: "Sign Up",
+    profile: "Profile", logout: "Log Out", welcome: "Hi", journey: "Journey: 950+ Questions to Mastery",
+    questions: "950+ Quantum Questions", sets_info: "Lecture/Video/NPTEL Sets | 10 Questions per Set",
+    daily_insight: "Daily Insight", start_learning: "Start Learning", full_name: "Full Name",
+    email: "Email Address", mobile: "Mobile Number", role: "Role", password: "Password",
+    create_password: "Create Password", state: "State", college: "College Name",
+    enrolled: "NPTEL Introduction to QC: Enrolled?", exam: "NPTEL Exam Registration?",
+    yes: "Yes", no: "No", complete_reg: "Complete Registration",
+    reg_title: "Create Your Portfolio", reg_sub: "Secure your access to Quantum Mastery",
+    back_msg: "Welcome Back!", login_sub: "Log in to continue your mastery",
+    no_account: "Don't have an account?", have_account: "Already have an account?",
+    search_college: "Search or Type College", select_state: "Select State", select_state_first: "Select State First",
+    faculty: "Faculty (Professor/Teacher)", individual: "Individual (Professional)", student: "Student (Student/Scholar)",
+    overview: "Home Overview", full_dashboard: "Full Dashboard", course_downloads: "Course Downloads",
+    quiz_sets: "Interactive Quiz Sets", account: "Account",
+    quiz_lecture: "Lecture PDF Quiz",
+    quiz_video: "Video Quiz",
+    quiz_nptel: "NPTEL Quiz/Solutions",
+    assignment: "Assignment",
+    week_label: "Week"
+  },
+  ta: {
+    home: "முகப்பு", dashboard: "டாஷ்போர்டு", downloads: "பதிவிறக்கங்கள்", login: "உள்நுழை", signup: "பதிவு செய்",
+    profile: "சுயவிவரம்", logout: "வெளியேறு", welcome: "வணக்கம்", journey: "பயணம்: 950+ கேள்விகளில் தேர்ச்சி",
+    questions: "950+ குவாண்டம் கேள்விகள்", sets_info: "Lecture/Video/NPTEL தொகுப்புகள் | ஒரு தொகுப்பிற்கு 10 கேள்விகள்",
+    daily_insight: "தினசரி நுண்ணறிவு", start_learning: "கற்றலைத் தொடங்கு", full_name: "முழு பெயர்",
+    email: "மின்னஞ்சல் முகவரி", mobile: "கைபேசி எண்", role: "பங்கு", password: "கடவுச்சொல்",
+    create_password: "கடவுச்சொல்லை உருவாக்கு", state: "மாநிலம்", college: "கல்லூரி பெயர்",
+    enrolled: "NPTEL Introduction to QC: சேர்ந்தாரா?", exam: "NPTEL க்கான தேர்வு பதிவு?",
+    yes: "ஆம்", no: "இல்லை", complete_reg: "பதிவை முடி",
+    reg_title: "உங்கள் சுயவிவரத்தை உருவாக்கவும்", reg_sub: "உங்கள் குவாண்டம் மாஸ்டரி அணுகலைப் பாதுகாக்கவும்",
+    back_msg: "மீண்டும் வருக!", login_sub: "உங்கள் கற்றலைத் தொடர உள்நுழையவும்",
+    no_account: "கணக்கு இல்லையா?", have_account: "ஏற்கனவே கணக்கு வைத்திருக்கிறீர்களா?",
+    search_college: "தேடு அல்லது கல்லூரி பெயரை தட்டச்சு செய்க", select_state: "மாநிலத்தைத் தேர்ந்தெடுக்கவும்", select_state_first: "முதலில் மாநிலத்தைத் தேர்ந்தெடுக்கவும்",
+    faculty: "ஆசிரியர் (பேராசிரியர்/ஆசிரியர்)", individual: "தனிநபர் (தொழில்முறை)", student: "மாணவர் (மாணவர்/அறிஞர்)",
+    overview: "முகப்பு மேலோட்டம்", full_dashboard: "முழு டாஷ்போர்டு", course_downloads: "பாடப் பதிவிறக்கங்கள்",
+    quiz_sets: "வினாடி வினா தொகுப்புகள்", account: "கணக்கு",
+    quiz_lecture: "Lecture PDF வினாடி வினா",
+    quiz_video: "Video வினாடி வினா",
+    quiz_nptel: "NPTEL வினாடி வினா/தீர்வுகள்",
+    assignment: "ஒப்படைப்பு",
+    week_label: "வாரம்"
+  },
+  te: {
+    home: "హోమ్", dashboard: "డాష్‌బోర్డ్", downloads: "డౌన్‌లోడ్‌లు", login: "లాగిన్", signup: "సైన్ అప్",
+    profile: "ప్రొఫైల్", logout: "లాగ్ అవుట్", welcome: "హాయ్", journey: "ప్రయాణం: 950+ ప్రశ్నలలో నైపుణ్యం",
+    questions: "950+ క్వాంటం ప్రశ్నలు", sets_info: "Lecture/Video/NPTEL సెట్లు | ఒక సెట్‌కు 10 ప్రశ్నలు",
+    daily_insight: "రోజువారీ అంతర్దృష్టి", start_learning: "నేర్చుకోవడం ప్రారంభించండి", full_name: "పూర్తి పేరు",
+    email: "ఈమెయిల్ చిరునామా", mobile: "మొబైల్ సంఖ్య", role: "పాత్ర", password: "పాస్‌వర్డ్",
+    create_password: "పాస్‌వర్డ్‌ను సృష్టించండి", state: "రాష్ట్రం", college: "కళాశాల పేరు",
+    enrolled: "NPTEL Introduction to QC: చేరారా?", exam: "NPTEL పరీక్ష రిజిస్ట్రేషన్?",
+    yes: "అవును", no: "కాదు", complete_reg: "రిజిస్ట్రేషన్ పూర్తి చేయండి",
+    reg_title: "మీ పోర్ట్‌ఫోలియోను సృష్టించండి", reg_sub: "క్వాంటం మాస్టరీకి మీ యాక్సెస్‌ను సురక్షితం చేసుకోండి",
+    back_msg: "స్వాగతం!", login_sub: "మీ శిక్షణను కొనసాగించడానికి లాగిన్ అవ్వండి",
+    no_account: "ఖాతా లేదా?", have_account: "ఇప్పటికే ఖాతా ఉందా?",
+    search_college: "శోధించండి లేదా కళాశాల పేరు టైప్ చేయండి", select_state: "రాష్ట్రం ఎంచుకోండి", select_state_first: "ముందుగా రాష్ట్రాన్ని ఎంచుకోండి",
+    faculty: "ఫ్యాకల్టీ (ప్రొఫెసర్/టీచర్)", individual: "వ్యక్తిగత (ప్రొఫెషనల్)", student: "విద్యార్థి (విద్యార్థి/స్కాలర్)",
+    overview: "హోమ్ అవలోకనం", full_dashboard: "పూర్తి డాష్‌బోర్డ్", course_downloads: "కోర్సు డౌన్‌లోడ్‌లు",
+    quiz_sets: "క్విజ్ సెట్లు", account: "ఖాతా",
+    quiz_lecture: "Lecture PDF క్విజ్",
+    quiz_video: "Video క్విజ్",
+    quiz_nptel: "NPTEL క్విజ్/సమాధానాలు",
+    assignment: "అసైన్ మెంట్",
+    week_label: "వారం"
+  },
+  hi: {
+    home: "होम", dashboard: "डैशबोर्ड", downloads: "डाउनलोड", login: "लॉगिन", signup: "साइन अप",
+    profile: "प्रोफ़ाइल", logout: "लॉग आउट", welcome: "नमस्ते", journey: "यात्रा: 950+ प्रश्नों में महारत",
+    questions: "950+ क्वांटम प्रश्न", sets_info: "Lecture/Video/NPTEL सेट | प्रति सेट 10 प्रश्न",
+    daily_insight: "दैनिक अंतर्दृष्टि", start_learning: "सीखना शुरू करें", full_name: "पूरा नाम",
+    email: "ईमेल पता", mobile: "मोबाइल नंबर", role: "भूमिका", password: "पासवर्ड",
+    create_password: "पासवर्ड बनाएं", state: "राज्य", college: "कॉलेज का नाम",
+    enrolled: "NPTEL Introduction to QC: नामांकित?", exam: "NPTEL परीक्षा पंजीकरण?",
+    yes: "हाँ", no: "नहीं", complete_reg: "पंजीकरण पूरा करें",
+    reg_title: " अपना पोर्टफोलियो बनाएं", reg_sub: "क्वांटम माస్టरी के लिए अपनी पहुंच सुरक्षित करें",
+    back_msg: "वापस स्वागत है!", login_sub: "अपनी मास्टरी जारी रखने के लिए लॉगिन करें",
+    no_account: "खाता नहीं है?", have_account: "क्या आपके पास पहले से खाता है?",
+    search_college: "कॉलेज खोजें या टाइप करें", select_state: "राज्य चुनें", select_state_first: "पहले राज्य चुनें",
+    faculty: "संकाय (प्रोफेसर/शिक्षक)", individual: "व्यक्तिगत (प्रोफेशनल)", student: "छात्र (छात्र/विद्वान)",
+    overview: "होम अवलोकन", full_dashboard: "पूर्ण डैशबोर्ड", course_downloads: "कोर्स डाउनलोड",
+    quiz_sets: "क्विज़ सेट", account: "खाता",
+    quiz_lecture: "Lecture PDF क्विज़",
+    quiz_video: "Video क्विज़",
+    quiz_nptel: "NPTEL क्विज़/समाधान",
+    assignment: "असाइनमेंट",
+    week_label: "सप्ताह"
+  }
+};
+
+const WEEKS_DATA = [1, 2, 3, 4].map(w => {
+  const quizzes = [];
+  const videoCounts = { 1: 8, 2: 4, 3: 4, 4: 7 };
+  const videoCount = videoCounts[w];
+  const lectureCount = (w === 1) ? 8 : 10;
+
+  // Lecture PDF
+  for (let i = 1; i <= lectureCount; i++) {
+    quizzes.push({ id: i, type: 'lecture', questions: Array.from({ length: 10 }, (_, q) => generateQuestion(w, i, q + 1)) });
+  }
+
+  // Video Lessons (Limited by availability of PDFs: 8, 4, 4, 7)
+  for (let i = 11; i < 11 + videoCount; i++) {
+    quizzes.push({ id: i, type: 'video', questions: Array.from({ length: 10 }, (_, q) => generateQuestion(w, i, q + 1)) });
+  }
+
+  // 5 NPTEL (Assignment & Solutions)
+  for (let i = 21; i <= 25; i++) {
+    quizzes.push({ id: i, type: 'nptel', questions: Array.from({ length: 10 }, (_, q) => generateQuestion(w, i, q + 1)) });
+  }
+
+  return {
+    week: w,
+    title: {
+      en: ["Foundations", "Qiskit Programming", "Standard Algorithms", "Advanced Speedups"][w - 1],
+      ta: ["அடிப்படைகள்", "Qiskit நிரலாக்கம்", "நிலையான வழிமுறைகள்", "மேம்பட்ட வேகப்படுத்துதல்கள்"][w - 1],
+      te: ["పునాదులు", "Qiskit ప్రోగ్రామింగ్", "ప్రామాణిక అల్గారిథమ్స్", "అడ్వాన్స్‌డ్ స్పీడప్స్"][w - 1],
+      hi: ["बुनियाद", "Qiskit प्रोग्रामिंग", "मानक एल्गोरिदम", "उन्नत स्पीडअप"][w - 1]
+    },
+    quizzes: quizzes
+  };
+});
+
+const VIDEO_TITLES = {
+  1: [
+    "Algorithms towards Quantum Advantage",
+    "Application of Quantum - Introduction",
+    "Quantum Computing Basics",
+    "Postulates of Quantum Mechanics - I",
+    "Postulates of Quantum Mechanics - II",
+    "Quantum Measurements",
+    "Quantum Gates and Circuits - Part 1",
+    "Quantum Gates and Circuits - Part 2"
+  ],
+  2: [
+    "Introduction to Qiskit",
+    "Quantum States and Operations",
+    "Measurement and Visualization",
+    "Building Quantum Circuits"
+  ],
+  3: [
+    "Deutsch-Jozsa Algorithm",
+    "Bernstein-Vazirani Algorithm",
+    "Grover Search Theory",
+    "Grover Implementation (Qiskit)"
+  ],
+  4: [
+    "Variational Quantum Algorithms",
+    "VQE Framework",
+    "VQE for Quantum Chemistry",
+    "Finance Applications (QGANs)",
+    "Quantum Error Correction (Intro)",
+    "Bit-Flip Error Code",
+    "Error Detection & Syndromes"
+  ]
+};
+
+class QuantumApp {
+  constructor() {
+    this.root = document.getElementById('app-root');
+    this.sidebar = document.getElementById('sidebar');
+    try {
+      this.userProgress = JSON.parse(localStorage.getItem('qp4_progress') || '{"scores":{}}');
+    } catch (e) {
+      console.warn("Corrupt progress data, resetting...", e);
+      this.userProgress = { "scores": {} };
+    }
+    try {
+      this.user = JSON.parse(localStorage.getItem('qp4_user') || 'null');
+    } catch (e) {
+      console.warn("Corrupt user data, resetting...", e);
+      this.user = null;
+    }
+    this.lang = localStorage.getItem('qp4_lang') || 'en';
+    this.state = { view: 'home', week: 1, setId: 1, qIdx: 0, score: 0, answers: [], activeQIndices: null, expandedWeek: 1 };
+    this.currentTheme = localStorage.getItem('quantum_theme') || 'default';
+    this.setTheme(this.currentTheme);
+    this.init();
+    this.checkSession();
+  }
+  t(key) {
+    return TRANSLATIONS[this.lang][key] || TRANSLATIONS['en'][key] || key;
+  }
+  setLanguage(l) {
+    this.lang = l;
+    localStorage.setItem('qp4_lang', l);
+    this.render();
+  }
+  async saveProgress() {
+    if (!this.user || !supabaseClient) return;
+    const { error } = await supabaseClient
+      .from('user_progress')
+      .upsert({
+        user_id: this.user.id,
+        scores: this.userProgress.scores,
+        updated_at: new Date()
+      }, { onConflict: 'user_id' });
+    if (error) console.error('Save error:', error);
+  }
+
+  updateSimulator(week, count) {
+    if (!this.userProgress.scores) this.userProgress.scores = {};
+    const key = `sim_w${week}`;
+    if (count > (this.userProgress.scores[key] || 0)) {
+      this.userProgress.scores[key] = count;
+      localStorage.setItem('qp4_progress', JSON.stringify(this.userProgress));
+      this.saveProgress();
+    }
+  }
+
+  async checkSession() {
+    if (!supabaseClient) return;
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (session) {
+      const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', session.user.id).single();
+      if (profile) {
+        this.user = { id: session.user.id, name: profile.full_name, role: profile.role, details: profile };
+        localStorage.setItem('qp4_user', JSON.stringify(this.user));
+
+        // Sync Progress
+        const { data: prog } = await supabaseClient.from('user_progress').select('scores').eq('user_id', session.user.id).single();
+        if (prog && prog.scores) {
+          const cloud = prog.scores;
+          const local = this.userProgress.scores || {};
+          const merged = { ...local, ...cloud };
+          // Ensure max score is kept
+          Object.keys(local).forEach(k => {
+            if ((local[k] || 0) > (merged[k] || 0)) merged[k] = local[k];
+          });
+          this.userProgress.scores = merged;
+          localStorage.setItem('qp4_progress', JSON.stringify(this.userProgress));
+        }
+
+        this.render();
+      }
+    }
+  }
+  setTheme(themeName) {
+    this.currentTheme = themeName;
+    localStorage.setItem('quantum_theme', themeName);
+    if (themeName === 'default') {
+      document.documentElement.removeAttribute('data-theme');
+    } else {
+      document.documentElement.setAttribute('data-theme', themeName);
+    }
+    const dropdown = document.getElementById('theme-dropdown');
+    if (dropdown) dropdown.classList.remove('show');
+  }
+  toggleThemeDropdown() {
+    const dropdown = document.getElementById('theme-dropdown');
+    if (dropdown) dropdown.classList.toggle('show');
+  }
+  init() {
+    this.renderSidebar();
+    this.handleRouting();
+    window.onpopstate = () => this.handleRouting();
+  }
+  handleRouting() {
+    const p = new URLSearchParams(window.location.search);
+    this.state.view = p.get('v') || 'home';
+    this.state.week = parseInt(p.get('w')) || 1;
+    this.state.setId = parseInt(p.get('s')) || 1;
+    this.state.type = p.get('t') || null;
+    if (p.get('w')) this.state.expandedWeek = parseInt(p.get('w'));
+
+    // Reset state when starting a new quiz sequence
+    if (this.state.view === 'play' && this.state.qIdx === 0 && (!this.state.answers || this.state.answers.length > 0)) {
+      if (this.state.qIdx === 0) {
+        this.state.answers = [];
+        this.state.activeQIndices = null; // Reset retry filter
+      }
+    }
+    this.render();
+  }
+  navigate(v, w, s, t) {
+    if (v === 'logout') {
+      localStorage.removeItem('qp4_user');
+      localStorage.removeItem('qp4_progress');
+      this.user = null;
+      this.userProgress = { scores: {} };
+      this.navigate('login');
+      return;
+    }
+    const u = new URL(window.location);
+    u.searchParams.set('v', v);
+    if (w) {
+      u.searchParams.set('w', w);
+      this.state.expandedWeek = parseInt(w);
+    } else u.searchParams.delete('w');
+    if (s) u.searchParams.set('s', s); else u.searchParams.delete('s');
+    if (t) u.searchParams.set('t', t); else u.searchParams.delete('t');
+    history.pushState({}, '', u);
+    this.handleRouting();
+  }
+  toggleSidebarWeek(w) {
+    this.state.expandedWeek = (this.state.expandedWeek === w ? null : w);
+    this.renderSidebar();
+  }
+  renderSidebar() {
+    if (this.state.view === 'login' || this.state.view === 'signup') {
+      this.sidebar.style.display = 'none';
+      return;
+    }
+    this.sidebar.style.display = 'block';
+
+    let h = `<div class="sidebar-group">
+                  <a class="sidebar-item" onclick="app.navigate('home')">🏠 ${this.t('overview')}</a>
+                  <a class="sidebar-item" onclick="app.navigate('dashboard')">📈 ${this.t('full_dashboard')}</a>
+                </div>`;
+    WEEKS_DATA.forEach(w => {
+      const isExpanded = this.state.expandedWeek === w.week;
+      h += `<div class="sidebar-group">
+                <div class="sidebar-title ${isExpanded ? 'active' : ''}" onclick="app.toggleSidebarWeek(${w.week}); app.navigate('quizzes', ${w.week}, null, 'video')" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center; padding: 0.75rem 1rem; border-radius: 8px; transition: all 0.3s ease">
+                  <span style="font-weight: ${isExpanded ? '600' : '400'}">${this.t('week_label')} ${w.week}: ${w.title[this.lang] || w.title['en']}</span>
+                  <span class="sidebar-chevron">▼</span>
+                </div>
+                <div class="sidebar-dropdown ${isExpanded ? 'expanded' : ''}">
+                  <a class="sidebar-item" onclick="app.navigate('quizzes', ${w.week}, null, 'lecture')" style="padding: 0.6rem 0.75rem; border-radius: 6px; font-size: 0.85rem">📄 ${this.t('quiz_lecture')}</a>
+                  <a class="sidebar-item" onclick="app.navigate('quizzes', ${w.week}, null, 'video')" style="padding: 0.6rem 0.75rem; border-radius: 6px; font-size: 0.85rem">🎥 ${this.t('quiz_video')}</a>
+                  <a class="sidebar-item" onclick="app.navigate('quizzes', ${w.week}, null, 'nptel')" style="padding: 0.6rem 0.75rem; border-radius: 6px; font-size: 0.85rem">📝 ${this.t('quiz_nptel')}</a>
+
+                </div>
+          </div>`;
+    });
+
+    this.sidebar.innerHTML = h;
+  }
+  render() {
+    this.updateNav();
+    this.renderSidebar();
+    this.root.innerHTML = '';
+    if (this.state.view === 'home') this.renderHome();
+    else if (this.state.view === 'quizzes') this.renderQuizList();
+    else if (this.state.view === 'play') this.renderPlay();
+    else if (this.state.view === 'dashboard') this.renderDashboard();
+    else if (this.state.view === 'downloads') this.renderDownloads();
+    else if (this.state.view === 'login') this.renderLogin();
+    else if (this.state.view === 'signup') this.renderSignup();
+    else if (this.state.view === 'profile') this.renderProfile();
+    this.renderMaTex();
+  }
+  updateNav() {
+    const navLinks = document.getElementById('nav-links');
+    if (!navLinks) return;
+    const switcher = `
+          <select class="lang-picker" onchange="app.setLanguage(this.value)" style="background:rgba(255,255,255,0.05); color:#fff; border:1px solid var(--glass-border); padding:2px 8px; border-radius:15px; font-size:0.75rem; cursor:pointer; outline:none">
+            <option value="en" ${this.lang === 'en' ? 'selected' : ''}>ENG</option>
+            <option value="ta" ${this.lang === 'ta' ? 'selected' : ''}>தமிழ்</option>
+            <option value="te" ${this.lang === 'te' ? 'selected' : ''}>తెలుగు</option>
+            <option value="hi" ${this.lang === 'hi' ? 'selected' : ''}>हिन्दी</option>
+          </select>
+        `;
+    if (this.user) {
+      navLinks.innerHTML = `
+                <a href="javascript:void(0)" onclick="app.navigate('home')" style="color:#fff; text-decoration:none">${this.t('home')}</a>
+                <a href="javascript:void(0)" onclick="app.navigate('dashboard')" style="color:#fff; text-decoration:none">${this.t('dashboard')}</a>
+                ${switcher}
+                <div onclick="app.navigate('profile')" style="cursor:pointer; background:var(--primary); color:#000; padding:2px 10px; border-radius:15px; font-size:0.8rem; font-weight:700; white-space:nowrap">
+                    👤 ${this.user.name.split(' ')[0]}
+                </div>
+              `;
+    } else {
+      navLinks.innerHTML = `
+                <a href="javascript:void(0)" onclick="app.navigate('home')" style="color:#fff; text-decoration:none">${this.t('home')}</a>
+                ${switcher}
+                <div style="display:flex; gap:12px; align-items:center">
+                    <a href="javascript:void(0)" onclick="app.navigate('login')" style="color:#fff; text-decoration:none; font-size:0.9rem">${this.t('login')}</a>
+                    <a href="javascript:void(0)" onclick="app.navigate('signup')" style="background:var(--primary); color:#000; padding:4px 12px; border-radius:15px; text-decoration:none; font-size:0.8rem; font-weight:700; white-space:nowrap">${this.t('signup')}</a>
+                </div>
+              `;
+    }
+  }
+  renderDownloads() {
+    this.root.innerHTML = `
+            <div class="animate">
+                <h2>Course Downloads</h2>
+                <div class="card" style="border-left: 4px solid var(--primary); background: rgba(56, 189, 248, 0.05);">
+                    <h3 style="color: var(--primary); font-size:1.1rem; margin-bottom:0.5rem">📚 Study Materials & Resources</h3>
+                    <p style="font-size:0.9rem; color:var(--text-main)">To access official lecture notes and PDFs, please use the NPTEL portal directly. This ensures you always have the most recent versions and saves them securely to your account.</p>
+                    
+                    <div style="margin: 1rem 0; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                        <h4 style="font-size:0.85rem; margin-bottom:0.5rem">How to download:</h4>
+                        <ol style="font-size:0.85rem; padding-left:1.5rem; color:var(--text-muted)">
+                            <li>Click <b>"Open NPTEL Page"</b> below and log in.</li>
+                            <li>Navigate to the specific week's "Lecture Notes" section.</li>
+                            <li>Download the PDFs and save them to your local project folder.</li>
+                        </ol>
+                    </div>
+
+                    <div style="display:flex; gap:1rem; flex-wrap:wrap">
+                        <a href="https://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=16&lesson=26" target="_blank" class="btn btn-primary">Open NPTEL Portal ↗</a>
+                        <a href="https://www.youtube.com/results?search_query=nptel+introduction+to+quantum+computing+qiskit+playlist" target="_blank" class="btn" style="border:1px solid var(--glass-border)">Video Lectures ↗</a>
+                    </div>
+                </div>
+
+                <div class="grid" style="gap:1.5rem; margin-top:2.5rem">
+                    ${WEEKS_DATA.map(w => `
+                        <div class="card" style="padding:1.75rem; border:1px solid var(--glass-border); background:rgba(255,255,255,0.01)">
+                            <div style="display:flex; justify-content:space-between; align-items:center">
+                                <div style="display:flex; align-items:center; gap:1rem">
+                                    <div style="width:40px; height:40px; background:var(--primary-glow); border-radius:12px; display:flex; align-items:center; justify-content:center; color:var(--primary); font-size:1.2rem">📂</div>
+                                    <div>
+                                        <h3 style="margin:0; font-size:1.1rem">Week ${w.week} Materials</h3>
+                                        <p style="color:var(--text-muted); font-size:0.8rem">${w.title}</p>
+                                    </div>
+                                </div>
+                                <a href="./resources/week_${w.week}" target="_blank" class="btn btn-outline" style="padding:0.6rem 1.2rem; font-size:0.85rem; border-radius:10px">Access Local File</a>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div style="margin-top:2rem; padding:1.5rem; border:1px dashed var(--glass-border); border-radius:8px; color:var(--text-muted); font-size:0.9rem">
+                    <strong>Manual Download Instructions:</strong>
+                    <ol style="margin-left:1.5rem; margin-top:0.5rem; line-height:1.6">
+                        <li>Click the <b>"Open NPTEL Course Page"</b> button above.</li>
+                        <li>Log in with your credentials.</li>
+                        <li>Go to the specific week's "Lecture Notes" tab.</li>
+                        <li>Download the PDF files.</li>
+                        <li>Click <b>"Open Local Folder"</b> for the corresponding week below.</li>
+                        <li>Drag and drop the downloaded PDFs into that folder.</li>
+                    </ol>
+                </div>
+            </div>
+          `;
+  }
+  renderMaTex() {
+    if (window.renderMathInElement) {
+      try {
+        renderMathInElement(this.root, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false },
+            { left: "\\\\(", right: "\\\\)", display: false }
+          ],
+          throwOnError: false
+        });
+      } catch (e) { console.error("Math render error", e); }
+    }
+  }
+  renderHome() {
+    let welcomeMsg = this.t('questions');
+    let subMsg = this.t('sets_info');
+    if (this.user) {
+      welcomeMsg = `${this.t('welcome')}, ${this.user.name.split(' ')[0]}! 👋`;
+      subMsg = `Your ${this.user.role} ${this.t('journey')}`;
+    }
+    this.root.innerHTML = `
+                <div class="animate" style="height:100%">
+                <div class="animate" style="height:100%">
+                    <div class="hero">
+                        <h1 style="margin-bottom: 1.5rem">Master Quantum Computing</h1>
+                        <p>The definitive study portal for NPTEL learners. Designed for simplicity, engineered for success.</p>
+                        <div style="display:flex; gap:1.25rem; justify-content:center; margin-top:2.5rem">
+                            <button class="btn btn-primary" onclick="app.navigate('quizzes', 1)">Start Learning Now</button>
+                            <button class="btn btn-outline" onclick="document.getElementById('mission').scrollIntoView({behavior:'smooth'})">Our Mission</button>
+                        </div>
+                    </div>
+                    
+                    ${this.user ? `
+                    <div class="card" style="display:flex; align-items:center; gap:1.5rem; padding:1.2rem; margin-bottom:2.5rem; border-left:4px solid var(--primary); background: rgba(56, 189, 248, 0.05);">
+                        <div style="font-size:2rem">⚡</div>
+                        <div>
+                            <h4 style="color:var(--primary); margin-bottom:2px">${this.t('daily_insight')}</h4>
+                            <p style="font-size:0.95rem; color:var(--text-main); line-height:1.4">"Quantum properties like superposition are the key to exponential speedups. Master Week 1 to understand the core!"</p>
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    <div id="mission" class="grid" style="grid-template-columns: repeat(3, 1fr); gap:1.5rem; margin-bottom:4rem">
+                        <div class="card" style="text-align:center; padding:2rem; border-top:4px solid var(--primary)">
+                            <div style="font-size:2.5rem; margin-bottom:1rem">🎯</div>
+                            <h3 style="color:#fff; margin-bottom:10px">Secure Your Pass</h3>
+                            <p style="font-size:0.9rem; color:var(--text-muted)">Our curated NPTEL-standard quizzes are designed to ensure you exceed the qualifying marks with ease.</p>
+                        </div>
+                        <div class="card" style="text-align:center; padding:2rem; border-top:4px solid var(--accent)">
+                            <div style="font-size:2.5rem; margin-bottom:1rem">💡</div>
+                            <h3 style="color:#fff; margin-bottom:10px">Simple Concepts</h3>
+                            <p style="font-size:0.9rem; color:var(--text-muted)">We break down complex quantum physics into bite-sized, understandable modules using video and PDF recaps.</p>
+                        </div>
+                        <div class="card" style="text-align:center; padding:2rem; border-top:4px solid var(--success)">
+                            <div style="font-size:2.5rem; margin-bottom:1rem">🚀</div>
+                            <h3 style="color:#fff; margin-bottom:10px">Exam Ready</h3>
+                            <p style="font-size:0.9rem; color:var(--text-muted)">Practice with real-world technical extracts to build the intuition required for final certification exams.</p>
+                        </div>
+                    </div>
+
+                    <div style="padding:4rem 2rem; background:rgba(255,255,255,0.02); border-radius:40px; border:1px solid var(--glass-border); text-align:center; margin-bottom:4rem">
+                        <h2 style="font-size:2.2rem; color:#fff; margin-bottom:1.5rem">Our Objective</h2>
+                        <p style="font-size:1.1rem; color:var(--text-muted); max-width:800px; margin:0 auto; line-height:1.8">
+                            This portal was created to support the <b>1,00,000+ registered learners</b> in Andhra Pradesh. We understand that Quantum Computing can be daunting. Our purpose is to provide a structured, stress-free environment where you can validate your knowledge, track your readiness, and confidently achieve a <b>Top-Elite Gold Certificate</b>.
+                        </p>
+                    </div>
+
+                    <h2 style="font-size:1.8rem; color:#fff; margin-bottom:2rem; padding-left:1rem">Course Syllabus (Weeks 1-4)</h2>
+                    <div class="grid" style="gap:2rem">
+                        ${WEEKS_DATA.map(w => `
+                            <div class="card" onclick="app.navigate('quizzes', ${w.week})" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center; padding:2rem">
+                                <div>
+                                    <h3 style="font-size:1.6rem; color:#fff; margin-bottom:6px">Week ${w.week}</h3>
+                                    <p style="font-size:1rem; color:var(--primary); font-weight:600; text-transform:uppercase; letter-spacing:1px">${w.title}</p>
+                                </div>
+                                <div class="btn btn-outline">Explore Week →</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    </div>
+                </div>
+            `;
+  }
+  renderQuizList() {
+    const w = WEEKS_DATA[this.state.week - 1];
+    const renderSubSection = (type, title, id) => {
+      const filtered = w.quizzes.filter(q => q.type === type);
+      return `
+            <div id="${id}" style="margin-top: 2rem">
+                <h3 style="color:var(--primary); font-size:1.1rem; margin-bottom:1rem; border-bottom:1px solid var(--glass-border); padding-bottom:0.5rem">${title}</h3>
+                <div class="grid" style="gap:0.8rem">
+                    ${filtered.map(q => {
+        const key = `${this.state.week}_${q.id}`;
+        const score = this.userProgress.scores[key];
+        let statusClass = 'status-unattended';
+        let scoreText = 'Not Started';
+        if (score !== undefined) {
+          scoreText = `Best: ${score}/10`;
+          statusClass = (score === 10) ? 'status-perfect' : 'status-incomplete';
+        }
+        let titleText = `${this.t('quiz_sets')} ${q.id}`;
+        if (type === 'video') titleText = `${this.t('quiz_video')} ${q.id - 10}: ${VIDEO_TITLES[this.state.week][q.id - 11]}`;
+        else if (type === 'nptel') titleText = `${this.t('assignment')} ${q.id - 20}`;
+        return `
+                            <div class="card ${statusClass}" onclick="app.navigate('play', ${this.state.week}, ${q.id})" style="cursor: pointer; padding:1rem; text-align:center">
+                                <h3 style="margin-bottom: 2px; font-size:0.9rem">${titleText}</h3>
+                                <div style="margin-top: 5px; font-weight: 700; color: var(--primary); font-size:0.8rem">${scoreText}</div>
+                            </div>
+                        `;
+      }).join('')}
+                </div>
+            </div>
+          `;
+    };
+
+    this.root.innerHTML = `
+                <div class="animate">
+                    <div style="margin-bottom: 2rem">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem">
+                            <h2 style="font-size:1.5rem; margin:0">${this.t('week_label')} ${w.week}: ${w.title[this.lang] || w.title['en']}</h2>
+                            ${!this.state.type ? `<div style="font-weight:700; color:var(--primary)">${w.quizzes.reduce((acc, q) => acc + (this.userProgress.scores[`${w.week}_${q.id}`] || 0), 0)} / ${w.quizzes.length * 10}</div>` : ''}
+                        </div>
+                        
+                        ${!this.state.type ? `
+                        <div class="grid" style="gap:1rem; margin-bottom:2rem">
+                            <div style="background:rgba(255,255,255,0.03); padding:0.8rem; border-radius:12px; border:1px solid var(--glass-border)">
+                                <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase">📄 ${this.t('quiz_lecture')}</div>
+                                <div style="font-size:1.2rem; font-weight:700">${w.quizzes.filter(q => q.type === 'lecture').reduce((acc, q) => acc + (this.userProgress.scores[`${w.week}_${q.id}`] || 0), 0)}/100</div>
+                            </div>
+                            <div style="background:rgba(255,255,255,0.03); padding:0.8rem; border-radius:12px; border:1px solid var(--glass-border)">
+                                <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase">🎥 ${this.t('quiz_video')}</div>
+                                <div style="font-size:1.2rem; font-weight:700">${w.quizzes.filter(q => q.type === 'video').reduce((acc, q) => acc + (this.userProgress.scores[`${w.week}_${q.id}`] || 0), 0)}/100</div>
+                            </div>
+                            <div style="background:rgba(255,255,255,0.03); padding:0.8rem; border-radius:12px; border:1px solid var(--glass-border)">
+                                <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase">📝 ${this.t('quiz_nptel')}</div>
+                                <div style="font-size:1.2rem; font-weight:700">${w.quizzes.filter(q => q.type === 'nptel').reduce((acc, q) => acc + (this.userProgress.scores[`${w.week}_${q.id}`] || 0), 0)}/${w.quizzes.filter(q => q.type === 'nptel').length * 10}</div>
+                            </div>
+                        </div>
+                        ` : `
+                        <p style="color: var(--text-muted); font-size:0.9rem">Category: ${this.t('quiz_' + this.state.type)}</p>
+                        `}
+                    </div>
+                    ${!this.state.type || this.state.type === 'lecture' ? renderSubSection('lecture', this.t('quiz_lecture'), `sec-lecture-${w.week}`) : ''}
+                    ${!this.state.type || this.state.type === 'video' ? renderSubSection('video', this.t('quiz_video'), `sec-video-${w.week}`) : ''}
+                    ${!this.state.type || this.state.type === 'nptel' ? renderSubSection('nptel', this.t('quiz_nptel'), `sec-nptel-${w.week}`) : ''}
+                </div>
+            `;
+  }
+  jumpTo(idx) {
+    this.state.qIdx = idx;
+    this.renderPlay();
+  }
+
+  renderPlay() {
+    // Resolve actual question index (0-9)
+    let qIndex = this.state.qIdx;
+    if (this.state.activeQIndices) {
+      qIndex = this.state.activeQIndices[this.state.qIdx];
+    }
+
+    const set = WEEKS_DATA[this.state.week - 1].quizzes.find(q => q.id === this.state.setId);
+    const q = set.questions[qIndex];
+
+    const totalQs = this.state.activeQIndices ? this.state.activeQIndices.length : 10;
+
+    // Check if current question is already answered
+    const currentAnswer = this.state.answers[this.state.qIdx];
+    const isAnswered = !!currentAnswer;
+
+    // Navigator HTML
+    const navigatorHtml = `
+            <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; max-width:400px;">
+                ${Array.from({ length: totalQs }).map((_, i) => {
+      const isQCurrent = i === this.state.qIdx;
+      const ans = this.state.answers[i];
+      let bg = 'rgba(255,255,255,0.05)';
+      let border = '1px solid var(--glass-border)';
+      let color = 'var(--text-muted)';
+
+      if (isQCurrent) {
+        bg = 'var(--primary)';
+        border = '1px solid var(--primary)';
+        color = '#000';
+      } else if (ans) {
+        if (ans.isCorrect) {
+          bg = 'rgba(34, 197, 94, 0.2)';
+          border = '1px solid var(--success)';
+          color = 'var(--success)';
+        } else {
+          bg = 'rgba(239, 68, 68, 0.2)';
+          border = '1px solid var(--error)';
+          color = 'var(--error)';
+        }
+      }
+
+      return `<div onclick="app.jumpTo(${i})" style="
+                        width: 32px; 
+                        height: 32px; 
+                        display: flex; 
+                        align-items: center; 
+                        justify-content: center; 
+                        border-radius: 8px; 
+                        font-size: 0.85rem; 
+                        cursor: pointer; 
+                        background: ${bg}; 
+                        border: ${border};
+                        color: ${color};
+                        font-weight: ${isQCurrent ? '700' : '400'};
+                        transition: all 0.2s;
+                        box-shadow: ${isQCurrent ? '0 0 10px var(--primary-glow)' : 'none'};
+                    ">${i + 1}</div>`;
+    }).join('')}
+            </div>
+        `;
+
+    const optionsHtml = q.options.map((o, i) => {
+      let className = 'option';
+      let style = '';
+
+      if (isAnswered) {
+        style = 'cursor:pointer; opacity: 1; pointer-events: auto !important;';
+        if (i === currentAnswer.userAnswer) {
+          className += currentAnswer.isCorrect ? ' correct' : ' wrong';
+        }
+        // Correct answer hidden to allow retry
+        // if (i === currentAnswer.correctAnswer && !currentAnswer.isCorrect) {
+        //   className += ' correct';
+        // }
+      }
+      return `<div class="${className}" id="o${i}" onclick="app.ans(${i})" style="${style}">${o}</div>`;
+    }).join('');
+
+    this.root.innerHTML = `
+                <div class="animate" style="height:100%; display:flex; flex-direction:column">
+                    <div style="display:flex; justify-content:space-between; margin-bottom: 1rem; align-items:flex-start">
+                        <div>
+                            <h2 style="color: var(--primary); font-size:1.2rem; margin:0">Week ${this.state.week} Mastery</h2>
+                            <p style="color: var(--text-muted); font-size:0.8rem">Set ${this.state.setId} • Question ${this.state.qIdx + 1} of ${totalQs}</p>
+                        </div>
+                        ${navigatorHtml}
+                    </div>
+
+                    <div class="quiz-layout">
+                        <aside class="quiz-sidebar">
+                            <div class="clue-box">
+                                <div style="font-size: 0.65rem; color: var(--primary); font-weight: 800; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;">Study Material / Clue</div>
+                                <h4 style="color: var(--primary); margin-bottom: 0.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 0.3rem; font-size: 0.9rem">Reference Text</h4>
+                                <div style="font-size: 1.05rem; line-height: 1.8; color: #ffffff; letter-spacing: 0.01em; font-weight: 400;">${q.clue}</div>
+                                <div style="margin-top: 1rem; padding-top: 0.5rem; border-top: 1px solid var(--glass-border); font-style: italic; color: var(--text-muted); font-size: 0.75rem;">
+                                    Read safely. Answer inside text.
+                                </div>
+                                <button class="btn btn-primary" style="width:100%; margin-top:1rem; padding: 0.5rem; display:${isAnswered ? 'none' : 'block'}" onclick="document.getElementById('quiz-question-container').style.display='block'; this.style.display='none'; app.renderMaTex()">Attempt Question</button>
+                            </div>
+                        </aside>
+
+                        <div class="quiz-main" id="quiz-question-container" style="display:${isAnswered ? 'block' : 'none'}; overflow-y:auto">
+                            <div class="card" style="margin-bottom: 0.5rem; padding: 1rem">
+                                <div style="font-size:1.1rem; font-weight: 600; margin-bottom:1rem; line-height: 1.3;">${q.question}</div>
+                                <div class="options">${optionsHtml}</div>
+                            </div>
+                            <div id="res" class="card" style="display:${isAnswered ? 'block' : 'none'}; border-left: 4px solid var(--success); background: rgba(34, 197, 94, 0.05); padding: 0.8rem; margin-top:0.5rem">
+                                <h4 style="color: var(--success); margin-bottom: 0.3rem; font-size:0.9rem">Explanation</h4>
+                                <p style="font-size:0.9rem">${q.explanation}</p>
+                            </div>
+                            <button id="nxt" class="btn btn-primary" style="display:${isAnswered ? 'block' : 'none'}; width:100%; margin-top: 0.5rem; padding:0.6rem" onclick="app.next()">Next Question →</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+    this.renderMaTex();
+  }
+  ans(idx) {
+    let qIndex = this.state.qIdx;
+    if (this.state.activeQIndices) {
+      qIndex = this.state.activeQIndices[this.state.qIdx];
+    }
+
+    const set = WEEKS_DATA[this.state.week - 1].quizzes.find(q => q.id === this.state.setId);
+    const q = set.questions[qIndex];
+
+    // Score Adjustment: check if changing answer
+    const prevAns = this.state.answers[this.state.qIdx];
+    if (prevAns && prevAns.isCorrect) {
+      this.state.score--;
+    }
+
+    const isCorrect = (idx === q.answer);
+    if (isCorrect) {
+      this.state.score++;
+    }
+
+    // Save/Update answer
+    this.state.answers[this.state.qIdx] = {
+      originalIndex: qIndex,
+      question: q.question,
+      options: q.options,
+      correctAnswer: q.answer,
+      userAnswer: idx,
+      isCorrect: isCorrect,
+      explanation: q.explanation
+    };
+
+    // Re-render to update UI state
+    this.renderPlay();
+  }
+  next() {
+    this.state.qIdx++;
+    const max = this.state.activeQIndices ? this.state.activeQIndices.length : 10;
+
+    if (this.state.qIdx >= max) {
+      const key = `${this.state.week}_${this.state.setId}`;
+      // Only update global score if playing the full set
+      if (!this.state.activeQIndices && this.state.score > (this.userProgress.scores[key] || 0)) {
+        this.userProgress.scores[key] = this.state.score;
+        localStorage.setItem('qp4_progress', JSON.stringify(this.userProgress));
+        this.saveProgress();
+      }
+      this.renderSummary();
+      // Reset progress locally, but KEEP answers so renderSummary can use them
+      this.state.qIdx = 0;
+      this.state.score = 0;
+      // this.state.answers = []; // MOVED: Clear answers only when navigating/starting new
+    } else this.renderPlay();
+  }
+  startRetryIncomplete() {
+    const total = this.state.activeQIndices ? this.state.activeQIndices.length : 10;
+    const retryIndices = [];
+
+    for (let i = 0; i < total; i++) {
+      const ans = this.state.answers[i];
+      const originalIdx = this.state.activeQIndices ? this.state.activeQIndices[i] : i;
+      // Retry if unattempted OR incorrect
+      if (!ans || !ans.isCorrect) {
+        retryIndices.push(originalIdx);
+      }
+    }
+
+    this.state.activeQIndices = retryIndices;
+    this.state.answers = [];
+    this.state.qIdx = 0;
+    this.state.score = 0;
+    this.renderPlay();
+  }
+
+  renderSummary() {
+    const score = this.state.score;
+    const total = this.state.activeQIndices ? this.state.activeQIndices.length : 10;
+
+    let attemptedCount = 0;
+    this.state.answers.forEach(a => { if (a) attemptedCount++; });
+
+    const isPerfect = (score === total);
+    const hasIncomplete = (attemptedCount < total) || (score < total);
+
+    let actionButton;
+    if (hasIncomplete) {
+      actionButton = `<button class="btn btn-primary" onclick="app.startRetryIncomplete()">Retry Wrong & Unattempted</button>`;
+    } else {
+      actionButton = `<button class="btn btn-primary" onclick="app.navigate('quizzes', ${this.state.week})">Back to List</button>`;
+    }
+
+    // Generate the list of all questions (attempted or not)
+    let summaryListHtml = '';
+    for (let i = 0; i < total; i++) {
+      const ans = this.state.answers[i];
+      const originalIdx = this.state.activeQIndices ? this.state.activeQIndices[i] : i;
+
+      // Fetch original question text
+      const set = WEEKS_DATA[this.state.week - 1].quizzes.find(q => q.id === this.state.setId);
+      const q = set.questions[originalIdx];
+
+      if (ans) {
+        // Attempted Question Card
+        summaryListHtml += `
+                    <div class="card" style="padding:1rem; border-left: 4px solid ${ans.isCorrect ? 'var(--success)' : 'var(--error)'}">
+                        <div style="font-size:0.9rem; margin-bottom:0.5rem; font-weight:600">Q${i + 1}: ${ans.question}</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.5rem">
+                            Your Answer: <span style="color:${ans.isCorrect ? 'var(--success)' : 'var(--error)'}">${ans.options[ans.userAnswer]}</span>
+                            ${!ans.isCorrect ? `<br>Correct Answer: <span style="color:var(--success)">${ans.options[ans.correctAnswer]}</span>` : ''}
+                        </div>
+                        <div style="font-size:0.8rem; background:rgba(255,255,255,0.03); padding:0.5rem; border-radius:4px">
+                            💡 ${ans.explanation}
+                        </div>
+                    </div>`;
+      } else {
+        // UNATTEMPTED Question Card
+        summaryListHtml += `
+                    <div class="card status-unattended" style="padding:1rem;">
+                        <div style="font-size:0.9rem; margin-bottom:0.5rem; font-weight:600">Q${i + 1}: ${q.question}</div>
+                        <div style="font-size:0.85rem; margin-bottom:0.5rem; color:var(--text-muted)">
+                             <span style="border: 1px solid var(--text-muted); padding: 2px 8px; border-radius: 4px; font-size: 0.7rem;">⚠️ NOT ATTEMPTED</span>
+                        </div>
+                        <div style="font-size:0.8rem; background:rgba(255,255,255,0.03); padding:0.5rem; border-radius:4px; opacity:0.7">
+                            💡 Explanation hidden. Retry to learn!
+                        </div>
+                    </div>`;
+      }
+    }
+
+    this.root.innerHTML = `
+            <div class="animate" style="height:100%; overflow-y:auto">
+                <div class="card" style="text-align:center; padding:1.5rem">
+                    <h1 style="color:var(--text-main)">Set Complete!</h1>
+                    <div style="font-size:3rem; color:var(--primary); font-family:'Outfit'">${score}/${total}</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-top:-5px">You attempted ${attemptedCount} out of ${total} questions.</p>
+                    <div style="margin-top:1rem">
+                        ${actionButton}
+                    </div>
+                </div>
+                
+                <h3 style="margin: 1.5rem 0 0.5rem 0">Detailed Summary</h3>
+                <div style="display:flex; flex-direction:column; gap:0.8rem; padding-bottom:2rem">
+                    ${summaryListHtml}
+                </div>
+            </div>
+         `;
+    this.renderMaTex();
+  }
+  renderLogin() {
+    this.root.innerHTML = `
+            <div class="auth-container animate">
+                <div style="text-align:center; margin-bottom:2rem">
+                    <h1 class="brand" style="font-size:2rem; margin-bottom:0.5rem">${this.t('back_msg')}</h1>
+                     <p style="color:var(--text-muted)">${this.t('login_sub')}</p>
+                </div>
+                <div class="card" style="padding:2rem; text-align:left">
+                    <label style="font-size:0.9rem; margin-bottom:0.4rem; display:block; color:var(--text-muted)">${this.t('email')}</label>
+                    <input type="email" class="input" placeholder="${this.t('email')}" onkeydown="if(event.key==='Enter') app.completeLogin()">
+                    
+                    <label style="font-size:0.9rem; margin-bottom:0.4rem; display:block; color:var(--text-muted)">${this.t('password')}</label>
+                    <input type="password" class="input" placeholder="${this.t('password')}" onkeydown="if(event.key==='Enter') app.completeLogin()">
+                    
+                    <button class="btn btn-primary" style="width:100%; margin-top:1rem" onclick="app.completeLogin()">${this.t('login')}</button>
+                    
+                    <div style="margin-top:1.5rem; text-align:center; font-size:0.9rem; color:var(--text-muted)">
+                        ${this.t('no_account')} <a href="javascript:void(0)" onclick="app.navigate('signup')" style="color:var(--primary); text-decoration:none">${this.t('signup')}</a>
+                    </div>
+                </div>
+            </div>
+        `;
+  }
+
+  renderSignup() {
+    this.root.innerHTML = `
+            <div class="auth-container animate" style="max-width: 600px;">
+                <div style="text-align:center; margin-bottom:1.5rem">
+                    <h1 class="brand" style="font-size:2rem; margin-bottom:0.5rem">${this.t('reg_title')}</h1>
+                     <p style="color:var(--text-muted)">${this.t('reg_sub')}</p>
+                </div>
+                <div class="card" style="padding:2rem; text-align:left">
+                    <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label class="form-label">${this.t('full_name')}</label>
+                            <input type="text" class="input" placeholder="Enter name">
+                        </div>
+                        <div>
+                            <label class="form-label">${this.t('mobile')}</label>
+                            <input type="tel" class="input" placeholder="+91 00000 00000">
+                        </div>
+                    </div>
+
+                    <label class="form-label">${this.t('email')}</label>
+                    <input type="email" class="input" placeholder="quantum@example.com">
+
+                    <label class="form-label">${this.t('role')}</label>
+                    <select id="signup-role" class="input" onchange="app.toggleCollegeField(this.value)">
+                        <option value="Student">${this.t('student')}</option>
+                        <option value="Individual">${this.t('individual')}</option>
+                        <option value="Faculty">${this.t('faculty')}</option>
+                    </select>
+
+                    <label class="form-label">${this.t('create_password')}</label>
+                    <input type="password" class="input" placeholder="Create a password">
+
+                    <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label class="form-label">${this.t('state')}</label>
+                            <select id="signup-state" class="input" onchange="app.updateColleges(this.value)">
+                                <option value="">${this.t('select_state')}</option>
+                                ${Object.keys(LOCATION_DATA).map(s => `<option value="${s}">${s}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div id="college-field-container">
+                            <label class="form-label">${this.t('college')}</label>
+                            <input type="text" id="signup-college" class="input" list="college-list" placeholder="${this.t('search_college')}">
+                            <datalist id="college-list">
+                                <option value="${this.t('select_state_first')}">
+                            </datalist>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1rem;">
+                        <label class="form-label">${this.t('enrolled')}</label>
+                        <div class="radio-group">
+                            <label class="radio-option"><input type="radio" name="enrolled" value="yes"> ${this.t('yes')}</label>
+                            <label class="radio-option"><input type="radio" name="enrolled" value="no" checked> ${this.t('no')}</label>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1rem;">
+                        <label class="form-label">${this.t('exam')}</label>
+                        <div class="radio-group">
+                            <label class="radio-option"><input type="radio" name="exam" value="yes"> ${this.t('yes')}</label>
+                            <label class="radio-option"><input type="radio" name="exam" value="no" checked> ${this.t('no')}</label>
+                        </div>
+                    </div>
+
+                    <div class="file-input-wrapper">
+                        <label class="form-label">Profile Photo (Optional)</label>
+                        <input type="file" class="file-input" accept="image/*">
+                    </div>
+
+                    <button class="btn btn-primary" style="width:100%; margin-top:0.5rem" onclick="app.completeSignup()">${this.t('complete_reg')}</button>
+                    
+                    <div style="margin-top:1.5rem; text-align:center; font-size:0.9rem; color:var(--text-muted)">
+                         ${this.t('have_account')} <a href="javascript:void(0)" onclick="app.navigate('login')" style="color:var(--primary); text-decoration:none">${this.t('login')}</a>
+                    </div>
+                </div>
+            </div>
+        `;
+  }
+
+
+  async completeLogin() {
+    const email = document.querySelector('input[type="email"]').value;
+    const password = document.querySelector('input[type="password"]').value;
+
+    if (!supabaseClient) {
+      alert("Please configure Supabase URL and Key in index.html first!");
+      return;
+    }
+
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      alert("Login Error: " + error.message);
+    } else {
+      await this.checkSession();
+      this.navigate('home');
+    }
+  }
+
+  async completeSignup() {
+    const fullName = document.querySelector('input[placeholder="Enter name"]').value;
+    const mobile = document.querySelector('input[placeholder="+91 00000 00000"]').value;
+    const email = document.querySelector('input[placeholder="quantum@example.com"]').value;
+    const password = document.querySelector('input[placeholder="Create a password"]').value;
+    const role = document.getElementById('signup-role').value;
+    const state = document.getElementById('signup-state').value;
+    const college = document.getElementById('signup-college').value;
+    const isEnrolled = document.querySelector('input[name="enrolled"]:checked').value === 'yes';
+    const isExamReg = document.querySelector('input[name="exam"]:checked').value === 'yes';
+
+    if (!fullName || !email || !password) {
+      alert("Please fill in Name, Email and Password");
+      return;
+    }
+
+    if (!supabaseClient) {
+      alert("Please configure Supabase URL and Key in index.html first!");
+      return;
+    }
+
+    console.log("Attempting signup for:", email);
+    const { data: authData, error: authError } = await supabaseClient.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { full_name: fullName }
+      }
+    });
+
+    if (authError) {
+      console.error("Auth Error:", authError);
+      alert("Signup Error (Step 1): " + authError.message);
+      return;
+    }
+
+    if (authData.user) {
+      console.log("Auth success, saving profile...");
+      const { error: profileError } = await supabaseClient.from('profiles').insert([{
+        id: authData.user.id,
+        full_name: fullName,
+        mobile_number: mobile,
+        email: email,
+        role: role,
+        state: state,
+        college: college,
+        nptel_enrolled: isEnrolled,
+        nptel_exam: isExamReg
+      }]);
+
+      if (profileError) {
+        console.error("Profile Error:", profileError);
+        alert("Profile Save Error (Step 2): " + profileError.message + "\\nCheck if the 'profiles' table exists in Supabase SQL Editor.");
+      } else {
+        alert("Registration Successful! Please check your email (or log in if email confirmation is off).");
+        this.navigate('login');
+      }
+    }
+  }
+
+  renderProfile() {
+    if (!this.user) { this.navigate('login'); return; }
+    this.root.innerHTML = `
+            <div class="animate">
+                <h2>User Profile</h2>
+                <div class="card" style="margin-top:1.5rem; padding:2rem; display:flex; gap:2rem; align-items:center">
+                    <div style="width:100px; height:100px; border-radius:50%; background:var(--accent); display:flex; align-items:center; justify-content:center; font-size:3rem">
+                        👤
+                    </div>
+                    <div>
+                        <h1 style="margin:0">${this.user.name}</h1>
+                        <p style="color:var(--primary); font-weight:600">${this.user.role}</p>
+                        <p style="color:var(--text-muted); font-size:0.9rem">Quantum Explorer since Feb 2026</p>
+                    </div>
+                </div>
+                
+                <div class="grid" style="margin-top:2rem">
+                    <div class="card">
+                        <h4>Learning Path</h4>
+                        <p style="font-size:0.9rem; color:var(--text-muted)">NPTEL Introduction to QC</p>
+                        <div style="margin-top:10px; color:var(--success)">● Enrolled</div>
+                    </div>
+                    <div class="card">
+                        <h4>Settings</h4>
+                        <button class="btn" style="padding:0.5rem 1rem; background:rgba(239, 68, 68, 0.1); color:var(--error); border:1px solid var(--error); margin-top:10px" onclick="app.navigate('logout')">Log Out Account</button>
+                    </div>
+                </div>
+            </div>
+          `;
+  }
+
+  updateColleges(state) {
+    const collegeList = document.getElementById('college-list');
+    const collegeInput = document.getElementById('signup-college');
+    if (!collegeList || !collegeInput) return;
+
+    collegeInput.value = ''; // Clear previous selection
+
+    if (!state || !LOCATION_DATA[state]) {
+      collegeList.innerHTML = '<option value="Select State First">';
+      return;
+    }
+
+    const colleges = LOCATION_DATA[state];
+    collegeList.innerHTML = colleges.map(c => `<option value="${c}">`).join('');
+  }
+
+  toggleCollegeField(role) {
+    const container = document.getElementById('college-field-container');
+    if (!container) return;
+
+    // Enabled for all roles now as requested
+    container.style.opacity = '1';
+    container.style.pointerEvents = 'all';
+    const input = container.querySelector('input');
+    if (input) input.disabled = false;
+  }
+
+  renderDashboard() {
+    let totalPossible = 0;
+    let totalScore = 0;
+
+    const weekStats = WEEKS_DATA.map(w => {
+      let lectureTotal = 0, videoTotal = 0, nptelTotal = 0;
+      let lecPoss = 0, vidPoss = 0, nptPoss = 0;
+
+      w.quizzes.forEach(q => {
+        const score = (this.userProgress.scores[`${w.week}_${q.id}`] || 0);
+        const possible = 10;
+        if (q.type === 'lecture') { lectureTotal += score; lecPoss += possible; }
+        else if (q.type === 'video') { videoTotal += score; vidPoss += possible; }
+        else if (q.type === 'nptel') { nptelTotal += score; nptPoss += possible; }
+        totalScore += score;
+        totalPossible += possible;
+      });
+      return { week: w.week, lecture: lectureTotal, lp: lecPoss, video: videoTotal, vp: vidPoss, nptel: nptelTotal, np: nptPoss, title: w.title };
+    });
+
+    this.root.innerHTML = `
+                <div class="animate" style="height:100%">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom: 3rem">
+                        <div>
+                            <h1 style="font-size:2.5rem; color:#fff; margin:0">Aesthetic Dashboard</h1>
+                            <p style="color: var(--text-muted); margin: 5px 0 0 0">Real-time synchronization with your NPTEL progress (4-Week Analysis)</p>
+                        </div>
+                        <div style="text-align:right">
+                            <div style="font-size:0.75rem; color:var(--primary); font-weight:800; text-transform:uppercase; letter-spacing:2px">Command Center</div>
+                            <div style="font-size:0.9rem; color:var(--text-muted)">v4.0 Enterprise Edition</div>
+                        </div>
+                    </div>
+
+                    <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap:1.5rem; margin-bottom:3rem">
+                        <div class="card" style="text-align:center; padding:2rem; background:linear-gradient(135deg, rgba(56, 189, 248, 0.1), transparent)">
+                            <div style="font-size:3.5rem; font-weight:900; color:var(--primary); font-family:'Outfit'">${Math.round((totalScore / totalPossible) * 100)}%</div>
+                            <p style="text-transform:uppercase; font-size:0.7rem; letter-spacing:2px; font-weight:700; color:var(--text-muted); margin-top:10px">Certification Readiness</p>
+                        </div>
+                        <div class="card" style="text-align:center; padding:2rem; background:linear-gradient(135deg, rgba(168, 85, 247, 0.1), transparent)">
+                            <div style="font-size:3.5rem; font-weight:900; color:var(--accent); font-family:'Outfit'">${totalScore}</div>
+                            <p style="text-transform:uppercase; font-size:0.7rem; letter-spacing:2px; font-weight:700; color:var(--text-muted); margin-top:10px">Aggregated Points / ${totalPossible}</p>
+                        </div>
+                        <div class="card" style="text-align:center; padding:2rem; background:linear-gradient(135deg, rgba(16, 185, 129, 0.1), transparent)">
+                            <div style="font-size:3.5rem; font-weight:900; color:var(--success); font-family:'Outfit'">${Math.floor(totalScore / 10)}h</div>
+                            <p style="text-transform:uppercase; font-size:0.7rem; letter-spacing:2px; font-weight:700; color:var(--text-muted); margin-top:10px">Est. Study Intensity</p>
+                        </div>
+                    </div>
+
+                    <div class="grid" style="grid-template-columns: 1fr">
+                        ${weekStats.map(s => `
+                            <div class="card" style="border-left: 6px solid var(--primary); margin-bottom:1.5rem">
+                                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.5rem">
+                                    <div>
+                                        <h3 style="margin:0; font-size:1.4rem">${this.t('week_label')} ${s.week}: ${s.title[this.lang] || s.title['en']}</h3>
+                                        <p style="color:var(--text-muted); font-size:0.85rem">Category Breakdown</p>
+                                    </div>
+                                    <div style="text-align:right">
+                                        <div style="font-size:1.5rem; font-weight:800; color:var(--primary)">${s.lecture + s.video + s.nptel} <span style="font-size:0.9rem; color:var(--text-muted)">/ ${s.lp + s.vp + s.np}</span></div>
+                                        <div style="font-size:0.65rem; color:var(--text-muted); font-weight:700">WEEKLY SCORE</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1.25rem">
+                                    <div style="background:rgba(255,255,255,0.02); padding:1.25rem; border-radius:16px; border:1px solid var(--glass-border)">
+                                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+                                            <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600">📄 ${this.t('quiz_lecture').toUpperCase()}</div>
+                                            <div style="font-size:0.9rem; font-weight:700">${s.lecture}/${s.lp}</div>
+                                        </div>
+                                        <div style="height:6px; background:rgba(255,255,255,0.05); border-radius:10px; overflow:hidden">
+                                            <div style="width:${(s.lecture / s.lp) * 100}%; height:100%; background:var(--primary); box-shadow:0 0 10px var(--primary-glow)"></div>
+                                        </div>
+                                    </div>
+                                    <div style="background:rgba(255,255,255,0.02); padding:1.25rem; border-radius:16px; border:1px solid var(--glass-border)">
+                                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+                                            <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600">🎥 ${this.t('quiz_video').toUpperCase()}</div>
+                                            <div style="font-size:0.9rem; font-weight:700">${s.video}/${s.vp}</div>
+                                        </div>
+                                        <div style="height:6px; background:rgba(255,255,255,0.05); border-radius:10px; overflow:hidden">
+                                            <div style="width:${(s.video / s.vp) * 100}%; height:100%; background:var(--accent); box-shadow:0 0 10px rgba(168, 85, 247, 0.4)"></div>
+                                        </div>
+                                    </div>
+                                    <div style="background:rgba(255,255,255,0.02); padding:1.25rem; border-radius:16px; border:1px solid var(--glass-border)">
+                                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+                                            <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600">📝 ${this.t('quiz_nptel').toUpperCase()}</div>
+                                            <div style="font-size:0.9rem; font-weight:700">${s.nptel}/${s.np}</div>
+                                        </div>
+                                        <div style="height:6px; background:rgba(255,255,255,0.05); border-radius:10px; overflow:hidden">
+                                            <div style="width:${(s.nptel / s.np) * 100}%; height:100%; background:var(--success); box-shadow:0 0 10px rgba(16, 185, 129, 0.4)"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div style="text-align: center; margin-top: 4rem;">
+                        <button class="btn" style="background: rgba(239, 68, 68, 0.1); color: var(--error); border: 1px solid var(--error);" onclick="if(confirm('Reset all progress?')) { localStorage.removeItem('qp4_progress'); location.reload(); }">Reset All Progress</button>
+                    </div>
+                </div>
+            `;
+  }
+}
+const app = new QuantumApp();
+window.app = app;

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design 1: Deep Quantum Nebula</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050510;
+            --glass-bg: rgba(20, 20, 40, 0.4);
+            --glass-border: rgba(0, 255, 255, 0.1);
+            --neon-accent: #00f3ff;
+            --neon-glow: 0 0 10px rgba(0, 243, 255, 0.5);
+            --text-main: #ffffff;
+            --text-muted: #8b9bb4;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(76, 29, 149, 0.4) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(29, 78, 216, 0.4) 0%, transparent 40%);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: var(--neon-accent);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            color: var(--neon-accent);
+            text-shadow: var(--neon-glow);
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 0.5rem 1.5rem;
+            border-radius: 99px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 243, 255, 0.1);
+            border-color: var(--neon-accent);
+            box-shadow: var(--neon-glow);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--neon-accent);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            height: 6px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            background: var(--neon-accent);
+            height: 100%;
+            box-shadow: var(--neon-glow);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="brand">QUANTUM NEBULA</div>
+            <div>
+                <button class="nav-btn">Home</button>
+                <button class="nav-btn">Dashboard</button>
+            </div>
+        </div>
+
+        <div class="glass-card" style="margin-bottom: 2rem; text-align: center;">
+            <h1 style="font-size: 3rem; margin-bottom: 1rem;">Welcome Back, Traveler</h1>
+            <p style="color: var(--text-muted); font-size: 1.2rem;">Your quantum journey continues through the stars.
+            </p>
+        </div>
+
+        <div class="grid">
+            <div class="glass-card">
+                <h3>Overall Progress</h3>
+                <div class="stat-value">78%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 78%"></div>
+                </div>
+            </div>
+            <div class="glass-card">
+                <h3>Next Module</h3>
+                <h2 style="color: #fff; margin: 10px 0;">Quantum Entanglement</h2>
+                <button class="nav-btn" style="margin-top: 1rem; width: 100%;">Resume Lecture</button>
+            </div>
+            <div class="glass-card">
+                <h3>Weekly Quiz</h3>
+                <div style="font-size: 2rem; margin: 1rem 0;">9/10 Score</div>
+                <p style="color: var(--text-muted);">You are mastering the unknown.</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

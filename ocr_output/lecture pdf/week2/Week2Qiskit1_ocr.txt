@@ -1,0 +1,142 @@
+# OCR Extraction: Week2Qiskit1.pdf
+# Engine: mistral
+# Pages: 8
+# Total Characters: 3598
+============================================================
+
+
+--- Page 0 ---
+
+# Programming using Qiskit
+
+Introduction to Quantum Computing
+
+NPTEL course Week 2
+
+--- Page 1 ---
+
+# Qiskit
+
+- Open-source Quantum Software Development Kit
+- High Performance SDK supporting static, dynamic and scheduled quantum circuits, operators and primitives.
+- Leaner - removing meta package architecture
+- Qiskit C Api - essential for realizing quantum-centric supercomputing
+- Refactoring the core of Qiskit to Rust led to average 16x speed increase
+- The shift to Rust not only brings performance gains—It enables a C API to support hybrid compute architectures.
+- https://quantum.cloud.ibm.co
+
+![img-0.jpeg](img-0.jpeg)
+
+--- Page 2 ---
+
+# Qiskit - Open ecosystem for quantum computing
+
+Qiskit for:
+
+Algorithm research
+
+Qiskit for:
+
+High Performance Computing
+
+Qiskit for:
+
+Quantum information science research
+
+![img-1.jpeg](img-1.jpeg)
+
+--- Page 3 ---
+
+IBM Quantum Platform: Software
+
+# Accelerate application research with a high-performance software stack powered by Qiskit
+
+# Qiskit SDK
+
+- Preferred by  $74\%$  of the developer community
+- 7400+ dependent projects
+- 83x faster mean transpilation time than nearest competitor TKET
+
+# Qiskit Runtime
+
+Accurately and efficiently execute estimation and sampling tasks in a near-time environment
+
+- Quality: Up to 5K gates
+- Speed: 330K CLOPS
+
+# Qiskit Serverless
+
+Run quantum-centric supercomputing workloads across QPUs, CPUs, and GPUs in the cloud
+- Simplifies heterogeneous application development for researchers
+
+![img-2.jpeg](img-2.jpeg)
+
+© 2025 IBM Corporation
+
+--- Page 4 ---
+
+# Qiskit is the most preferred and performant quantum SDK
+
+|  Speed | 129x faster in wall clock time
+(Qiskit 2.0.2 vs. Tket 2.6.0) | 83x faster mean transpilation time
+(Qiskit 2.2.0 vs. Tket 2.6.0)  |
+| --- | --- | --- |
+|  Quality | 29% fewer 2Q gates
+(Qiskit 2.2.0 vs. Tket 2.6.0) | Only SDK not to fail any tests  |
+|  Extensibility | 5,700+ more dependent projects
+(Qiskit: 7400+ vs. PennyLane: 1700+)  |   |
+
+Read the Benchpress paper
+
+https://www.nature.com/articles/s43588-025-00792-y
+
+Results reported from Benchpress tests of  $\sim 1000$  circuits (https://github.com/Qiskit/benchpress) and published in Nature Computational Science (2025): https://www.nature.com/articles/s43588-025-00792-y. Timing and quality measured using only completed tests. Dependencies from Github insights. Current as of 12/9/25.
+
+© 2025 IBM Corporation
+
+![img-3.jpeg](img-3.jpeg)
+Full-stack development platforms, compilers, and simulators adoption
+
+Source: Unitary Foundation 2025 Quantum Open Source Software Survey
+
+--- Page 5 ---
+
+# Qiskit is the most preferred and performant quantum SDK
+
+Results reported from Benchpress tests of ~1000 circuits (https://github.com/Qiskit/benchpress) and published in Nature Computational Science (2025): https://www.nature.com/articles/s43588-025-00792-y. Timing and quality measured using only completed tests. Dependencies from Github insights. Current as of 12/9/25.
+
+|  ## 69%
+
+- Quantum computing programmers prefer the Qiskit SDK
+- (2025 Unitary Foundation Open Source Software Survey) | ## 7400+
+
+- Dependent projects
+- (Next nearest: PennyLane, 1000+)  |
+| --- | --- |
+|  ## 83x
+
+- Mean transpilation time improvement
+- (Qiskit 2.2.0 vs TKET 2.6.0) | ## 29%
+
+Fewer 2Q gates
+(Qiskit 2.2.0 vs TKET 2.6.0)  |
+
+© 2025 IBM Corporation
+
+--- Page 6 ---
+
+# Qiskit setup
+
+- https://quantum.cloud.ibm.com/docs/en/guides/install-qiskit
+
+- Qiskit code assistant
+- Local install for visual studio - https://github.com/Qiskit/qiskit-code-assistant-vscode/blob/main/LOCAL_SETUP.md
+
+- Self-learning Resources
+- Coding with Qiskit youtube series
+- IBM Quantum Learning platform - 10+ free courses, tutorials, notebooks
+
+--- Page 7 ---
+
+|  |   |
+| --- | --- |

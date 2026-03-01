@@ -1,0 +1,240 @@
+{
+  "file": "resources\\week_4\\lecture notes\\Week4_QEC.pdf",
+  "file_name": "Week4_QEC.pdf",
+  "success": true,
+  "winner": "mistral",
+  "total_pages": 46,
+  "total_chars": 14914,
+  "pages": [
+    {
+      "page_number": 0,
+      "text": "# Fixing quantum errors with quantum tricks: A brief introduction to Quantum Error Correction\n\nPrabha Mandayam\n\nDepartment of Physics, Indian Institute of Technology Madras\n\n![img-0.jpeg](img-0.jpeg)\n\nNPTEL Aug 2021",
+      "text_length": 215
+    },
+    {
+      "page_number": 1,
+      "text": "# Towards Scalable Quantum Devices\n\n\"Quantum phenomena do not occur in a Hilbert space, they occur in a laboratory.\" - Asher Peres\n\nA",
+      "text_length": 133
+    },
+    {
+      "page_number": 2,
+      "text": "# Towards Scalable Quantum Devices\n\n\"Quantum phenomena do not occur in a Hilbert space, they occur in a laboratory.\" - Asher Peres\n\n## Desiderata for a universal quantum computer\n\n1. A scalable system with well defined qubits\n2. Initialization to a simple fiducial state\n3. Long decoherence times\n4. The ability to perform a universal set of gates\n5. Permit efficient, single-qubit measurements\n\nA",
+      "text_length": 397
+    },
+    {
+      "page_number": 3,
+      "text": "# Towards Scalable Quantum Devices\n\n\"Quantum phenomena do not occur in a Hilbert space, they occur in a laboratory.\" - Asher Peres\n\n## Desiderata for a universal quantum computer\n\n1. A scalable system with well defined qubits\n2. Initialization to a simple fiducial state\n3. Long decoherence times\n4. The ability to perform a universal set of gates\n5. Permit efficient, single-qubit measurements\n\n**Decoherence**: Irretrievable loss of information (coherence) in a quantum state due to interactions with its environment (bath).",
+      "text_length": 526
+    },
+    {
+      "page_number": 4,
+      "text": "# Ideal vs Noisy QC\n\n![img-1.jpeg](img-1.jpeg)\n\nResult of Grover search on an ideal simulator\n\nA",
+      "text_length": 96
+    },
+    {
+      "page_number": 5,
+      "text": "# Ideal vs Noisy QC\n\n![img-2.jpeg](img-2.jpeg)\n\nResult of Grover search on an ideal simulator\n\n![img-3.jpeg](img-3.jpeg)\n\nResult of Grover search on the 5-qubit Lima processor\n\n□ 《",
+      "text_length": 180
+    },
+    {
+      "page_number": 6,
+      "text": "# Enter QEC\n\n\"Noisy Intermediate-Scale Quantum (NISQ) technology will be available in the near future. Quantum computers with 50-100 qubits may be able to perform tasks which surpass the capabilities of today's classical digital computers, but **noise** in quantum gates will limit the size of quantum circuits that can be executed reliably.\n\nQuantum Error Correction (is) our basis for thinking that quantum computers are **scalable** to large devices solving hard problems.\"\n\n– John Preskill, Quantum Computing in the NISQ era and beyond, Quantum 2, 79 (2018).",
+      "text_length": 562
+    },
+    {
+      "page_number": 7,
+      "text": "# Noise on classical bits\n\n- Bit-flip errors: The Binary Symmetric Channel\n\n![img-4.jpeg](img-4.jpeg)\n\nA",
+      "text_length": 104
+    },
+    {
+      "page_number": 8,
+      "text": "# Noise on classical bits\n\n- Bit-flip errors: The Binary Symmetric Channel\n\n![img-5.jpeg](img-5.jpeg)\n\n$p$ is the probability of a single bit flip.\n\nA",
+      "text_length": 150
+    },
+    {
+      "page_number": 9,
+      "text": "# Noise on classical bits\n\n- Bit-flip errors: The Binary Symmetric Channel\n\n![img-6.jpeg](img-6.jpeg)\n\n$p$ is the probability of a single bit flip.\n\n- The 3-bit repetition code: Encode 0 as 000 and 1 as 111. Single-bit errors lead to distinct 3-bit strings:\n\n$$\n000 \\rightarrow 001/010/100; 111 \\rightarrow 110/101/011\n$$\n\n- Error detection: The decoder decides whether the noisy string corresponds to 000 or 111 by parity checks (majority voting!).\n- The 3-bit code corrects errors up to $O(p^2)$.",
+      "text_length": 498
+    },
+    {
+      "page_number": 10,
+      "text": "# Noise in quantum systems\n\n![img-7.jpeg](img-7.jpeg)\n\nA",
+      "text_length": 56
+    },
+    {
+      "page_number": 11,
+      "text": "# Noise in quantum systems\n\n![img-8.jpeg](img-8.jpeg)\n\n- Noisy evolution is not unitary ⇒ Irreversible!\n- Example: quantum bit-flip noise\n\nA",
+      "text_length": 140
+    },
+    {
+      "page_number": 12,
+      "text": "# Quantum bit-flip noise\n\n![img-9.jpeg](img-9.jpeg)\n\nNPTTEL\n\nA",
+      "text_length": 62
+    },
+    {
+      "page_number": 13,
+      "text": "# Quantum bit-flip noise\n\n![img-10.jpeg](img-10.jpeg)\n\n- State of the qubit is affected by an $X$ error with probability $p$:\n\n$$\n\\alpha | 0 \\rangle + \\beta | 1 \\rangle \\rightarrow \\alpha | 1 \\rangle + \\beta | 0 \\rangle\n$$\n\nIt is left unchanged, with probability $1 - p$.\n\nA",
+      "text_length": 274
+    },
+    {
+      "page_number": 14,
+      "text": "# Quantum bit-flip noise\n\n![img-11.jpeg](img-11.jpeg)\n\n- State of the qubit is affected by an $X$ error with probability $p$:\n\n$$\n\\alpha | 0 \\rangle + \\beta | 1 \\rangle \\rightarrow \\alpha | 1 \\rangle + \\beta | 0 \\rangle\n$$\n\nIt is left unchanged, with probability $1 - p$.\n\n- The qubit starts in a pure state, say $|0\\rangle$, but *decoheres* into a mixed state:\n\n$$\n\\rho = (1 - p) |0\\rangle \\langle 0| + p |1\\rangle \\langle 1|.\n$$",
+      "text_length": 430
+    },
+    {
+      "page_number": 15,
+      "text": "# Quantum bit-flip noise\n\n![img-12.jpeg](img-12.jpeg)\n\n- State of the qubit is affected by an $X$ error with probability $p$:\n\n$$\n\\alpha | 0 \\rangle + \\beta | 1 \\rangle \\rightarrow \\alpha | 1 \\rangle + \\beta | 0 \\rangle\n$$\n\nIt is left unchanged, with probability $1 - p$.\n\n- The qubit starts in a pure state, say $|0\\rangle$, but *decoheres* into a mixed state:\n\n$$\n\\rho = (1 - p) | 0 \\rangle \\langle 0 | + p | 1 \\rangle \\langle 1 |.\n$$\n\n- The error probability behaves as, $p = \\frac{1}{2} (1 - \\exp(-t / T))$. $T$ is the *coherence* time.",
+      "text_length": 540
+    },
+    {
+      "page_number": 16,
+      "text": "# Coherence Times : Superconducting Qubits\n\n![img-13.jpeg](img-13.jpeg)\n\nSuperconducting quantum circuits and circuit-QED, Sep 2017.",
+      "text_length": 132
+    },
+    {
+      "page_number": 17,
+      "text": "# Quantum Error Correction\n\n## The challenges:\n\n1. The encoding process has to circumvent the no-cloning theorem.\n2. A continuum of several possible errors can occur on a single qubit: bit-flip errors, phase-flip errors, amplitude-damping errors etc.\n3. Measurement disturbs the state! How do we decode?\n\nA",
+      "text_length": 306
+    },
+    {
+      "page_number": 18,
+      "text": "# Quantum Error Correction\n\n## The challenges:\n1. The encoding process has to circumvent the no-cloning theorem.\n2. A continuum of several possible errors can occur on a single qubit: bit-flip errors, phase-flip errors, amplitude-damping errors etc.\n3. Measurement disturbs the state! How do we decode?\n\n## Solutions:\n1. Entanglement to the rescue! We encode into entangled states.\n2. Discretize the errors in terms of a finite, unitary set of errors: Unitary error basis (linearity helps!)\n3. Decode using controlled gate operations!",
+      "text_length": 534
+    },
+    {
+      "page_number": 19,
+      "text": "# Quantum Error Correction\n\n\"With group and eigenstate, we've learned to fix,\nYour quantum errors with our quantum tricks.\"\n\n- QEC Sonnet, Daniel Gottesman\n\nA",
+      "text_length": 158
+    },
+    {
+      "page_number": 20,
+      "text": "# Quantum Error Correction\n\n\"With group and eigenstate, we've learned to fix,\nYour quantum errors with our quantum tricks.\"\n\n- QEC Sonnet, Daniel Gottesman\n\nWe will explain the basic principles of QEC using the example of the 3-qubit code that corrects for single-qubit bit-flip noise.\n\nA",
+      "text_length": 288
+    },
+    {
+      "page_number": 21,
+      "text": "# Quantum Error Correction\n\n\"With group and eigenstate, we've learned to fix,\nYour quantum errors with our quantum tricks.\"\n\n- QEC Sonnet, Daniel Gottesman\n\n- We will explain the basic principles of QEC using the example of the 3-qubit code that corrects for single-qubit bit-flip noise.\n- The 3-qubit code encodes one qubit into three:\n\n$$\n\\begin{array}{l}\n|0_L\\rangle \\rightarrow |0\\rangle |0\\rangle |0\\rangle, |1_L\\rangle \\rightarrow |1\\rangle |1\\rangle |1\\rangle, \\text{ so that}, \\\\\n\\alpha |0\\rangle + \\beta |1\\rangle \\rightarrow \\alpha |0_L\\rangle + \\beta |1_L\\rangle.\n\\end{array}\n$$",
+      "text_length": 589
+    },
+    {
+      "page_number": 22,
+      "text": "# Quantum Error Correction\n\n\"With group and eigenstate, we've learned to fix,\nYour quantum errors with our quantum tricks.\"\n\n- QEC Sonnet, Daniel Gottesman\n\n- We will explain the basic principles of QEC using the example of the 3-qubit code that corrects for single-qubit bit-flip noise.\n- The 3-qubit code encodes one qubit into three:\n\n$$\n\\begin{array}{l}\n|0_L\\rangle \\rightarrow |0\\rangle |0\\rangle |0\\rangle, |1_L\\rangle \\rightarrow |1\\rangle |1\\rangle |1\\rangle, \\text{ so that,} \\\\\n\\alpha |0\\rangle + \\beta |1\\rangle \\rightarrow \\alpha |0_L\\rangle + \\beta |1_L\\rangle.\n\\end{array}\n$$\n\n- The states $|0_L\\rangle$ and $|1_L\\rangle$ are the codewords or logical states.",
+      "text_length": 672
+    },
+    {
+      "page_number": 23,
+      "text": "# Quantum Error Correction\n\n\"With group and eigenstate, we've learned to fix,\nYour quantum errors with our quantum tricks.\"\n\n- QEC Sonnet, Daniel Gottesman\n\n- We will explain the basic principles of QEC using the example of the 3-qubit code that corrects for single-qubit bit-flip noise.\n- The 3-qubit code encodes one qubit into three:\n\n$$\n\\begin{array}{l}\n|0_L\\rangle \\rightarrow |0\\rangle |0\\rangle |0\\rangle, |1_L\\rangle \\rightarrow |1\\rangle |1\\rangle |1\\rangle, \\text{ so that}, \\\\\n\\alpha |0\\rangle + \\beta |1\\rangle \\rightarrow \\alpha |0_L\\rangle + \\beta |1_L\\rangle.\n\\end{array}\n$$\n\n- The states $|0_L\\rangle$ and $|1_L\\rangle$ are the codewords or logical states.\n- The no-cloning theorem forbids an operation of the form,\n\n$$\n\\alpha |0\\rangle + \\beta |1\\rangle \\rightarrow (\\alpha |0\\rangle + \\beta |1\\rangle) \\otimes (\\alpha |0\\rangle + \\beta |1\\rangle) \\otimes (\\alpha |0\\rangle + \\beta |1\\rangle)\n$$",
+      "text_length": 912
+    },
+    {
+      "page_number": 24,
+      "text": "# The encoding circuit\n\n![img-14.jpeg](img-14.jpeg)\n\nNPTTEL\n\nA",
+      "text_length": 62
+    },
+    {
+      "page_number": 25,
+      "text": "# The encoding circuit\n\n![img-15.jpeg](img-15.jpeg)\n\n- It is easy to check that $|\\psi\\rangle_L = \\alpha |0\\rangle_L + \\beta |1\\rangle_L$.\n\nA",
+      "text_length": 141
+    },
+    {
+      "page_number": 26,
+      "text": "# The encoding circuit\n\n![img-16.jpeg](img-16.jpeg)\n\n- It is easy to check that $|\\psi\\rangle_L = \\alpha |0\\rangle_L + \\beta |1\\rangle_L$.\n- The noise now acts on all 3 qubits, but is assumed to act independently and identically on each qubit.\n\nA",
+      "text_length": 246
+    },
+    {
+      "page_number": 27,
+      "text": "# The encoding circuit\n\n![img-17.jpeg](img-17.jpeg)\n\n- It is easy to check that $|\\psi\\rangle_L = \\alpha |0\\rangle_L + \\beta |1\\rangle_L$.\n- The noise now acts on all 3 qubits, but is assumed to act independently and identically on each qubit.\n- The leading source of noise is the set of single-qubit errors – XII, IX and IIX – which occur with probability $p$.",
+      "text_length": 361
+    },
+    {
+      "page_number": 28,
+      "text": "# The encoding circuit\n\n![img-18.jpeg](img-18.jpeg)\n\n- It is easy to check that $|\\psi\\rangle_L = \\alpha |0\\rangle_L + \\beta |1\\rangle_L$.\n- The noise now acts on all 3 qubits, but is assumed to act independently and identically on each qubit.\n- The leading source of noise is the set of single-qubit errors – XII, IX and IIX – which occur with probability $p$.\n- Multi-qubit errors occur with probability $O(p^2)$ or $O(p^3)$.",
+      "text_length": 427
+    },
+    {
+      "page_number": 29,
+      "text": "# Action of the single bit-flip errors\n\n- Under the action of the single qubit errors, the codewords get modified as,\n\n$$\n\\begin{array}{l}\n|0\\rangle |0\\rangle |0\\rangle \\quad \\rightarrow \\quad |1\\rangle |0\\rangle |0\\rangle \\text{ (or)} |0\\rangle |1\\rangle |0\\rangle \\text{ (or)} |0\\rangle |0\\rangle |1\\rangle \\\\\n|1\\rangle |1\\rangle |1\\rangle \\quad \\rightarrow \\quad |0\\rangle |1\\rangle |1\\rangle \\text{ (or)} |1\\rangle |0\\rangle |1\\rangle \\text{ (or)} |1\\rangle |1\\rangle |0\\rangle \\\\\n\\end{array}\n$$\n\nA",
+      "text_length": 502
+    },
+    {
+      "page_number": 30,
+      "text": "# Action of the single bit-flip errors\n\n- Under the action of the single qubit errors, the codewords get modified as,\n\n$$\n\\begin{array}{l}\n|0\\rangle |0\\rangle |0\\rangle \\quad \\rightarrow \\quad |1\\rangle |0\\rangle |0\\rangle \\text{ (or)} |0\\rangle |1\\rangle |0\\rangle \\text{ (or)} |0\\rangle |0\\rangle |1\\rangle \\\\\n|1\\rangle |1\\rangle |1\\rangle \\quad \\rightarrow \\quad |0\\rangle |1\\rangle |1\\rangle \\text{ (or)} |1\\rangle |0\\rangle |1\\rangle \\text{ (or)} |1\\rangle |1\\rangle |0\\rangle \\\\\n\\end{array}\n$$\n\n- Bit flip on different qubits leads to **distinct** states, which are **distinguishable** $\\Rightarrow$ **Errors can be detected and corrected**.",
+      "text_length": 647
+    },
+    {
+      "page_number": 31,
+      "text": "# Action of the single bit-flip errors\n\n- Under the action of the single qubit errors, the codewords get modified as,\n\n$$\n\\begin{array}{l}\n|0\\rangle |0\\rangle |0\\rangle \\quad \\rightarrow \\quad |1\\rangle |0\\rangle |0\\rangle \\text{ (or)} |0\\rangle |1\\rangle |0\\rangle \\text{ (or)} |0\\rangle |0\\rangle |1\\rangle \\\\\n|1\\rangle |1\\rangle |1\\rangle \\quad \\rightarrow \\quad |0\\rangle |1\\rangle |1\\rangle \\text{ (or)} |1\\rangle |0\\rangle |1\\rangle \\text{ (or)} |1\\rangle |1\\rangle |0\\rangle \\\\\n\\end{array}\n$$\n\n- Bit flip on different qubits leads to **distinct** states, which are **distinguishable** $\\Rightarrow$ Errors can be detected and corrected.\n\n- Error detection requires a set of measurements in the $Z$-basis $(\\{|0\\rangle, |1\\rangle\\}$ basis). The measurements are not done on the encoded qubits, but on an additional pair of qubits called **ancilla** qubits.",
+      "text_length": 862
+    },
+    {
+      "page_number": 32,
+      "text": "# Error detection and Recovery\n\n![img-19.jpeg](img-19.jpeg)\n\nThe measurement outcomes are referred to as *syndrome bits* and they *uniquely* identify the correctable (single-qubit) errors.\n\nA",
+      "text_length": 191
+    },
+    {
+      "page_number": 33,
+      "text": "# Error detection and Recovery\n\n![img-20.jpeg](img-20.jpeg)\n\n- The measurement outcomes are referred to as *syndrome bits* and they *uniquely* identify the correctable (single-qubit) errors.\n- The recovery operation is simply a single-qubit $X$ gate!\n\nA",
+      "text_length": 253
+    },
+    {
+      "page_number": 34,
+      "text": "# Error detection and Recovery\n\n![img-21.jpeg](img-21.jpeg)\n\n- The measurement outcomes are referred to as *syndrome bits* and they *uniquely* identify the correctable (single-qubit) errors.\n- The recovery operation is simply a single-qubit $X$ gate!\n- Based on the value of the syndrome bits, an $X$ gate is applied to one of the 3 encoded qubits.\n\nA",
+      "text_length": 351
+    },
+    {
+      "page_number": 35,
+      "text": "# Syndrome table for the 3-qubit code\n\n|   | ZZI | IZZ | Comments | Recovery operator  |\n| --- | --- | --- | --- | --- |\n|  III | +1 | +1 | No error | Identity  |\n|  XII | -1 | +1 | bit flip on the first qubit | apply Pauli X on the first qubit  |\n|  IXI | -1 | -1 | bit flip on the second qubit | apply Pauli X on the second qubit  |\n|  IIX | +1 | -1 | bit flip on the third qubit | apply Pauli X on the third qubit  |\n\nA",
+      "text_length": 422
+    },
+    {
+      "page_number": 36,
+      "text": "# The 3-qubit QEC circuit\n\n![img-22.jpeg](img-22.jpeg)\n\n- The 3-qubit code can detect and correct single-qubit errors perfectly; it does not detect and correct two- or three-qubit errors.\n\nA",
+      "text_length": 190
+    },
+    {
+      "page_number": 37,
+      "text": "# The 3-qubit QEC circuit\n\n![img-23.jpeg](img-23.jpeg)\n\n- The 3-qubit code can detect and correct single-qubit errors perfectly; it does not detect and correct two- or three-qubit errors.\n- QEC improves the fidelity and coherence time of the qubit, provided the error probability $p &lt; \\frac{1}{2}$.\n\nA",
+      "text_length": 304
+    },
+    {
+      "page_number": 38,
+      "text": "# Resources for QEC\n\n- A *continuum* of different errors can occur on a single qubit: erasure, phase-flip (*T*2-process), amplitude-damping (*T*1-process), depolarizing noise etc.\n\n![img-24.jpeg](img-24.jpeg)\n\nA",
+      "text_length": 211
+    },
+    {
+      "page_number": 39,
+      "text": "# Resources for QEC\n\n- A *continuum* of different errors can occur on a single qubit: erasure, phase-flip (*T*2-process), amplitude-damping (*T*1-process), depolarizing noise etc.\n- Resolution: *Discretize* the errors in terms of a finite, unitary set of errors\nUnitary error basis: $\\{X, Y, Z, I\\}$",
+      "text_length": 299
+    },
+    {
+      "page_number": 40,
+      "text": "# Resources for QEC\n\n- A *continuum* of different errors can occur on a single qubit: erasure, phase-flip ($T2$-process), amplitude-damping ($T1$-process), depolarizing noise etc.\n- Resolution: *Discretize* the errors in terms of a finite, unitary set of errors\nUnitary error basis: $\\{X, Y, Z, I\\}$\n- Quantum Hamming Bound: shortest perfect QEC code requires 5 qubits to protect against arbitrary single-qubit errors.",
+      "text_length": 418
+    },
+    {
+      "page_number": 41,
+      "text": "# Resources for QEC\n\n- A *continuum* of different errors can occur on a single qubit: erasure, phase-flip ($T2$-process), amplitude-damping ($T1$-process), depolarizing noise etc.\n- Resolution: *Discretize* the errors in terms of a finite, unitary set of errors\nUnitary error basis: $\\{X, Y, Z, I\\}$\n- Quantum Hamming Bound: shortest perfect QEC code requires 5 qubits to protect against arbitrary single-qubit errors.\n- Further resource requirements:\n- Dealing with faulty gates and circuits: **Fault-tolerance**\n- Bringing down the logical error rate: *concatenation*\nEg. A concatenated 7-qubit code $\\Rightarrow$ 49 physical qubits for one logical qubit!",
+      "text_length": 657
+    },
+    {
+      "page_number": 42,
+      "text": "# The road ahead …\n\n![img-25.jpeg](img-25.jpeg)\n\nThe Google Roadmap (2018)\n\nA",
+      "text_length": 77
+    },
+    {
+      "page_number": 43,
+      "text": "# Future Outlook\n\n![img-26.jpeg](img-26.jpeg)\n\nThe IBM Roadmap (2021)",
+      "text_length": 69
+    },
+    {
+      "page_number": 44,
+      "text": "# Future Outlook\n\n![img-27.jpeg](img-27.jpeg)\n\nThe IBM Roadmap (2021)",
+      "text_length": 69
+    },
+    {
+      "page_number": 45,
+      "text": "# References\n\n- Quantum Computing and Quantum Information, Nielsen and Chuang (Chapter 10)\n- Lecture notes by Prof. John Preskill (Chapter 7) http://theory.caltech.edu/preskill/ph229/notes/chap7.pdf\n\nA",
+      "text_length": 201
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sitemap - Quantum Study Portal</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: rgba(30, 41, 59, 0.7);
+            --text: #f8fafc;
+            --primary: #38bdf8;
+            --accent: #818cf8;
+            --text-muted: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 40px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .sitemap-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .sitemap-card {
+            background: var(--card);
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sitemap-card h2 {
+            margin-top: 0;
+            color: var(--accent);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+            font-size: 1.25rem;
+        }
+
+        .sitemap-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sitemap-card li {
+            margin-bottom: 10px;
+        }
+
+        .sitemap-card a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .sitemap-card a:hover {
+            color: var(--primary);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--text-muted);
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🌐 Site Navigator & Resources Map</h1>
+    <div class="sitemap-container">
+        <div class="sitemap-card">
+            <h2>Main Architecture</h2>
+            <ul>
+                <li><a href="index.html?v=home">🏠 Home (Curriculum Overview)</a></li>
+                <li><a href="index.html?v=announcements">📢 Official Announcements</a></li>
+                <li><a href="index.html?v=citations">⚖️ Intellectual Property Citations</a></li>
+                <li><a href="index.html?v=dashboard">📊 Student Dashboard (Progress & Analytics)</a></li>
+                <li><a href="index.html?v=forum">💬 Live Community Forum</a></li>
+                <li><a href="index.html?v=contact">📬 Contact Administration</a></li>
+            </ul>
+        </div>
+        <div class="sitemap-card">
+            <h2>Weekly Curriculum</h2>
+            <ul>
+                <li><a href="index.html?v=week_intro&w=1">📚 Week 1: Introduction to Quantum Mechanics</a></li>
+                <li><a href="index.html?v=week_intro&w=2">📚 Week 2: Quantum Computing Basics</a></li>
+                <li><a href="index.html?v=week_intro&w=3">📚 Week 3: Quantum Algorithms</a></li>
+                <li><a href="index.html?v=week_intro&w=4">📚 Week 4: Advanced Quantum Topics</a></li>
+            </ul>
+        </div>
+        <div class="sitemap-card">
+            <h2>Resources Matrix</h2>
+            <ul>
+                <li><a href="index.html?v=resources">📄 Advanced Exam Preparations</a></li>
+                <li><a href="index.html?v=dashboard"
+                        onclick="alert('Download your progress report from the Dashboard!')">📥 Download PDF Course
+                        Report</a></li>
+                <li><a href="index.html"
+                        onclick="alert('Switch themes using the Theme Selector in the Top Menu on any page')">🎨
+                        Universal Theme Styling</a></li>
+            </ul>
+        </div>
+        <div class="sitemap-card">
+            <h2>Account & Tools</h2>
+            <ul>
+                <li><a href="index.html?v=login">🔑 Login</a></li>
+                <li><a href="index.html?v=signup">📝 Create Account / Details</a></li>
+                <li><a href="index.html?v=profile">👤 User Profile</a></li>
+                <li><a href="admin.html" target="_blank">⚙️ Local Administration Panel</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer">
+        <p>Return to <a href="index.html">Quantum Portal Main</a></p>
+    </div>
+</body>
+
+</html>

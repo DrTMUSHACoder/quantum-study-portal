@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>SWAYAM Login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+
+        <link href="https://swayam.gov.in/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.js"></script>
+        <link type="text/css" rel="stylesheet"
+            href="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.css" />
+
+        <script
+            src="https://storage.googleapis.com/swayam-py3-central-dev-cdn/assets/fb-sso/js/signin_with_cloudflare.js?v=1770970819"></script>
+
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad"
+            defer></script>
+
+        <link rel="stylesheet"
+            href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="https://storage.googleapis.com/swayam-py3-central-dev-cdn/assets/fb-sso/css/globals.css?v=1770970819" />
+        <link rel="stylesheet"
+            href="https://storage.googleapis.com/swayam-py3-central-dev-cdn/assets/fb-sso/css/styleguide.css?v=1770970819" />
+        <link rel="stylesheet" href="https://storage.googleapis.com/swayam-py3-central-dev-cdn/assets/fb-sso/css/style.css?v=1770970819" />
+        <style type="text/css">
+            #loading-img {
+                background: url(https://storage.googleapis.com/swayam-py3-central-dev-cdn/assets/fb-sso/images/loading.gif) center center no-repeat;
+                height: 100%;
+                z-index: 1001;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="main-container">
+            <div class="log-in-screen">
+                <img class="image" src="https://storage.googleapis.com/swayam-py3-central-dev-cdn/assets/fb-sso/images/background.png" />
+                <div class="header">
+                    <div class="header-logo">
+                        <a href="https://swayam.gov.in">
+                            <img class="swayam" src="https://storage.googleapis.com/swayam-py3-central-dev-cdn/assets/fb-sso/images/logo/Swayam_logo.svg" />
+                        </a>
+                        <a href="https://www.education.gov.in" target="_blank">
+                            <img class="img"
+                                src="https://storage.googleapis.com/swayam-py3-central-dev-cdn/assets/fb-sso/images/logo/Ministry_of_Education_India.svg" />
+                        </a>
+                    </div>
+                    <div class="menu">
+                        <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                            <span class="bar"></span>
+                        </button>
+                        <div class="navbar">
+                            <div class="menu-item"><a href="https://swayam.gov.in/about">About Swayam</a></div>
+                            <div class="menu-item"><a href="https://swayam.gov.in/explorer">All Courses</a></div>
+                            <div class="menu-item"><a href="https://swayam.gov.in/nc_details">Partner Institutions</a></div>
+                            <div class="menu-item"><a href="https://nptel.ac.in/LocalChapter">Local Chapters</a></div>
+                            <div class="menu-item"><a href="https://swayam-plus.swayam2.ac.in">Swayam Plus</a></div>
+                        </div>
+                        <div class="spacing-horizontal">
+                            <div class="frame">
+                                <img class="line" src="https://storage.googleapis.com/swayam-py3-central-dev-cdn/assets/fb-sso/images/line-2.svg" />
+                                <img class="line-2" src="https://storage.googleapis.com/swayam-py3-central-dev-cdn/assets/fb-sso/images/line.svg" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="rectangle"></div> -->
+                <div class="description">
+                    <p class="p">
+                        <span class="span">Sign in to SWAYAM using your Google (Gmail), Microsoft accounts (MSN, Hotmail
+                            etc.), or SWAYAM account. If you don’t have one, select
+                        </span>
+                        <span class="text-wrapper-2"><a href="/create_account">Sign Up</a></span>
+                        <span class="span"> now to create a new account.</span>
+                    </p>
+                </div>
+
+                <div class="container">
+                    <div class="container-2">
+                        <div class="title-wrapper">
+                            <p class="title">Sign in to SWAYAM</p>
+                        </div>
+                        <div class="custom-forms-email-wrapper">
+                            <div class="custom-forms-email-2">
+                                <div class="fb-auth-content-div">
+                                    <div id="firebaseui-auth-container"></div>
+                                </div>
+                                <div class="divider">
+                                    <div
+                                        style="width: 70px; height: 0px; outline: 1px #AAAAAA solid; outline-offset: -0.50px">
+                                    </div>
+                                    <p class="divider-text">Or continue with SWAYAM Account</p>
+                                    <div
+                                        style="width: 70px; height: 0px; outline: 1px #AAAAAA solid; outline-offset: -0.50px">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="custom-forms-email">
+                            <div id="error-div" class="error-div"></div>
+                            <div id="success-div" class="success-div"></div>
+                            <div class="input-field-wrapper">
+                                <div class="input-field-div">
+                                    <input id="user_email" class="input-field" placeholder="Enter your email"
+                                        type="email" aria-describedby="email-error" />
+                                </div>
+                                <small id="email-error" class="error-msg" role="alert"></small>
+                                <div class="label-wrapper">
+                                    <div class="label">Email</div>
+                                </div>
+                            </div>
+                            <div class="input-field-wrapper">
+                                <div class="input-field-div">
+                                    <input id="password" class="input-field" placeholder="Enter your password"
+                                        type="password" aria-describedby="password-error" />
+                                </div>
+                                <small id="password-error" class="error-msg" role="alert"></small>
+                                <div class="label-wrapper">
+                                    <div class="label">Password</div>
+                                </div>
+                                <button class="forgot-pwd-button">
+                                    <div class="account-action-wrapper">
+                                        <div class="forgot-pwd-div" id="forgot-password">Forgot your password?</div>
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="cf-base-div">
+                                <div id="cf-turnstile-div" class="cf-turnstile-div" data-size="flexible"></div>
+                                <input id="cf-turnstile-sitekey" value="0x4AAAAAACC6essTnEeOKVmR" type="hidden" />
+                            </div>
+
+                            <div class="action-button-group">
+                                <button id="cancel-button" class="button-cancel" host-url="https://swayam.gov.in">
+                                    <div class="action-button-text">Cancel</div>
+                                </button>
+                                <button id="sign-in-button" class="button-sign-up">
+                                    <div class="action-button-text">Sign In</div>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="account-action-div">
+                            <div class="prompt">Need a SWAYAM account?</div>
+                            <div class="account-action-wrapper">
+                                <a id="create-account" href="/create_account" class="button-5">Sign Up</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-wrapper">
+                        <div class="container-4">
+                            <div class="container-5">
+                                <div class="title-2">Download App</div>
+                                <a target="_blank"
+                                    href="https://play.google.com/store/apps/details?id=in.gov.swayam.app">
+                                    <img class="image-2" src="https://storage.googleapis.com/swayam-py3-central-dev-cdn/assets/fb-sso/images/playstore.png" />
+                                </a>
+                            </div>
+                            <div class="container-6">
+                                <div class="title-2">Follow Us</div>
+                                <div class="icon-group">
+                                    <a target="_blank" href="#">
+                                        <img class="icon"
+                                            src="https://storage.googleapis.com/swayam-py3-central-dev-cdn/assets/fb-sso/images/social/facebook_icon.svg" />
+                                    </a>
+                                    <a target="_blank" href="#">
+                                        <img class="icon"
+                                            src="https://storage.googleapis.com/swayam-py3-central-dev-cdn/assets/fb-sso/images/social/instagram_icon.svg" />
+                                    </a>
+                                    <a target="_blank" href="#">
+                                        <img class="icon"
+                                            src="https://storage.googleapis.com/swayam-py3-central-dev-cdn/assets/fb-sso/images/social/twitter_x_icon.svg" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="footer">
+                    <p class="footer-text-wrapper">Copyright © 2026 | Ministry Of Education (Government
+                        Of India)</p>
+                    <p class="footer-text-wrapper"><a href="https://swayam.gov.in/privacy_policy">Privacy Policy</a> | <a
+                            href="https://swayam.gov.in/terms_of_use">Terms Of Use</a> | <a
+                            href="https://swayam.gov.in/terms_of_use">Honor Code</a></p>
+                    <p class="footer-text-wrapper">Initiative By : Ministry Of Education (Government Of India)</p>
+                </footer>
+
+            </div>
+        </div>
+
+        <div class="overlay">
+            <div id="loading-img" title="Loading..."></div>
+        </div>
+        <div id="dialog-form" title="Reset Your Password">
+            <div class="validate-tips">Reset password link will be sent to your registered email.
+            </div>
+            <div class="custom-forms-email">
+                <div id="reset-error-div" class="error-div"></div>
+                <div id="reset-success-div" class="success-div"></div>
+                <div class="input-field-wrapper">
+                    <div class="input-field-div">
+                        <input id="reset_password_email" class="input-field" placeholder="Enter your email" type="email"
+                            aria-describedby="reset-email-error" />
+                    </div>
+                    <small id="reset-email-error" class="error-msg" role="alert"></small>
+                    <div class="label-wrapper">
+                        <div class="label">Registered Email</div>
+                    </div>
+                </div>
+                <div></div>
+                <div id="cf-turnstile-div-reset" class="cf-turnstile-div"></div>
+            </div>
+        </div>
+    </body>
+
+</html>

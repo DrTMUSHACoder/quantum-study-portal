@@ -1,0 +1,192 @@
+"""
+Prepare College Data for Supabase Import
+=========================================
+Source: GitHub (PriyanKishoreMS/colleges-api) - 43,000+ colleges from data.gov.in
+This script:
+1. Reads the raw CSV (43,122 rows)
+2. Cleans and standardizes the data
+3. Outputs a clean CSV ready for Supabase Table Import
+4. Outputs a SQL file for direct Supabase SQL Editor paste
+"""
+
+import csv
+import os
+
+INPUT_FILE = "colleges_india.csv"
+OUTPUT_CSV = "colleges_for_supabase.csv"
+OUTPUT_SQL = "colleges_for_supabase.sql"
+
+def clean_name(name):
+    """Clean college name: title case, remove extra spaces, codes"""
+    if not name:
+        return ""
+    # Remove leading/trailing whitespace
+    name = name.strip()
+    # Remove leading ID codes like "D536 " 
+    parts = name.split(' ', 1)
+    if len(parts) > 1 and len(parts[0]) <= 5 and parts[0].isalnum() and not parts[0].isalpha():
+        # Check if first part looks like a code (e.g., D536, 952)
+        if any(c.isdigit() for c in parts[0]):
+            name = parts[1].strip()
+    # Remove trailing codes like ", 952" or " 610"
+    if name and name[-1].isdigit():
+        # Check if last few chars are just a number
+        last_space = name.rfind(' ')
+        if last_space > 0:
+            suffix = name[last_space+1:]
+            if suffix.isdigit() and len(suffix) <= 4:
+                name = name[:last_space].rstrip(',').strip()
+    return name
+
+def clean_district(district):
+    """Standardize district names"""
+    if not district:
+        return "General"
+    district = district.strip()
+    # Handle common variations
+    replacements = {
+        "Ahmadabad": "Ahmedabad",
+        "Bangalore": "Bengaluru Urban",
+        "Bangalore Rural": "Bengaluru Rural",
+        "Belgaum": "Belagavi",
+        "Bellary": "Ballari",
+        "Bijapur": "Vijayapura",
+        "Gulbarga": "Kalaburagi",
+        "Mysore": "Mysuru",
+        "Shimoga": "Shivamogga",
+        "Tumkur": "Tumakuru",
+        "Kachchh": "Kutch",
+        "Sabar Kantha": "Sabarkantha",
+        "Banaskantha": "Banaskantha",
+        "Mahesana": "Mehsana",
+        "The Dangs": "Dang",
+        "North Twenty Four Parganas": "North 24 Parganas",
+        "South Twenty Four Parganas": "South 24 Parganas",
+    }
+    return replacements.get(district, district)
+
+def escape_sql(val):
+    """Escape single quotes for SQL"""
+    if not val:
+        return ""
+    return val.replace("'", "''")
+
+def main():
+    print(f"Reading {INPUT_FILE}...")
+    
+    rows = []
+    states_count = {}
+    districts_seen = {}
+    
+    with open(INPUT_FILE, 'r', encoding='utf-8-sig') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            state = row.get('state', '').strip()
+            name = clean_name(row.get('name', ''))
+            district = clean_district(row.get('district', ''))
+            city = row.get('city', '').strip()
+            
+            if not state or not name:
+                continue
+            
+            rows.append({
+                'state': state,
+                'district': district,
+                'college_name': name,
+                'city': city
+            })
+            
+            states_count[state] = states_count.get(state, 0) + 1
+            if state not in districts_seen:
+                districts_seen[state] = set()
+            districts_seen[state].add(district)
+    
+    print(f"\n{'='*60}")
+    print(f"TOTAL COLLEGES PROCESSED: {len(rows)}")
+    print(f"TOTAL STATES/UTs: {len(states_count)}")
+    print(f"{'='*60}")
+    
+    # Print state-wise summary
+    print(f"\n{'State':<35} {'Colleges':>10} {'Districts':>10}")
+    print("-" * 60)
+    for state in sorted(states_count.keys()):
+        print(f"{state:<35} {states_count[state]:>10} {len(districts_seen[state]):>10}")
+    
+    # Write clean CSV for Supabase Table Import
+    print(f"\nWriting {OUTPUT_CSV}...")
+    with open(OUTPUT_CSV, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=['state', 'district', 'college_name'])
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({
+                'state': row['state'],
+                'district': row['district'],
+                'college_name': row['college_name']
+            })
+    
+    # Write SQL file (batched INSERTs for performance)
+    print(f"Writing {OUTPUT_SQL}...")
+    with open(OUTPUT_SQL, 'w', encoding='utf-8') as f:
+        f.write("-- ============================================\n")
+        f.write("-- QUANTUM STUDY PORTAL - National College Database\n")
+        f.write(f"-- Total Records: {len(rows)}\n")
+        f.write(f"-- Source: data.gov.in via GitHub\n")
+        f.write("-- ============================================\n\n")
+        
+        f.write("-- Step 1: Create Table\n")
+        f.write("CREATE TABLE IF NOT EXISTS public.institutions (\n")
+        f.write("    id bigint generated by default as identity primary key,\n")
+        f.write("    state text not null,\n")
+        f.write("    district text,\n")
+        f.write("    college_name text not null,\n")
+        f.write("    created_at timestamp with time zone default now()\n")
+        f.write(");\n\n")
+        
+        f.write("-- Step 2: Enable Public Read Access\n")
+        f.write("ALTER TABLE public.institutions ENABLE ROW LEVEL SECURITY;\n")
+        f.write("CREATE POLICY \"Allow public read access\" ON public.institutions FOR SELECT USING (true);\n\n")
+        
+        f.write("-- Step 3: Create Index for fast search\n")
+        f.write("CREATE INDEX IF NOT EXISTS idx_institutions_state ON public.institutions(state);\n")
+        f.write("CREATE INDEX IF NOT EXISTS idx_institutions_district ON public.institutions(district);\n")
+        f.write("CREATE INDEX IF NOT EXISTS idx_institutions_name ON public.institutions(college_name);\n\n")
+        
+        f.write("-- Step 4: Insert All Colleges (batched)\n")
+        
+        batch_size = 500
+        for i in range(0, len(rows), batch_size):
+            batch = rows[i:i+batch_size]
+            f.write(f"\n-- Batch {i//batch_size + 1} ({i+1} to {min(i+batch_size, len(rows))})\n")
+            f.write("INSERT INTO public.institutions (state, district, college_name) VALUES\n")
+            
+            values = []
+            for row in batch:
+                s = escape_sql(row['state'])
+                d = escape_sql(row['district'])
+                n = escape_sql(row['college_name'])
+                values.append(f"('{s}', '{d}', '{n}')")
+            
+            f.write(",\n".join(values))
+            f.write(";\n")
+        
+        # Add "Other (Not Listed)" for every state
+        f.write("\n-- Step 5: Add 'Other' option for every state\n")
+        f.write("INSERT INTO public.institutions (state, district, college_name)\n")
+        f.write("SELECT DISTINCT state, 'Other', 'Other (Not Listed)' FROM public.institutions;\n")
+    
+    csv_size = os.path.getsize(OUTPUT_CSV) / (1024 * 1024)
+    sql_size = os.path.getsize(OUTPUT_SQL) / (1024 * 1024)
+    
+    print(f"\n{'='*60}")
+    print(f"✅ DONE!")
+    print(f"   {OUTPUT_CSV}: {csv_size:.1f} MB (for Supabase Table Import)")
+    print(f"   {OUTPUT_SQL}: {sql_size:.1f} MB (for Supabase SQL Editor)")
+    print(f"{'='*60}")
+    print(f"\nIMPORT OPTIONS:")
+    print(f"  Option A (EASY): Go to Supabase > Table Editor > institutions > Import CSV")
+    print(f"           Upload: {OUTPUT_CSV}")
+    print(f"  Option B (SQL):  Go to Supabase > SQL Editor > New Query")
+    print(f"           Paste contents of: {OUTPUT_SQL}")
+
+if __name__ == "__main__":
+    main()

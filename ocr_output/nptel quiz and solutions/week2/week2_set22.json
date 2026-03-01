@@ -1,0 +1,62 @@
+[
+    {
+        "q": "Which Qiskit class is used to create a quantum circuit object?",
+        "options": [
+            "QuantumCircuit",
+            "QuantumRegister",
+            "ClassicalRegister",
+            "GateSet"
+        ],
+        "answer": 0,
+        "explanation": "In Qiskit, `QuantumCircuit` is the main class used to define and manipulate quantum circuits.",
+        "id": "2_22_1"
+    },
+    {
+        "q": "What does the `qc.draw('mpl')` command do in a Jupyter notebook?",
+        "options": [
+            "Executes the circuit",
+            "Visualizes the circuit using Matplotlib",
+            "Prints the circuit in LaTeX",
+            "Saves the circuit as a JSON file"
+        ],
+        "answer": 1,
+        "explanation": "The `draw('mpl')` method uses Matplotlib to create a high-quality visualization of the quantum circuit.",
+        "id": "2_22_2"
+    },
+    {
+        "q": "In the transpilation process, what is the 'basis gates' set?",
+        "options": [
+            "The set of all possible gates",
+            "The set of gates natively supported by the physical hardware",
+            "Only H and CNOT gates",
+            "A set of classical gates"
+        ],
+        "answer": 1,
+        "explanation": "Basis gates are the fundamental operations that a specific quantum processor can execute directly. Transpilation converts target gates into these basis gates.",
+        "id": "2_22_3"
+    },
+    {
+        "q": "Which primitive is optimized for computing the expectation value of an operator?",
+        "options": [
+            "Sampler",
+            "Estimator",
+            "Executor",
+            "Runner"
+        ],
+        "answer": 1,
+        "explanation": "The `Estimator` primitive is specifically designed to calculate the expectation value of observables (like energy in VQE) efficiently.",
+        "id": "2_22_4"
+    },
+    {
+        "q": "What is the purpose of 'shots' in the `execute` or `run` command?",
+        "options": [
+            "To speed up the calculation",
+            "To specify the number of times the circuit is measured to get statistics",
+            "To add noise to the circuit",
+            "To reset the qubits"
+        ],
+        "answer": 1,
+        "explanation": "Quantum results are probabilistic. 'Shots' define how many times the experiment is repeated to build a probability distribution (histogram) of outcomes.",
+        "id": "2_22_5"
+    }
+]

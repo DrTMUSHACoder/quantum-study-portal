@@ -1,0 +1,1715 @@
+{
+  "1": {
+    "Assignment 1": [
+      {
+        "q": "Recall the Bloch sphere (geometric) representation of a qubit system, where the state of a qubit is parameterized by two angles $\\theta$ and $\\phi$, as $$ | \\psi \\rangle = \\left(\\cos \\frac {\\theta}{2}\\right) | 0 \\rangle + e ^ {i \\phi} \\left(\\sin \\frac {\\theta}{2}\\right) | 1 \\rangle$$ What are the values of the angles $\\theta$ and $\\phi$ for the state $|\\psi \\rangle = \\binom{(1 + i) / \\sqrt{2}}{(1 - i) / \\sqrt{2}}$?",
+        "options": [
+          "$\\theta = \\pi /2$ and $\\phi = \\pi /2$",
+          "$\\theta = \\pi /2$ and $\\phi = 3\\pi /2$",
+          "$\\theta = \\pi$ and $\\phi = \\pi /4$",
+          "$\\theta = \\pi /4$ and $\\phi = \\pi /2$"
+        ],
+        "answer": 0,
+        "explanation": "$\\theta = \\pi /2$ and $\\phi = 3\\pi /2$",
+        "id": "1_1"
+      },
+      {
+        "q": "The state $|\\phi \\rangle = \\left(\\frac{1 + i}{4}\\right)|0\\rangle +\\left(\\frac{3 - i}{4}\\right)|1\\rangle$ is measured in the $\\{|+\\rangle ,|- \\rangle \\}$ basis (also called the Hadamard basis). What is the probability of obtaining $| + \\rangle$ as the measurement result?",
+        "options": [
+          "1/3",
+          "2/3",
+          "$\\sqrt{2/3}$",
+          "1/2"
+        ],
+        "answer": 1,
+        "explanation": "To find the probability, express $|\\phi\\rangle$ in the Hadamard basis: $|+\\rangle$ component is $\\langle +|\\phi\\rangle$. Probability = $|\\langle +|\\phi\\rangle|^2 = 2/3$.",
+        "id": "1_2"
+      },
+      {
+        "q": "Which of the following gate sequences adds a relative phase of $\\pi$ between $|0\\rangle$ and $|1\\rangle$?",
+        "options": [
+          "X gate",
+          "Y gate",
+          "Z gate",
+          "H gate"
+        ],
+        "answer": 2,
+        "explanation": "The Pauli-Z gate maps $|1\\rangle$ to $-|1\\rangle = e^{i\\pi}|1\\rangle$, effectively adding a relative phase of $\\pi$.",
+        "id": "1_3"
+      },
+      {
+        "q": "Suppose the state $| + \\rangle = \\frac{|0\\rangle + |1\\rangle}{\\sqrt{2}}$ is transformed via a quantum gate of the form $P = |0\\rangle \\langle 0| + e^{i\\phi}|1\\rangle \\langle 1|$. Find the angle $\\phi$ such that, after the action of the gate, the probability of obtaining $| + \\rangle$ is $1 / 2$.",
+        "options": [
+          "$\\phi = 0$",
+          "$\\phi = \\pi / 2$",
+          "$\\phi = \\pi / 4$",
+          "$\\phi = \\pi$"
+        ],
+        "answer": 1,
+        "explanation": "$$",
+        "id": "1_4"
+      },
+      {
+        "q": "Which of the circuits below implement the following permutation operation? $O = \\begin{pmatrix} 0 & 1 & 0 & 0 \\ 1 & 0 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\end{pmatrix}$",
+        "options": [
+          "CNOT with control q[0], target q[1]",
+          "CNOT with control q[1], target q[0]",
+          "SWAP gate",
+          "X gate on q[0]"
+        ],
+        "answer": 1,
+        "explanation": "The matrix represents a CNOT where the first qubit is flipped if the second is $|1\\rangle$, but looking at the matrix indices (01 <-> 10 swapping), it corresponds to a CNOT where q[1] is the control and q[0] is the target.",
+        "id": "1_5"
+      },
+      {
+        "q": "Which of these are valid quantum gates?",
+        "options": [
+          "$\\left( \\begin{array}{cc} 1 & 0 \\ 0 & e^{i\\pi / 2} \\end{array} \\right)$",
+          "$\\left( \\begin{array}{cc} 1 & 0 \\ 0 & e^{i\\pi / 4} \\end{array} \\right)$",
+          "$\\left( \\begin{array}{cc} \\frac{1}{\\sqrt{2}} & -\\frac{i}{\\sqrt{2}} \\ \\frac{1}{\\sqrt{2}} & \\frac{i}{\\sqrt{2}} \\end{array} \\right)$",
+          "$\\left( \\begin{array}{cc} e^{-i\\pi / 3} & 0 \\ 0 & e^{i\\pi / 3} \\end{array} \\right)$"
+        ],
+        "answer": 2,
+        "explanation": "Valid quantum gates must be unitary ($U^\\dagger U = I$). The third matrix is unitary.",
+        "id": "1_6"
+      },
+      {
+        "q": "Which of these circuits implement the transformation $|00\\rangle \\rightarrow \\frac{1}{\\sqrt{2}} |00\\rangle -\\frac{1}{\\sqrt{2}} |11\\rangle$?",
+        "options": [
+          "H on q[0], then CNOT(0,1)",
+          "X on q[0], H on q[0], then CNOT(0,1)",
+          "H on q[1], then CNOT(1,0)",
+          "Z on q[0], H on q[0], then CNOT(0,1)"
+        ],
+        "answer": 1,
+        "explanation": "Applying X to $|00\\rangle$ gives $|10\\rangle$. Applying H to the first qubit gives $(|0\\rangle - |1\\rangle)|0\\rangle / \\sqrt{2}$. CNOT then results in $(|00\\rangle - |11\\rangle) / \\sqrt{2}$.",
+        "id": "1_7"
+      },
+      {
+        "q": "Which of the following pairs of quantum states can be perfectly distinguished?",
+        "options": [
+          "$(|0\\rangle, |0\\rangle)$",
+          "$(|0\\rangle, |1\\rangle)$",
+          "$(\\frac{|0\\rangle + |1\\rangle}{\\sqrt{2}}, \\frac{|0\\rangle - |1\\rangle}{\\sqrt{2}})$",
+          "Both (b) and (c)"
+        ],
+        "answer": 3,
+        "explanation": "Orthogonal states can be perfectly distinguished. Both $|0\\rangle, |1\\rangle$ and $|+\\rangle, |-\\rangle$ are orthogonal pairs.",
+        "id": "1_8"
+      },
+      {
+        "q": "Which of the following states are equivalent to $|\\psi \\rangle = \\cos \\frac{\\pi}{4} |0\\rangle + e^{i\\pi /3}\\sin \\frac{\\pi}{4} |1\\rangle$ physically?",
+        "options": [
+          "$e^{i\\pi/2}(\\cos \\frac{\\pi}{4} |0\\rangle + e^{i\\pi/3}\\sin \\frac{\\pi}{4} |1\\rangle)$",
+          "$\\cos \\frac{\\pi}{4} |0\\rangle + e^{i4\\pi/3}\\sin \\frac{\\pi}{4} |1\\rangle$",
+          "$-(\\cos \\frac{\\pi}{4} |0\\rangle + e^{i\\pi/3}\\sin \\frac{\\pi}{4} |1\\rangle)$",
+          "Both (a) and (c)"
+        ],
+        "answer": 3,
+        "explanation": "Global phases do not affect the physical state. Options (a) and (c) differ only by a global phase from the origin state.",
+        "id": "1_9"
+      },
+      {
+        "q": "The Hadamard gate can be realized as a sequence of gates: $H = e^{i\\pi /2}R_z(\\pi/2)R_x(\\pi/2)R_z(\\pi/2)$. Identify the Euler angles $(\\alpha, \\beta, \\gamma)$ for the general rotation $R_z(\\alpha)R_y(\\beta)R_z(\\gamma)$ that represents H.",
+        "options": [
+          "$(\\pi, \\pi/2, 0)$",
+          "$(0, \\pi/2, \\pi)$",
+          "$(\\pi/2, \\pi/2, \\pi/2)$",
+          "Direct Sequence $R_z R_x R_z$"
+        ],
+        "answer": 0,
+        "explanation": "A common decomposition for H is $R_z(\\pi)R_y(\\pi/2)$.",
+        "id": "1_10"
+      }
+    ],
+    "Set 2: Solution Logic": [
+      {
+        "q": "In the normalization of the state vector $|\\psi\\rangle = \\binom{(1+i)/\\sqrt{2}}{(1-i)/\\sqrt{2}}$, what is the calculated value of $|(1+i)/\\sqrt{2}|^2 + |(1-i)/\\sqrt{2}|^2$ before re-normalization?",
+        "options": [
+          "1",
+          "2",
+          "1/2",
+          "4"
+        ],
+        "answer": 1,
+        "explanation": "As per the solution, $|1+i|^2/2 + |1-i|^2/2 = 2/2 + 2/2 = 2$. Since this is not 1, a further normalization factor of $1/\\sqrt{2}$ is needed.",
+        "id": "1_22_1"
+      },
+      {
+        "q": "What is the normalization factor applied to the state $(\\frac{1+i}{4})|0\\rangle + (\\frac{3-i}{4})|1\\rangle$ to make it a unit vector?",
+        "options": [
+          "$\\sqrt{3}/2$",
+          "$\\sqrt{3/4}$",
+          "$2/\\sqrt{3}$",
+          "$1/\\sqrt{2}$"
+        ],
+        "answer": 2,
+        "explanation": "The sum of absolute squares is $6/8 = 3/4$. The normalization factor is the inverse of the square root of this sum, which is $\\sqrt{4/3} = 2/\\sqrt{3}$.",
+        "id": "1_22_2"
+      },
+      {
+        "q": "A Pauli-Z gate maps the input state $\\alpha|0\\rangle + \\beta|1\\rangle$ to which output state?",
+        "options": [
+          "$\\alpha|0\\rangle + \\beta|1\\rangle$",
+          "$\\alpha|1\\rangle + \\beta|0\\rangle$",
+          "$\\alpha|0\\rangle - \\beta|1\\rangle$",
+          "$-\\alpha|0\\rangle + \\beta|1\\rangle$"
+        ],
+        "answer": 2,
+        "explanation": "The Z gate adds a relative phase of $\\pi$ ($e^{i\\pi} = -1$) to the $|1\\rangle$ component: $Z|0\\rangle = |0\\rangle$ and $Z|1\\rangle = -|1\\rangle$.",
+        "id": "1_22_3"
+      },
+      {
+        "q": "Which property of a matrix identifies it as a valid quantum gate representing a single-qubit transformation?",
+        "options": [
+          "It must be Hermitian ($U=U^\\dagger$)",
+          "It must be Unitary ($U^\\dagger U = I$)",
+          "It must have real eigenvalues",
+          "It must be diagonal"
+        ],
+        "answer": 1,
+        "explanation": "As per Postulate 3 and general gate definitions, all quantum gates must be Unitary to preserve the normalization of the state vector.",
+        "id": "1_22_4"
+      },
+      {
+        "q": "To implement the transformation $|00\\rangle \\to \\frac{1}{\\sqrt{2}}(|00\\rangle - |11\\rangle)$, what is the first gate applied to the first qubit in the standard circuit shown in the solutions?",
+        "options": [
+          "Hadamard (H)",
+          "Pauli-X (NOT)",
+          "Pauli-Z",
+          "CNOT"
+        ],
+        "answer": 1,
+        "explanation": "The circuit starts with an X gate on the first qubit to change $|00\\rangle$ to $|10\\rangle$, followed by an H gate and then a CNOT.",
+        "id": "1_22_5"
+      }
+    ],
+    "Set 3: Quantum Postulates": [
+      {
+        "q": "According to Postulate 1, the state of a quantum system is represented as what in a Hilbert space?",
+        "options": [
+          "A real vector",
+          "A unit vector (state vector)",
+          "A scalar value",
+          "A probability distribution"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 1 specifies that a quantum state is a unit vector in a complex inner product space (Hilbert space).",
+        "id": "1_23_1"
+      },
+      {
+        "q": "Which postulate addresses the physical quantities (position, momentum, spin) obtained by making measurements on a system?",
+        "options": [
+          "Postulate 1",
+          "Postulate 2",
+          "Postulate 3",
+          "Postulate 4"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 2 states that observables are described by Hermitian operators on the quantum state space.",
+        "id": "1_23_2"
+      },
+      {
+        "q": "Time evolution of a closed quantum system is described by which type of operator according to Postulate 3?",
+        "options": [
+          "Hermitian operator",
+          "Unitary operator",
+          "Stochastic operator",
+          "Projection operator"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 3 (and the Schrödinger equation) implies that the time evolution is governed by a Unitary operator, which preserves the norm.",
+        "id": "1_23_3"
+      },
+      {
+        "q": "If |0⟩ and |1⟩ are orthogonal basis states, what is the value of the inner product ⟨0|1⟩?",
+        "options": [
+          "1",
+          "0",
+          "i",
+          "-1"
+        ],
+        "answer": 1,
+        "explanation": "Orthogonal states have an inner product of 0 by definition.",
+        "id": "1_23_4"
+      },
+      {
+        "q": "What is the range of the polar angle θ and the azimuthal angle φ for a state represented on the Bloch sphere?",
+        "options": [
+          "θ ∈ [0, π], φ ∈ [0, π]",
+          "θ ∈ [0, 2π], φ ∈ [0, π]",
+          "θ ∈ [0, π], φ ∈ [0, 2π]",
+          "θ ∈ [0, π/2], φ ∈ [0, 2π]"
+        ],
+        "answer": 2,
+        "explanation": "As per the recap on Qubit state space, θ ranges from 0 to π, and φ ranges from 0 to 2π.",
+        "id": "1_23_5"
+      }
+    ],
+    "Set 4: Advanced Concepts": [
+      {
+        "q": "According to Postulate 1, the state of a quantum system is represented as what in a Hilbert space?",
+        "options": [
+          "A real vector",
+          "A unit vector (state vector)",
+          "A scalar value",
+          "A probability distribution"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 1 specifies that a quantum state is a unit vector in a complex inner product space (Hilbert space).",
+        "id": "1_23_1"
+      },
+      {
+        "q": "Which postulate addresses the physical quantities (position, momentum, spin) obtained by making measurements on a system?",
+        "options": [
+          "Postulate 1",
+          "Postulate 2",
+          "Postulate 3",
+          "Postulate 4"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 2 states that observables are described by Hermitian operators on the quantum state space.",
+        "id": "1_23_2"
+      },
+      {
+        "q": "Time evolution of a closed quantum system is described by which type of operator according to Postulate 3?",
+        "options": [
+          "Hermitian operator",
+          "Unitary operator",
+          "Stochastic operator",
+          "Projection operator"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 3 (and the Schrödinger equation) implies that the time evolution is governed by a Unitary operator, which preserves the norm.",
+        "id": "1_23_3"
+      },
+      {
+        "q": "In the normalization of the state vector $|\\psi\\rangle = \\binom{(1+i)/\\sqrt{2}}{(1-i)/\\sqrt{2}}$, what is the calculated value of $|(1+i)/\\sqrt{2}|^2 + |(1-i)/\\sqrt{2}|^2$ before re-normalization?",
+        "options": [
+          "1",
+          "2",
+          "1/2",
+          "4"
+        ],
+        "answer": 1,
+        "explanation": "As per the solution, $|1+i|^2/2 + |1-i|^2/2 = 2/2 + 2/2 = 2$. Since this is not 1, a further normalization factor of $1/\\sqrt{2}$ is needed.",
+        "id": "1_22_1"
+      },
+      {
+        "q": "What is the normalization factor applied to the state $(\\frac{1+i}{4})|0\\rangle + (\\frac{3-i}{4})|1\\rangle$ to make it a unit vector?",
+        "options": [
+          "$\\sqrt{3}/2$",
+          "$\\sqrt{3/4}$",
+          "$2/\\sqrt{3}$",
+          "$1/\\sqrt{2}$"
+        ],
+        "answer": 2,
+        "explanation": "The sum of absolute squares is $6/8 = 3/4$. The normalization factor is the inverse of the square root of this sum, which is $\\sqrt{4/3} = 2/\\sqrt{3}$.",
+        "id": "1_22_2"
+      }
+    ],
+    "Set 5: Mastery Review": [
+      {
+        "q": "In the normalization of the state vector $|\\psi\\rangle = \\binom{(1+i)/\\sqrt{2}}{(1-i)/\\sqrt{2}}$, what is the calculated value of $|(1+i)/\\sqrt{2}|^2 + |(1-i)/\\sqrt{2}|^2$ before re-normalization?",
+        "options": [
+          "1",
+          "2",
+          "1/2",
+          "4"
+        ],
+        "answer": 1,
+        "explanation": "As per the solution, $|1+i|^2/2 + |1-i|^2/2 = 2/2 + 2/2 = 2$. Since this is not 1, a further normalization factor of $1/\\sqrt{2}$ is needed.",
+        "id": "1_22_1"
+      },
+      {
+        "q": "What is the normalization factor applied to the state $(\\frac{1+i}{4})|0\\rangle + (\\frac{3-i}{4})|1\\rangle$ to make it a unit vector?",
+        "options": [
+          "$\\sqrt{3}/2$",
+          "$\\sqrt{3/4}$",
+          "$2/\\sqrt{3}$",
+          "$1/\\sqrt{2}$"
+        ],
+        "answer": 2,
+        "explanation": "The sum of absolute squares is $6/8 = 3/4$. The normalization factor is the inverse of the square root of this sum, which is $\\sqrt{4/3} = 2/\\sqrt{3}$.",
+        "id": "1_22_2"
+      },
+      {
+        "q": "A Pauli-Z gate maps the input state $\\alpha|0\\rangle + \\beta|1\\rangle$ to which output state?",
+        "options": [
+          "$\\alpha|0\\rangle + \\beta|1\\rangle$",
+          "$\\alpha|1\\rangle + \\beta|0\\rangle$",
+          "$\\alpha|0\\rangle - \\beta|1\\rangle$",
+          "$-\\alpha|0\\rangle + \\beta|1\\rangle$"
+        ],
+        "answer": 2,
+        "explanation": "The Z gate adds a relative phase of $\\pi$ ($e^{i\\pi} = -1$) to the $|1\\rangle$ component: $Z|0\\rangle = |0\\rangle$ and $Z|1\\rangle = -|1\\rangle$.",
+        "id": "1_22_3"
+      },
+      {
+        "q": "According to Postulate 1, the state of a quantum system is represented as what in a Hilbert space?",
+        "options": [
+          "A real vector",
+          "A unit vector (state vector)",
+          "A scalar value",
+          "A probability distribution"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 1 specifies that a quantum state is a unit vector in a complex inner product space (Hilbert space).",
+        "id": "1_23_1"
+      },
+      {
+        "q": "Which postulate addresses the physical quantities (position, momentum, spin) obtained by making measurements on a system?",
+        "options": [
+          "Postulate 1",
+          "Postulate 2",
+          "Postulate 3",
+          "Postulate 4"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 2 states that observables are described by Hermitian operators on the quantum state space.",
+        "id": "1_23_2"
+      }
+    ],
+    "Set 2: Conceptual Review": [
+      {
+        "q": "In the normalization of the state vector $|\\psi\\rangle = \\binom{(1+i)/\\sqrt{2}}{(1-i)/\\sqrt{2}}$, what is the calculated value of $|(1+i)/\\sqrt{2}|^2 + |(1-i)/\\sqrt{2}|^2$ before re-normalization?",
+        "options": [
+          "1",
+          "2",
+          "1/2",
+          "4"
+        ],
+        "answer": 1,
+        "explanation": "As per the solution, $|1+i|^2/2 + |1-i|^2/2 = 2/2 + 2/2 = 2$. Since this is not 1, a further normalization factor of $1/\\sqrt{2}$ is needed.",
+        "id": "1_22_1"
+      },
+      {
+        "q": "What is the normalization factor applied to the state $(\\frac{1+i}{4})|0\\rangle + (\\frac{3-i}{4})|1\\rangle$ to make it a unit vector?",
+        "options": [
+          "$\\sqrt{3}/2$",
+          "$\\sqrt{3/4}$",
+          "$2/\\sqrt{3}$",
+          "$1/\\sqrt{2}$"
+        ],
+        "answer": 2,
+        "explanation": "The sum of absolute squares is $6/8 = 3/4$. The normalization factor is the inverse of the square root of this sum, which is $\\sqrt{4/3} = 2/\\sqrt{3}$.",
+        "id": "1_22_2"
+      },
+      {
+        "q": "A Pauli-Z gate maps the input state $\\alpha|0\\rangle + \\beta|1\\rangle$ to which output state?",
+        "options": [
+          "$\\alpha|0\\rangle + \\beta|1\\rangle$",
+          "$\\alpha|1\\rangle + \\beta|0\\rangle$",
+          "$\\alpha|0\\rangle - \\beta|1\\rangle$",
+          "$-\\alpha|0\\rangle + \\beta|1\\rangle$"
+        ],
+        "answer": 2,
+        "explanation": "The Z gate adds a relative phase of $\\pi$ ($e^{i\\pi} = -1$) to the $|1\\rangle$ component: $Z|0\\rangle = |0\\rangle$ and $Z|1\\rangle = -|1\\rangle$.",
+        "id": "1_22_3"
+      },
+      {
+        "q": "Which property of a matrix identifies it as a valid quantum gate representing a single-qubit transformation?",
+        "options": [
+          "It must be Hermitian ($U=U^\\dagger$)",
+          "It must be Unitary ($U^\\dagger U = I$)",
+          "It must have real eigenvalues",
+          "It must be diagonal"
+        ],
+        "answer": 1,
+        "explanation": "As per Postulate 3 and general gate definitions, all quantum gates must be Unitary to preserve the normalization of the state vector.",
+        "id": "1_22_4"
+      },
+      {
+        "q": "To implement the transformation $|00\\rangle \\to \\frac{1}{\\sqrt{2}}(|00\\rangle - |11\\rangle)$, what is the first gate applied to the first qubit in the standard circuit shown in the solutions?",
+        "options": [
+          "Hadamard (H)",
+          "Pauli-X (NOT)",
+          "Pauli-Z",
+          "CNOT"
+        ],
+        "answer": 1,
+        "explanation": "The circuit starts with an X gate on the first qubit to change $|00\\rangle$ to $|10\\rangle$, followed by an H gate and then a CNOT.",
+        "id": "1_22_5"
+      }
+    ],
+    "Set 3: Advanced Topics": [
+      {
+        "q": "According to Postulate 1, the state of a quantum system is represented as what in a Hilbert space?",
+        "options": [
+          "A real vector",
+          "A unit vector (state vector)",
+          "A scalar value",
+          "A probability distribution"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 1 specifies that a quantum state is a unit vector in a complex inner product space (Hilbert space).",
+        "id": "1_23_1"
+      },
+      {
+        "q": "Which postulate addresses the physical quantities (position, momentum, spin) obtained by making measurements on a system?",
+        "options": [
+          "Postulate 1",
+          "Postulate 2",
+          "Postulate 3",
+          "Postulate 4"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 2 states that observables are described by Hermitian operators on the quantum state space.",
+        "id": "1_23_2"
+      },
+      {
+        "q": "Time evolution of a closed quantum system is described by which type of operator according to Postulate 3?",
+        "options": [
+          "Hermitian operator",
+          "Unitary operator",
+          "Stochastic operator",
+          "Projection operator"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 3 (and the Schrödinger equation) implies that the time evolution is governed by a Unitary operator, which preserves the norm.",
+        "id": "1_23_3"
+      },
+      {
+        "q": "If |0⟩ and |1⟩ are orthogonal basis states, what is the value of the inner product ⟨0|1⟩?",
+        "options": [
+          "1",
+          "0",
+          "i",
+          "-1"
+        ],
+        "answer": 1,
+        "explanation": "Orthogonal states have an inner product of 0 by definition.",
+        "id": "1_23_4"
+      },
+      {
+        "q": "What is the range of the polar angle θ and the azimuthal angle φ for a state represented on the Bloch sphere?",
+        "options": [
+          "θ ∈ [0, π], φ ∈ [0, π]",
+          "θ ∈ [0, 2π], φ ∈ [0, π]",
+          "θ ∈ [0, π], φ ∈ [0, 2π]",
+          "θ ∈ [0, π/2], φ ∈ [0, 2π]"
+        ],
+        "answer": 2,
+        "explanation": "As per the recap on Qubit state space, θ ranges from 0 to π, and φ ranges from 0 to 2π.",
+        "id": "1_23_5"
+      }
+    ],
+    "Set 4: Mastery Challenge": [
+      {
+        "q": "According to Postulate 1, the state of a quantum system is represented as what in a Hilbert space?",
+        "options": [
+          "A real vector",
+          "A unit vector (state vector)",
+          "A scalar value",
+          "A probability distribution"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 1 specifies that a quantum state is a unit vector in a complex inner product space (Hilbert space).",
+        "id": "1_23_1"
+      },
+      {
+        "q": "Which postulate addresses the physical quantities (position, momentum, spin) obtained by making measurements on a system?",
+        "options": [
+          "Postulate 1",
+          "Postulate 2",
+          "Postulate 3",
+          "Postulate 4"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 2 states that observables are described by Hermitian operators on the quantum state space.",
+        "id": "1_23_2"
+      },
+      {
+        "q": "Time evolution of a closed quantum system is described by which type of operator according to Postulate 3?",
+        "options": [
+          "Hermitian operator",
+          "Unitary operator",
+          "Stochastic operator",
+          "Projection operator"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 3 (and the Schrödinger equation) implies that the time evolution is governed by a Unitary operator, which preserves the norm.",
+        "id": "1_23_3"
+      },
+      {
+        "q": "In the normalization of the state vector $|\\psi\\rangle = \\binom{(1+i)/\\sqrt{2}}{(1-i)/\\sqrt{2}}$, what is the calculated value of $|(1+i)/\\sqrt{2}|^2 + |(1-i)/\\sqrt{2}|^2$ before re-normalization?",
+        "options": [
+          "1",
+          "2",
+          "1/2",
+          "4"
+        ],
+        "answer": 1,
+        "explanation": "As per the solution, $|1+i|^2/2 + |1-i|^2/2 = 2/2 + 2/2 = 2$. Since this is not 1, a further normalization factor of $1/\\sqrt{2}$ is needed.",
+        "id": "1_22_1"
+      },
+      {
+        "q": "What is the normalization factor applied to the state $(\\frac{1+i}{4})|0\\rangle + (\\frac{3-i}{4})|1\\rangle$ to make it a unit vector?",
+        "options": [
+          "$\\sqrt{3}/2$",
+          "$\\sqrt{3/4}$",
+          "$2/\\sqrt{3}$",
+          "$1/\\sqrt{2}$"
+        ],
+        "answer": 2,
+        "explanation": "The sum of absolute squares is $6/8 = 3/4$. The normalization factor is the inverse of the square root of this sum, which is $\\sqrt{4/3} = 2/\\sqrt{3}$.",
+        "id": "1_22_2"
+      }
+    ],
+    "Set 5: Comprehensive Review": [
+      {
+        "q": "In the normalization of the state vector $|\\psi\\rangle = \\binom{(1+i)/\\sqrt{2}}{(1-i)/\\sqrt{2}}$, what is the calculated value of $|(1+i)/\\sqrt{2}|^2 + |(1-i)/\\sqrt{2}|^2$ before re-normalization?",
+        "options": [
+          "1",
+          "2",
+          "1/2",
+          "4"
+        ],
+        "answer": 1,
+        "explanation": "As per the solution, $|1+i|^2/2 + |1-i|^2/2 = 2/2 + 2/2 = 2$. Since this is not 1, a further normalization factor of $1/\\sqrt{2}$ is needed.",
+        "id": "1_22_1"
+      },
+      {
+        "q": "What is the normalization factor applied to the state $(\\frac{1+i}{4})|0\\rangle + (\\frac{3-i}{4})|1\\rangle$ to make it a unit vector?",
+        "options": [
+          "$\\sqrt{3}/2$",
+          "$\\sqrt{3/4}$",
+          "$2/\\sqrt{3}$",
+          "$1/\\sqrt{2}$"
+        ],
+        "answer": 2,
+        "explanation": "The sum of absolute squares is $6/8 = 3/4$. The normalization factor is the inverse of the square root of this sum, which is $\\sqrt{4/3} = 2/\\sqrt{3}$.",
+        "id": "1_22_2"
+      },
+      {
+        "q": "A Pauli-Z gate maps the input state $\\alpha|0\\rangle + \\beta|1\\rangle$ to which output state?",
+        "options": [
+          "$\\alpha|0\\rangle + \\beta|1\\rangle$",
+          "$\\alpha|1\\rangle + \\beta|0\\rangle$",
+          "$\\alpha|0\\rangle - \\beta|1\\rangle$",
+          "$-\\alpha|0\\rangle + \\beta|1\\rangle$"
+        ],
+        "answer": 2,
+        "explanation": "The Z gate adds a relative phase of $\\pi$ ($e^{i\\pi} = -1$) to the $|1\\rangle$ component: $Z|0\\rangle = |0\\rangle$ and $Z|1\\rangle = -|1\\rangle$.",
+        "id": "1_22_3"
+      },
+      {
+        "q": "According to Postulate 1, the state of a quantum system is represented as what in a Hilbert space?",
+        "options": [
+          "A real vector",
+          "A unit vector (state vector)",
+          "A scalar value",
+          "A probability distribution"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 1 specifies that a quantum state is a unit vector in a complex inner product space (Hilbert space).",
+        "id": "1_23_1"
+      },
+      {
+        "q": "Which postulate addresses the physical quantities (position, momentum, spin) obtained by making measurements on a system?",
+        "options": [
+          "Postulate 1",
+          "Postulate 2",
+          "Postulate 3",
+          "Postulate 4"
+        ],
+        "answer": 1,
+        "explanation": "Postulate 2 states that observables are described by Hermitian operators on the quantum state space.",
+        "id": "1_23_2"
+      }
+    ]
+  },
+  "2": {
+    "Assignment 2": [
+      {
+        "q": "Which of the following are Qiskit Runtime primitives currently available on the IBM Quantum Platform?",
+        "options": [
+          "Sampler",
+          "Estimator",
+          "Circuit-Runner",
+          "Executor 1/7",
+          "Experience and Circuit Composer",
+          "Quantum Computing Concepts: Entanglement and Interference - Part 1",
+          "Quantum Computing Concepts: Entanglement and Interference - Part 2",
+          "Programming with Qiskit",
+          "● Week 2: Lecture notes",
+          "● Downloadable Notes"
+        ],
+        "answer": 0,
+        "explanation": "Sampler Estimator",
+        "id": "2_1"
+      },
+      {
+        "q": "According to the IBM Quantum Composer documentation, which version of OpenQASM is currently supported for writing quantum circuits in the code editor?",
+        "options": [
+          "OpenQASM 1.0",
+          "OpenQASM 2.0",
+          "OpenQASM 3.0",
+          "OpenQASM 2.5"
+        ],
+        "answer": 1,
+        "explanation": "OpenQASM 2.0",
+        "id": "2_2"
+      },
+      {
+        "q": "Which statement correctly describes the difference between the Sampler and Estimator primitives in Qiskit?",
+        "options": [
+          "Sampler returns measurement outcome distributions from a circuit, while Estimator returns expectation values of specified observables",
+          "Sampler is used for variational algorithms, while Estimator is used only for circuit execution",
+          "Sampler requires observables as input, while Estimator does not",
+          "Estimator returns raw bitstrings, while Sampler returns expectation values"
+        ],
+        "answer": 0,
+        "explanation": "Sampler returns measurement outcome distributions from a circuit, while Estimator returns expectation values of specified observables",
+        "id": "2_3"
+      },
+      {
+        "q": "In the transpilation process, which of the following steps are NOT performed to prepare a quantum circuit for execution on real quantum hardware?",
+        "options": [
+          "Decomposing multi-qubit gates into basis gates supported by the backend",
+          "Mapping logical qubits to physical qubits based on the hardware topology",
+          "Optimizing circuit depth to reduce gate count",
+          "Converting all gates to Hadamard and CNOT gates only"
+        ],
+        "answer": 3,
+        "explanation": "Converting all gates to Hadamard and CNOT gates only",
+        "id": "2_4"
+      },
+      {
+        "q": "Using IBM Quantum Composer, create a 3-qubit circuit starting in state $|000\\rangle$ . Apply a rotation gate $R_{y}\\left(\\frac{\\pi}{3}\\right)$ to the first qubit $(q[0])$ . After running the circuit and viewing the statever visualization, which of the following images correctly represents the resulting quantum state? - - Week 2: Solution ![img-1.jpeg](img-1.jpeg) ![img-2.jpeg](img-2.jpeg) ![img-3.jpeg](img-3.jpeg) ![img-4.jpeg](img-4.jpeg) 3/7",
+        "options": [
+          "![img-5.jpeg](img-5.jpeg)"
+        ],
+        "answer": 0,
+        "explanation": "![img-5.jpeg](img-5.jpeg)",
+        "id": "2_5"
+      },
+      {
+        "q": "Create a 3-qubit GHZ state by applying a Hadamard gate to q[0], followed by CNOT gates from q[0] to q[1] and q[0] to q[2]. Visualize the density matrix using the state city representation. Which of the following images correctly shows the real and imaginary components of the density matrix? ![img-6.jpeg](img-6.jpeg) ![img-7.jpeg](img-7.jpeg) ![img-8.jpeg](img-8.jpeg) ![img-9.jpeg](img-9.jpeg) ![img-10.jpeg](img-10.jpeg) ![img-11.jpeg](img-11.jpeg) ![img-12.jpeg](img-12.jpeg) ![img-13.jpeg](img-13.jpeg)",
+        "options": [
+          "![img-14.jpeg](img-14.jpeg) ![img-15.jpeg](img-15.jpeg)"
+        ],
+        "answer": 0,
+        "explanation": "![img-14.jpeg](img-14.jpeg)",
+        "id": "2_6"
+      },
+      {
+        "q": "Starting with the initial state $|\\psi \\rangle = \\frac{1}{2} (|00\\rangle + |01\\rangle + |10\\rangle + |11\\rangle)$ , apply a CNOT gate with control qubit q[0] and target qubit q[1], followed by a Hadamard gate on q[0]. What is the resulting quantum state? $$ \\begin{array}{l} \\frac {1}{2} \\left(| 0 0 \\rangle + | 0 1 \\rangle + | 1 0 \\rangle - | 1 1 \\rangle\\right) \\ \\frac {\\sqrt {2}}{2} \\left(| 0 0 \\rangle + | 1 0 \\rangle\\right) \\ \\left| 0 0 \\right\\rangle \\ \\end{array} $$ $$ \\frac{1}{2} (|00\\rangle + |01\\rangle - |10\\rangle + |11\\rangle) $$",
+        "options": [
+          "\\frac{\\sqrt{2}}{2} (|00\\rangle + |10\\rangle)"
+        ],
+        "answer": 0,
+        "explanation": "$$",
+        "id": "2_7"
+      },
+      {
+        "q": "Apply a rotation gate $R_y\\left(\\frac{2\\pi}{3}\\right)$ to the first qubit of state $|000\\rangle$, followed by a CNOT from qubit 0 to qubit 1. What is the resulting quantum state? $$ \\begin{array}{l} \\odot \\ \\frac{1}{2} |000\\rangle + \\frac{\\sqrt{3}}{2} |011\\rangle \\ \\odot \\ \\frac{\\sqrt{3}}{2} |000\\rangle + \\frac{1}{2} |011\\rangle \\ \\odot \\ \\frac{1}{2} |000\\rangle + \\frac{\\sqrt{3}}{2} |110\\rangle \\ \\odot \\ \\frac{1}{2} |000\\rangle - \\frac{\\sqrt{3}}{2} |011\\rangle \\ \\end{array} $$",
+        "options": [
+          "\\frac{1}{2} |000\\rangle + \\frac{\\sqrt{3}}{2} |011\\rangle"
+        ],
+        "answer": 0,
+        "explanation": "$$",
+        "id": "2_8"
+      },
+      {
+        "q": "In a quantum teleportation protocol, Bob applies correction gates based on the 2-bit classical message from Alice. If Bob's gate sequences in four trials are: (I, I), (Z, I), (X, I), and (XZ, I), what are the corresponding 2-bit messages Alice sent?",
+        "options": [
+          "00, 01, 10, 11",
+          "00, 10, 01, 11",
+          "11, 10, 01, 00",
+          "10, 00, 11, 01 00, 01, 10, 11"
+        ],
+        "answer": 0,
+        "explanation": "00, 01, 10, 11",
+        "id": "2_9"
+      },
+      {
+        "q": "Alice and Bob share an entangled state $\\frac{1}{\\sqrt{2}}(|01\\rangle + |10\\rangle)$. If Alice measures her qubit in the computational basis and obtains result $|0\\rangle$, what is the state of Bob's qubit after Alice's measurement?",
+        "options": [
+          "$\\frac{1}{\\sqrt{2}}(|0\\rangle + |1\\rangle)$ 6/7",
+          "\\frac {1}{\\sqrt {2}} (| 0 \\rangle - | 1 \\rangle)",
+          "|1&gt; 7/7"
+        ],
+        "answer": 0,
+        "explanation": "|1&gt;",
+        "id": "2_10"
+      }
+    ],
+    "Set 2: Conceptual Review": [
+      {
+        "q": "Which Qiskit class is used to create a quantum circuit object?",
+        "options": [
+          "QuantumCircuit",
+          "QuantumRegister",
+          "ClassicalRegister",
+          "GateSet"
+        ],
+        "answer": 0,
+        "explanation": "In Qiskit, `QuantumCircuit` is the main class used to define and manipulate quantum circuits.",
+        "id": "2_22_1"
+      },
+      {
+        "q": "What does the `qc.draw('mpl')` command do in a Jupyter notebook?",
+        "options": [
+          "Executes the circuit",
+          "Visualizes the circuit using Matplotlib",
+          "Prints the circuit in LaTeX",
+          "Saves the circuit as a JSON file"
+        ],
+        "answer": 1,
+        "explanation": "The `draw('mpl')` method uses Matplotlib to create a high-quality visualization of the quantum circuit.",
+        "id": "2_22_2"
+      },
+      {
+        "q": "In the transpilation process, what is the 'basis gates' set?",
+        "options": [
+          "The set of all possible gates",
+          "The set of gates natively supported by the physical hardware",
+          "Only H and CNOT gates",
+          "A set of classical gates"
+        ],
+        "answer": 1,
+        "explanation": "Basis gates are the fundamental operations that a specific quantum processor can execute directly. Transpilation converts target gates into these basis gates.",
+        "id": "2_22_3"
+      },
+      {
+        "q": "Which primitive is optimized for computing the expectation value of an operator?",
+        "options": [
+          "Sampler",
+          "Estimator",
+          "Executor",
+          "Runner"
+        ],
+        "answer": 1,
+        "explanation": "The `Estimator` primitive is specifically designed to calculate the expectation value of observables (like energy in VQE) efficiently.",
+        "id": "2_22_4"
+      },
+      {
+        "q": "What is the purpose of 'shots' in the `execute` or `run` command?",
+        "options": [
+          "To speed up the calculation",
+          "To specify the number of times the circuit is measured to get statistics",
+          "To add noise to the circuit",
+          "To reset the qubits"
+        ],
+        "answer": 1,
+        "explanation": "Quantum results are probabilistic. 'Shots' define how many times the experiment is repeated to build a probability distribution (histogram) of outcomes.",
+        "id": "2_22_5"
+      }
+    ],
+    "Set 3: Advanced Topics": [
+      {
+        "q": "Which of the following describes a Bell State?",
+        "options": [
+          "A state of 1 qubit",
+          "A maximally entangled state of 2 qubits",
+          "A state where qubits are completely independent",
+          "A classical bit pair"
+        ],
+        "answer": 1,
+        "explanation": "Bell States are the four specific states of two qubits that represent the maximum possible entanglement between them.",
+        "id": "2_23_1"
+      },
+      {
+        "q": "To create the Bell state $(|00\\rangle + |11\\rangle)/\\sqrt{2}$, which gates are applied and in what order?",
+        "options": [
+          "X then CNOT",
+          "H then CNOT",
+          "CNOT then H",
+          "H then X"
+        ],
+        "answer": 1,
+        "explanation": "Applying a Hadamard on the first qubit ($H \\otimes I$) followed by a CNOT from the first to the second qubit generates this Bell state.",
+        "id": "2_23_2"
+      },
+      {
+        "q": "In Quantum Teleportation, how many classical bits does Alice send to Bob?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "0"
+        ],
+        "answer": 1,
+        "explanation": "Alice sends two classical bits (resulting from her Bell measurement) to Bob so he can apply the correct recovery gates.",
+        "id": "2_23_3"
+      },
+      {
+        "q": "The No-Cloning Theorem states that:",
+        "options": [
+          "Qubits cannot be measured",
+          "An unknown quantum state cannot be perfectly duplicated",
+          "CNOT gates are impossible",
+          "Classical bits are superior to qubits"
+        ],
+        "answer": 1,
+        "explanation": "The No-Cloning Theorem is a fundamental result in quantum mechanics that prevents the creation of an identical copy of an arbitrary unknown quantum state.",
+        "id": "2_23_4"
+      },
+      {
+        "q": "What happens if you measure one qubit of a Bell state $(|00\\rangle + |11\\rangle)/\\sqrt{2}$ and get $|0\\rangle$?",
+        "options": [
+          "The other qubit remains in superposition",
+          "The other qubit immediately collapses to $|0\\rangle$",
+          "The other qubit collapses to $|1\\rangle$",
+          "The entanglement is preserved"
+        ],
+        "answer": 1,
+        "explanation": "In an entangled state like this, measuring one qubit instantly determines the state of the other. If the first is $|0\\rangle$, the second must also be $|0\\rangle$ due to the correlation.",
+        "id": "2_23_5"
+      }
+    ],
+    "Set 4: Mastery Challenge": [
+      {
+        "q": "Which of the following describes a Bell State?",
+        "options": [
+          "A state of 1 qubit",
+          "A maximally entangled state of 2 qubits",
+          "A state where qubits are completely independent",
+          "A classical bit pair"
+        ],
+        "answer": 1,
+        "explanation": "Bell States are the four specific states of two qubits that represent the maximum possible entanglement between them.",
+        "id": "2_23_1"
+      },
+      {
+        "q": "To create the Bell state $(|00\\rangle + |11\\rangle)/\\sqrt{2}$, which gates are applied and in what order?",
+        "options": [
+          "X then CNOT",
+          "H then CNOT",
+          "CNOT then H",
+          "H then X"
+        ],
+        "answer": 1,
+        "explanation": "Applying a Hadamard on the first qubit ($H \\otimes I$) followed by a CNOT from the first to the second qubit generates this Bell state.",
+        "id": "2_23_2"
+      },
+      {
+        "q": "In Quantum Teleportation, how many classical bits does Alice send to Bob?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "0"
+        ],
+        "answer": 1,
+        "explanation": "Alice sends two classical bits (resulting from her Bell measurement) to Bob so he can apply the correct recovery gates.",
+        "id": "2_23_3"
+      },
+      {
+        "q": "Which Qiskit class is used to create a quantum circuit object?",
+        "options": [
+          "QuantumCircuit",
+          "QuantumRegister",
+          "ClassicalRegister",
+          "GateSet"
+        ],
+        "answer": 0,
+        "explanation": "In Qiskit, `QuantumCircuit` is the main class used to define and manipulate quantum circuits.",
+        "id": "2_22_1"
+      },
+      {
+        "q": "What does the `qc.draw('mpl')` command do in a Jupyter notebook?",
+        "options": [
+          "Executes the circuit",
+          "Visualizes the circuit using Matplotlib",
+          "Prints the circuit in LaTeX",
+          "Saves the circuit as a JSON file"
+        ],
+        "answer": 1,
+        "explanation": "The `draw('mpl')` method uses Matplotlib to create a high-quality visualization of the quantum circuit.",
+        "id": "2_22_2"
+      }
+    ],
+    "Set 5: Comprehensive Review": [
+      {
+        "q": "Which Qiskit class is used to create a quantum circuit object?",
+        "options": [
+          "QuantumCircuit",
+          "QuantumRegister",
+          "ClassicalRegister",
+          "GateSet"
+        ],
+        "answer": 0,
+        "explanation": "In Qiskit, `QuantumCircuit` is the main class used to define and manipulate quantum circuits.",
+        "id": "2_22_1"
+      },
+      {
+        "q": "What does the `qc.draw('mpl')` command do in a Jupyter notebook?",
+        "options": [
+          "Executes the circuit",
+          "Visualizes the circuit using Matplotlib",
+          "Prints the circuit in LaTeX",
+          "Saves the circuit as a JSON file"
+        ],
+        "answer": 1,
+        "explanation": "The `draw('mpl')` method uses Matplotlib to create a high-quality visualization of the quantum circuit.",
+        "id": "2_22_2"
+      },
+      {
+        "q": "In the transpilation process, what is the 'basis gates' set?",
+        "options": [
+          "The set of all possible gates",
+          "The set of gates natively supported by the physical hardware",
+          "Only H and CNOT gates",
+          "A set of classical gates"
+        ],
+        "answer": 1,
+        "explanation": "Basis gates are the fundamental operations that a specific quantum processor can execute directly. Transpilation converts target gates into these basis gates.",
+        "id": "2_22_3"
+      },
+      {
+        "q": "Which of the following describes a Bell State?",
+        "options": [
+          "A state of 1 qubit",
+          "A maximally entangled state of 2 qubits",
+          "A state where qubits are completely independent",
+          "A classical bit pair"
+        ],
+        "answer": 1,
+        "explanation": "Bell States are the four specific states of two qubits that represent the maximum possible entanglement between them.",
+        "id": "2_23_1"
+      },
+      {
+        "q": "To create the Bell state $(|00\\rangle + |11\\rangle)/\\sqrt{2}$, which gates are applied and in what order?",
+        "options": [
+          "X then CNOT",
+          "H then CNOT",
+          "CNOT then H",
+          "H then X"
+        ],
+        "answer": 1,
+        "explanation": "Applying a Hadamard on the first qubit ($H \\otimes I$) followed by a CNOT from the first to the second qubit generates this Bell state.",
+        "id": "2_23_2"
+      }
+    ]
+  },
+  "3": {
+    "Assignment 3": [
+      {
+        "q": "Consider $|X\\rangle = |X_{N - 1}X_{N - 2}\\ldots X_1X_0\\rangle$, a N-qubit state, is there a simple unitary $\\hat{U}$ such that: $$ \\hat {U} | X \\rangle = | \\psi \\rangle = \\frac {1}{\\sqrt {2 ^ {N}}} \\sum_ {Y \\in \\{0, 1 \\} ^ {N}} (- 1) ^ {X \\cdot Y} | Y \\rangle $$ where $X\\cdot Y$ denotes the mod 2 bitwise inner product $X\\cdot Y = (X_{N - 1}\\cdot Y_{N - 1})\\oplus (X_{N - 2}\\cdot Y_{N - 2})\\oplus \\dots \\oplus (X_1\\cdot Y_1)\\oplus (X_0\\cdot Y_0)$ Starting from the state $|\\psi \\rangle$, can one get complete information of $X$ by applying some unitary gates followed by measurement?",
+        "options": [
+          "$\\hat{U} = \\hat{S}^{\\otimes N}$, Yes we can get information about $X$ starting from $|\\psi \\rangle$ by using $\\hat{S}^{\\otimes N}$ followed by measurement.",
+          "Such a unitary cannot be achieved.",
+          "$\\hat{U} = \\hat{H}^{\\otimes N}$, Yes we can get information about $X$ starting from $|\\psi \\rangle$ by using $\\hat{H}^{\\otimes N}$ followed by measurement.",
+          "● Week 3:",
+          "Lecture notes",
+          "Week 3 Feedback Form:",
+          "Quiz: Week 3:",
+          "Assignment 3",
+          "\\hat{U} = \\hat{T}^{\\otimes N}, \\text{ We cannot infer } X \\text{ from } |\\psi\\rangle.",
+          "\\hat{U} = \\hat{H}^{\\otimes N}, \\text{ Yes we can get information about } X \\text{ starting from } |\\psi\\rangle \\text{ by using } \\hat{H}^{\\otimes N} \\text{ followed by measurement.}"
+        ],
+        "answer": 3,
+        "explanation": "$$",
+        "id": "3_1"
+      },
+      {
+        "q": "In the Deutsch-Jozsa problem, what is the minimum number of queries a classical deterministic algorithm must make to determine with 100% certainty whether a function of input size $n$ is constant or balanced? $$ \\begin{array}{c} \\boxed{2^n} \\ \\boxed{n} \\ \\boxed{2^{n-1} + 1} \\ \\boxed{2} \\end{array} $$",
+        "options": [
+          "2^{n-1} + 1"
+        ],
+        "answer": 1,
+        "explanation": "$$",
+        "id": "3_2"
+      },
+      {
+        "q": "What are the possible outputs when the first 3 qubits are measured at the end of the circuit? Follow qiskit ordering $$ \\begin{array}{c} \\boxed{0} \\ \\boxed{0} \\ \\boxed{1} \\ \\boxed{1} \\ \\boxed{1} \\end{array} \\quad \\begin{array}{c} \\boxed{H} \\ \\boxed{H} \\ \\boxed{H} \\ \\boxed{H} \\end{array} $$ $$ \\begin{array}{c} \\boxed{000} \\ \\boxed{101} \\ \\boxed{010} \\ \\boxed{110} \\ \\boxed{110} \\ \\boxed{110} \\ \\boxed{110} \\ \\boxed{110} \\ \\boxed{110} \\ \\boxed{110} \\ \\boxed{110} \\end{array} $$",
+        "options": [
+          "\\begin{array}{c}",
+          "\\boxed{010} \\",
+          "\\boxed{110} \\",
+          "\\boxed{110} \\",
+          "\\boxed{110} \\",
+          "\\boxed{110} \\",
+          "\\boxed{110} \\",
+          "\\box",
+          "\\end{array}"
+        ],
+        "answer": 0,
+        "explanation": "$$",
+        "id": "3_3"
+      },
+      {
+        "q": "Which properties of a quantum mechanical system are exploited by both the Deutsch- Jozsa and Bernstein-Vazirani algorithms to encode the function's output $f(x)$ onto the phase of the input state?",
+        "options": [
+          "Uncertainty Principle",
+          "Phase Kickback",
+          "Superposition",
+          "All the above Phase Kickback Superposition"
+        ],
+        "answer": 1,
+        "explanation": "Phase Kickback",
+        "id": "3_4"
+      },
+      {
+        "q": "What is the expected output when the qubits are measured at the end of the circuit ![img-2.jpeg](img-2.jpeg) 010&gt; 110&gt; 001&gt; 000&gt;",
+        "options": [
+          "None of these 000&gt;"
+        ],
+        "answer": 0,
+        "explanation": "000&gt;",
+        "id": "3_5"
+      },
+      {
+        "q": "What is the probability for all the first 4 wires to output 0 when measured at the end of the following circuit? ![img-3.jpeg](img-3.jpeg) 1/4 1/16 0 1",
+        "options": [
+          "None of these 3/5 0"
+        ],
+        "answer": 0,
+        "explanation": "0",
+        "id": "3_6"
+      },
+      {
+        "q": "How does the quantum circuit for the Bernstein-Vazirani algorithm fundamentally compare to the circuit for the Deutsch-Jozsa algorithm? It requires n repetitions of the Deutsch-Jozsa circuit to find each bit of the secret string. It is completely different, using a new set of gates and a novel structure. It replaces all Hadamard gates with CNOT gates to determine the secret string. It is identical in structure, differing only in the function implemented by the oracle.",
+        "options": [
+          "It is identical in structure, differing only in the function implemented by the oracle."
+        ],
+        "answer": 0,
+        "explanation": "It is identical in structure, differing only in the function implemented by the oracle.",
+        "id": "3_7"
+      },
+      {
+        "q": "How is the reflection about the uniform superposition state $|u\\rangle$ (the Grover diffuser) constructed? By transforming $|u\\rangle$ to $|0\\ldots 0\\rangle$ with Hadamard gates, reflecting about $|0\\ldots 0\\rangle$ , and transforming back It is implemented by a different oracle designed to mark the state $|u\\rangle$ It is a fundamental quantum gate that can be applied directly. By applying the oracle in reverse on the state $|u\\rangle$",
+        "options": [
+          "By transforming $|u\\rangle$ to $|0\\ldots 0\\rangle$ with Hadamard gates, reflecting about $|0\\ldots 0\\rangle$ , and transforming back"
+        ],
+        "answer": 0,
+        "explanation": "By transforming $|u\\rangle$ to $|0\\ldots 0\\rangle$ with Hadamard gates, reflecting about $|0\\ldots 0\\rangle$ , and transforming back",
+        "id": "3_8"
+      },
+      {
+        "q": "What does the following quantum circuit represent? ![img-4.jpeg](img-4.jpeg) Deutsch-Jozsa with Constant Function Oracle Deutsch-Jozsa with Balanced Function Oracle Bernstein-Vazirani with hidden string 111 ## Grover's Search",
+        "options": [
+          "*Deutsch-Jozsa with Constant Function Oracle* **10)** The geometric interpretation of Grover’s algorithm involves a rotation within a 2D plane. Which two orthogonal basis vectors span this plane?",
+          "The initial uniform superposition state $|u\\rangle$ and the final target state $|a\\rangle$.",
+          "The target state $|a\\rangle$ and a uniform superposition of all non-target states, $|e\\rangle$.",
+          "The input register state $|x\\rangle$ and the output register state $|f(x)\\rangle$.",
+          "The all-zeros state $|0\\dots 0\\rangle$ and the all-ones state $|1\\dots 1\\rangle$.",
+          "*The target state $|a\\rangle$ and a uniform superposition of all non-target states, $|e\\rangle*. 5/5"
+        ],
+        "answer": 5,
+        "explanation": "*The target state $|a\\rangle$ and a uniform superposition of all non-target states, $|e\\rangle*.",
+        "id": "3_9"
+      }
+    ],
+    "Set 2: Conceptual Review": [
+      {
+        "q": "What is the optimal number of iterations for Grover's search in a database of size N with 1 solution?",
+        "options": [
+          "O(N)",
+          "O(√N)",
+          "O(log N)",
+          "O(1)"
+        ],
+        "answer": 1,
+        "explanation": "Grover's algorithm provides a quadratic speedup, requiring approximately $(\\pi/4)\\sqrt{N}$ iterations to find a single target.",
+        "id": "3_22_1"
+      },
+      {
+        "q": "The Grover operator consists of two primary parts applied repeatedly. What is the second part called?",
+        "options": [
+          "Oracle",
+          "Diffuser (Inversion about the mean)",
+          "Hadamard transform",
+          "Measurement"
+        ],
+        "answer": 1,
+        "explanation": "The diffuser reflects amplitudes about their average, effectively amplifying the state marked by the oracle.",
+        "id": "3_22_2"
+      },
+      {
+        "q": "In the geometric interpretation of Grover's search, each iteration rotates the state vector by which angle?",
+        "options": [
+          "θ",
+          "2θ",
+          "θ/2",
+          "π"
+        ],
+        "answer": 1,
+        "explanation": "Each Grover iteration performs a rotation of $2\\theta$ in the two-dimensional subspace spanned by the target and non-target states.",
+        "id": "3_22_3"
+      },
+      {
+        "q": "What happens if you run Grover's algorithm for significantly more than the optimal number of iterations?",
+        "options": [
+          "The probability stays at 1",
+          "The probability of success decreases (over-rotation)",
+          "The system crashes",
+          "The speedup becomes exponential"
+        ],
+        "answer": 1,
+        "explanation": "Running too many iterations causes the state vector to rotate past the target state, reducing the overlap and thus the success probability.",
+        "id": "3_22_4"
+      },
+      {
+        "q": "How many qubits are required to search a space of N = 64 elements?",
+        "options": [
+          "6",
+          "8",
+          "64",
+          "32"
+        ],
+        "answer": 0,
+        "explanation": "Since $2^6 = 64$, a system of 6 qubits provides the 64 basis states needed for the database indices.",
+        "id": "3_22_5"
+      }
+    ],
+    "Set 3: Advanced Topics": [
+      {
+        "q": "In the Deutsch-Jozsa algorithm, a 'balanced' function returns '1' for exactly how many of its $2^n$ inputs?",
+        "options": [
+          "All of them",
+          "None of them",
+          "Half ($2^{n-1}$)",
+          "Just one"
+        ],
+        "answer": 2,
+        "explanation": "A balanced function is defined as having output 0 for half the inputs and 1 for the other half.",
+        "id": "3_23_1"
+      },
+      {
+        "q": "The Bernstein-Vazirani algorithm identifies a hidden bitstring 's' in how many queries to the oracle?",
+        "options": [
+          "1",
+          "n",
+          "2^n",
+          "√n"
+        ],
+        "answer": 0,
+        "explanation": "Unlike classical algorithms that require $n$ queries, Bernstein-Vazirani finds the secret string in a single quantum query.",
+        "id": "3_23_2"
+      },
+      {
+        "q": "Which quantum effect is commonly used by DJ and BV algorithms to 'read' the function output into the control qubit?",
+        "options": [
+          "Decoherence",
+          "Phase Kickback",
+          "Amplitude Damping",
+          "Quantum Error Correction"
+        ],
+        "answer": 1,
+        "explanation": "Phase Kickback allows the result of an operation on a target qubit (in an eigenvector state) to be reflected as a phase change in the control qubit.",
+        "id": "3_23_3"
+      },
+      {
+        "q": "In Grover's implementation, the phase oracle marks the solution $|w\\rangle$ by applying which transformation?",
+        "options": [
+          "$|w\\rangle \\to |w\\rangle$",
+          "$|w\\rangle \\to -|w\\rangle$",
+          "$|w\\rangle \\to |0\\rangle$",
+          "$|w\\rangle \\to |1\\rangle$"
+        ],
+        "answer": 1,
+        "explanation": "A phase oracle flips the sign (phase) of the target state, leaving all other states unchanged.",
+        "id": "3_23_4"
+      },
+      {
+        "q": "To find the secret string $s = 101$ using Bernstein-Vazirani, what will be the measurement result in the standard Z-basis?",
+        "options": [
+          "000",
+          "111",
+          "101",
+          "010"
+        ],
+        "answer": 2,
+        "explanation": "The algorithm is designed such that the secret string $s$ is exactly what appears as the measurement outcome after the final Hadamard transforms.",
+        "id": "3_23_5"
+      }
+    ],
+    "Set 4: Mastery Challenge": [
+      {
+        "q": "In the Deutsch-Jozsa algorithm, a 'balanced' function returns '1' for exactly how many of its $2^n$ inputs?",
+        "options": [
+          "All of them",
+          "None of them",
+          "Half ($2^{n-1}$)",
+          "Just one"
+        ],
+        "answer": 2,
+        "explanation": "A balanced function is defined as having output 0 for half the inputs and 1 for the other half.",
+        "id": "3_23_1"
+      },
+      {
+        "q": "The Bernstein-Vazirani algorithm identifies a hidden bitstring 's' in how many queries to the oracle?",
+        "options": [
+          "1",
+          "n",
+          "2^n",
+          "√n"
+        ],
+        "answer": 0,
+        "explanation": "Unlike classical algorithms that require $n$ queries, Bernstein-Vazirani finds the secret string in a single quantum query.",
+        "id": "3_23_2"
+      },
+      {
+        "q": "Which quantum effect is commonly used by DJ and BV algorithms to 'read' the function output into the control qubit?",
+        "options": [
+          "Decoherence",
+          "Phase Kickback",
+          "Amplitude Damping",
+          "Quantum Error Correction"
+        ],
+        "answer": 1,
+        "explanation": "Phase Kickback allows the result of an operation on a target qubit (in an eigenvector state) to be reflected as a phase change in the control qubit.",
+        "id": "3_23_3"
+      },
+      {
+        "q": "What is the optimal number of iterations for Grover's search in a database of size N with 1 solution?",
+        "options": [
+          "O(N)",
+          "O(√N)",
+          "O(log N)",
+          "O(1)"
+        ],
+        "answer": 1,
+        "explanation": "Grover's algorithm provides a quadratic speedup, requiring approximately $(\\pi/4)\\sqrt{N}$ iterations to find a single target.",
+        "id": "3_22_1"
+      },
+      {
+        "q": "The Grover operator consists of two primary parts applied repeatedly. What is the second part called?",
+        "options": [
+          "Oracle",
+          "Diffuser (Inversion about the mean)",
+          "Hadamard transform",
+          "Measurement"
+        ],
+        "answer": 1,
+        "explanation": "The diffuser reflects amplitudes about their average, effectively amplifying the state marked by the oracle.",
+        "id": "3_22_2"
+      }
+    ],
+    "Set 5: Comprehensive Review": [
+      {
+        "q": "What is the optimal number of iterations for Grover's search in a database of size N with 1 solution?",
+        "options": [
+          "O(N)",
+          "O(√N)",
+          "O(log N)",
+          "O(1)"
+        ],
+        "answer": 1,
+        "explanation": "Grover's algorithm provides a quadratic speedup, requiring approximately $(\\pi/4)\\sqrt{N}$ iterations to find a single target.",
+        "id": "3_22_1"
+      },
+      {
+        "q": "The Grover operator consists of two primary parts applied repeatedly. What is the second part called?",
+        "options": [
+          "Oracle",
+          "Diffuser (Inversion about the mean)",
+          "Hadamard transform",
+          "Measurement"
+        ],
+        "answer": 1,
+        "explanation": "The diffuser reflects amplitudes about their average, effectively amplifying the state marked by the oracle.",
+        "id": "3_22_2"
+      },
+      {
+        "q": "In the geometric interpretation of Grover's search, each iteration rotates the state vector by which angle?",
+        "options": [
+          "θ",
+          "2θ",
+          "θ/2",
+          "π"
+        ],
+        "answer": 1,
+        "explanation": "Each Grover iteration performs a rotation of $2\\theta$ in the two-dimensional subspace spanned by the target and non-target states.",
+        "id": "3_22_3"
+      },
+      {
+        "q": "In the Deutsch-Jozsa algorithm, a 'balanced' function returns '1' for exactly how many of its $2^n$ inputs?",
+        "options": [
+          "All of them",
+          "None of them",
+          "Half ($2^{n-1}$)",
+          "Just one"
+        ],
+        "answer": 2,
+        "explanation": "A balanced function is defined as having output 0 for half the inputs and 1 for the other half.",
+        "id": "3_23_1"
+      },
+      {
+        "q": "The Bernstein-Vazirani algorithm identifies a hidden bitstring 's' in how many queries to the oracle?",
+        "options": [
+          "1",
+          "n",
+          "2^n",
+          "√n"
+        ],
+        "answer": 0,
+        "explanation": "Unlike classical algorithms that require $n$ queries, Bernstein-Vazirani finds the secret string in a single quantum query.",
+        "id": "3_23_2"
+      }
+    ]
+  },
+  "4": {
+    "Assignment 4": [
+      {
+        "q": "Which of the following statements regarding Variational Quantum Algorithms (VQAs) are correct? (Select all that apply)",
+        "options": [
+          "Classical part of the VQA calculates the cost function",
+          "A shallow and faithful cost function is desirable",
+          "Problem-agnostic ansatz perform better than Problem-inspired ansatz",
+          "Randomly initialized deep Quantum Circuits exhibit Barren Plateau Fig. 1 shows quantum circuit used in molecular simulations using VQE implementation by Kandala et. al.1. Answer the following questions 2 and 3, with reference to Fig. 1. #",
+          "NISQ-era quantum algorithms",
+          "$\\bigcirc$ Variational Quantum Algorithms",
+          "$\\bigcirc$ Variational Quantum Eigensolver",
+          "Quantum Generative Adversarial Networks (QGANs) Fixing quantum errors with quantum tricks: A brief introduction to Quantum Error Correction - Part 1 Fixing quantum errors with quantum tricks: A brief introduction to Quantum Error Correction - Part 2 ![img-2.jpeg](img-2.jpeg) Figure 1: Quantum circuit implementing VQE algorithm."
+        ],
+        "answer": 0,
+        "explanation": "",
+        "id": "4_1"
+      },
+      {
+        "q": "Select all the statements that hold for $U_{ENT}$ and the unitaries $U^{i,j}(\\Theta_k)$. Together, $U_{ENT}$ and the unitaries $U^{i,j}(\\Theta_k)$ form the trial state. $U_{ENT}$ refers to 'entangling block'. The unitaries $U^{i,j}(\\Theta_k)$ are multiqubit unitaries. The state created by these unitaries have both superposition and entanglement.",
+        "options": [
+          "True",
+          "False"
+        ],
+        "answer": 0,
+        "explanation": "",
+        "id": "4_2"
+      },
+      {
+        "q": "The number of layers $d$ is primarily a function of $\\bigcirc$ the gates being performed the number of qubits in the system. $\\bigcirc$ both (a) and (b). the available depth or coherence time.",
+        "options": [
+          "True",
+          "False"
+        ],
+        "answer": 0,
+        "explanation": "",
+        "id": "4_3"
+      },
+      {
+        "q": "Quantum Generative Adversarial Networks (QGANs) consists of: Encoder Generator Decoder □Discriminator",
+        "options": [
+          "True",
+          "False"
+        ],
+        "answer": 0,
+        "explanation": "",
+        "id": "4_4"
+      },
+      {
+        "q": "Which of the following statements is an accurate description of the phenomenon of decoherence? □ Decoherence causes a pure quantum state to transform into an incoherent mixture of multiple states.",
+        "options": [
+          "Fixing quantum errors with quantum tricks: A brief introduction to Quantum Error Correction - Part 3",
+          "● Week 4: Lecture notes",
+          "○",
+          "Decoherence is caused when a quantum system evolves with time via a unitary transformation.",
+          "Decoherence is caused when a quantum system is coupled to a bath or environment and the joint system evolves via a unitary transformation.",
+          "Decoherence is a reversible process."
+        ],
+        "answer": 0,
+        "explanation": "",
+        "id": "4_5"
+      },
+      {
+        "q": "Select all the options that apply to the three-qubit quantum error correcting code.",
+        "options": [
+          "The three-qubit code assumes that the bit-flip noise occurs identically and independently on the encoded qubits.",
+          "The encoding transforms the state $\\alpha |0\\rangle +\\beta |1\\rangle$ to $(\\alpha |0\\rangle +\\beta |1\\rangle)^{\\otimes 3}$ where $|\\alpha |^2 +|\\beta |^2 = 1$.",
+          "The bit-flip noise flips the qubit with some probability $p$ and leaves it untouched with probability $1 - p$.",
+          "The encoding transforms the state $\\alpha |0\\rangle +\\beta |1\\rangle$ to $(\\alpha |000\\rangle +\\beta |111\\rangle)$ where $|\\alpha |^2 +|\\beta |^2 = 1$."
+        ],
+        "answer": 0,
+        "explanation": "",
+        "id": "4_6"
+      },
+      {
+        "q": "Let $S1$ and $S2$ denote the syndrome bits at the end of the 3-qubit bit-flip quantum error correction protocol. Match the syndrome bit values to their respective recovery gates. | Syndrome (S1, S2) | Recovery Gates | | --- | --- | | x. (0, 1) | i. I ⊗ I ⊗ X | | y. (1, 1) | ii. X ⊗ I ⊗ I | | z. (1, 0) | iii. I ⊗ X ⊗ I | ○ x-i, y-ii, z-iii ○ x-i, y-iii, z-ii ○ x-ii, y-iii, z-i ○ x-iii, y-i, z-ii",
+        "options": [
+          "True",
+          "False"
+        ],
+        "answer": 0,
+        "explanation": "",
+        "id": "4_7"
+      },
+      {
+        "q": "Analyse the following 7-qubit circuit and answer the question. ![img-3.jpeg](img-3.jpeg) What is the probability for all of the first 6 wires to output 0 when measured at the end of this circuit?",
+        "options": [
+          "1/64",
+          "1/2",
+          "0",
+          "1"
+        ],
+        "answer": 0,
+        "explanation": "",
+        "id": "4_8"
+      },
+      {
+        "q": "Consider the encoded (or logical) state $|\\psi_L\\rangle = \\alpha |000\\rangle +\\beta |111\\rangle$ subject to a quantum noise channel where each qubit can undergo a bit flip with probability $p$. The exact probability that the 3-qubit bit-flip quantum error correcting code fails to recover the original state is given by $x\\cdot p^{y}\\cdot (1 - p)^{z} + p^{3}$, where $p$ is the bit-flip probability and $x,y,z$ are the variables to be identified. The value of $y\\cdot x + z$ (here, $\\cdot$ denotes multiplication)",
+        "options": [
+          "6",
+          "7",
+          "10",
+          "5"
+        ],
+        "answer": 0,
+        "explanation": "",
+        "id": "4_9"
+      },
+      {
+        "q": "Consider a 3-qubit state in the $\\{|+ \\rangle, |- \\rangle\\}$ basis, of the form $\\frac{1}{\\sqrt{2}} (|+ + + \\rangle + |- - - \\rangle)$. Which of the following sets of errors can be detected on this state?",
+        "options": [
+          "$\\{XII, IXI, IIX\\}$",
+          "$\\{IZI, ZIZ\\}$",
+          "$\\{ZII, IZI, IIZ\\}$",
+          "$\\{ZII, IZZ, ZZZ\\}$ You may submit any number of times before the due date. The final submission will be considered for grading. Submit Answers 5/5"
+        ],
+        "answer": 0,
+        "explanation": "",
+        "id": "4_10"
+      }
+    ],
+    "Set 2: Conceptual Review": [
+      {
+        "q": "What does VQE stand for in the context of NISQ-era algorithms?",
+        "options": [
+          "Variational Quantum Eigensolver",
+          "Visual Quality Estimator",
+          "Variable Quantum Engine",
+          "Virtual Quantum Emulator"
+        ],
+        "answer": 0,
+        "explanation": "VQE is a hybrid quantum-classical algorithm used to find the minimum eigenvalue of a Hamiltonian.",
+        "id": "4_22_1"
+      },
+      {
+        "q": "In VQE, the parameterized quantum circuit used to prepare the trial state is called an:",
+        "options": [
+          "Oracle",
+          "Ansatz",
+          "Encoder",
+          "Diffuser"
+        ],
+        "answer": 1,
+        "explanation": "The 'Ansatz' is the specific circuit template with adjustable parameters that is optimized to find the ground state.",
+        "id": "4_22_2"
+      },
+      {
+        "q": "Which part of the VQE algorithm is executed on a classical computer?",
+        "options": [
+          "State preparation",
+          "Measurement",
+          "Parameter optimization",
+          "Entanglement creation"
+        ],
+        "answer": 2,
+        "explanation": "VQE is hybrid: the quantum computer measures expectation values, while the classical computer runs the optimizer to pick new parameters.",
+        "id": "4_22_3"
+      },
+      {
+        "q": "Potential Energy Surface (PES) in quantum chemistry represents energy as a function of:",
+        "options": [
+          "Temperature",
+          "Number of electrons",
+          "Inter-atomic distances",
+          "Qubit count"
+        ],
+        "answer": 2,
+        "explanation": "A PES shows how the total energy of a molecule changes as the nuclei are moved relative to each other.",
+        "id": "4_22_4"
+      },
+      {
+        "q": "What is 'Chemical Accuracy' typically defined as in energy calculations?",
+        "options": [
+          "1 eV",
+          "1 kcal/mol",
+          "1 Joule",
+          "1% error"
+        ],
+        "answer": 1,
+        "explanation": "Chemical accuracy refers to a precision of ~1 kcal/mol, which is necessary to predict reaction rates correctly.",
+        "id": "4_22_5"
+      }
+    ],
+    "Set 3: Advanced Topics": [
+      {
+        "q": "Which of the following is a fundamental challenge for physical qubits?",
+        "options": [
+          "High speed",
+          "Decoherence and noise",
+          "Too many electrons",
+          "Lack of cooling"
+        ],
+        "answer": 1,
+        "explanation": "Qubits are extremely sensitive to their environment, leading to loss of quantum information (decoherence) and logical errors.",
+        "id": "4_23_1"
+      },
+      {
+        "q": "How does the 3-qubit bit-flip code encode a logical $|0\\rangle_L$?",
+        "options": [
+          "$|0\\rangle$",
+          "$|000\\rangle$",
+          "$|111\\rangle$",
+          "$|010\\rangle$"
+        ],
+        "answer": 1,
+        "explanation": "Redundancy is used to protect against single-qubit errors; $|0\\rangle_L$ is mapped to $|000\\rangle$.",
+        "id": "4_23_2"
+      },
+      {
+        "q": "In QGANs (Quantum Generative Adversarial Networks), what is the goal of the Generator?",
+        "options": [
+          "To detect errors",
+          "To generate data distributions that mimic real data",
+          "To price options directly",
+          "To minimize qubit counts"
+        ],
+        "answer": 1,
+        "explanation": "The Generator's task is to learn and reproduce the underlying probability distribution of a target dataset.",
+        "id": "4_23_3"
+      },
+      {
+        "q": "Quantum Amplitude Estimation (QAE) provides a speedup for which financial task?",
+        "options": [
+          "Printing receipts",
+          "Monte Carlo simulations for risk analysis",
+          "Logging users",
+          "Sorting account IDs"
+        ],
+        "answer": 1,
+        "explanation": "QAE offers a quadratic speedup over classical Monte Carlo methods, making it valuable for risk assessment and option pricing.",
+        "id": "4_23_4"
+      },
+      {
+        "q": "What is the primary role of an 'Ancilla' qubit in error detection?",
+        "options": [
+          "To execute gates faster",
+          "To store measurement results without collapsing the data qubits",
+          "To power the chip",
+          "To replace a broken qubit"
+        ],
+        "answer": 1,
+        "explanation": "Ancilla qubits are parity probes that extract error syndromes without measuring the data qubits directly.",
+        "id": "4_23_5"
+      }
+    ],
+    "Set 4: Mastery Challenge": [
+      {
+        "q": "Which of the following is a fundamental challenge for physical qubits?",
+        "options": [
+          "High speed",
+          "Decoherence and noise",
+          "Too many electrons",
+          "Lack of cooling"
+        ],
+        "answer": 1,
+        "explanation": "Qubits are extremely sensitive to their environment, leading to loss of quantum information (decoherence) and logical errors.",
+        "id": "4_23_1"
+      },
+      {
+        "q": "How does the 3-qubit bit-flip code encode a logical $|0\\rangle_L$?",
+        "options": [
+          "$|0\\rangle$",
+          "$|000\\rangle$",
+          "$|111\\rangle$",
+          "$|010\\rangle$"
+        ],
+        "answer": 1,
+        "explanation": "Redundancy is used to protect against single-qubit errors; $|0\\rangle_L$ is mapped to $|000\\rangle$.",
+        "id": "4_23_2"
+      },
+      {
+        "q": "In QGANs (Quantum Generative Adversarial Networks), what is the goal of the Generator?",
+        "options": [
+          "To detect errors",
+          "To generate data distributions that mimic real data",
+          "To price options directly",
+          "To minimize qubit counts"
+        ],
+        "answer": 1,
+        "explanation": "The Generator's task is to learn and reproduce the underlying probability distribution of a target dataset.",
+        "id": "4_23_3"
+      },
+      {
+        "q": "What does VQE stand for in the context of NISQ-era algorithms?",
+        "options": [
+          "Variational Quantum Eigensolver",
+          "Visual Quality Estimator",
+          "Variable Quantum Engine",
+          "Virtual Quantum Emulator"
+        ],
+        "answer": 0,
+        "explanation": "VQE is a hybrid quantum-classical algorithm used to find the minimum eigenvalue of a Hamiltonian.",
+        "id": "4_22_1"
+      },
+      {
+        "q": "In VQE, the parameterized quantum circuit used to prepare the trial state is called an:",
+        "options": [
+          "Oracle",
+          "Ansatz",
+          "Encoder",
+          "Diffuser"
+        ],
+        "answer": 1,
+        "explanation": "The 'Ansatz' is the specific circuit template with adjustable parameters that is optimized to find the ground state.",
+        "id": "4_22_2"
+      }
+    ],
+    "Set 5: Comprehensive Review": [
+      {
+        "q": "What does VQE stand for in the context of NISQ-era algorithms?",
+        "options": [
+          "Variational Quantum Eigensolver",
+          "Visual Quality Estimator",
+          "Variable Quantum Engine",
+          "Virtual Quantum Emulator"
+        ],
+        "answer": 0,
+        "explanation": "VQE is a hybrid quantum-classical algorithm used to find the minimum eigenvalue of a Hamiltonian.",
+        "id": "4_22_1"
+      },
+      {
+        "q": "In VQE, the parameterized quantum circuit used to prepare the trial state is called an:",
+        "options": [
+          "Oracle",
+          "Ansatz",
+          "Encoder",
+          "Diffuser"
+        ],
+        "answer": 1,
+        "explanation": "The 'Ansatz' is the specific circuit template with adjustable parameters that is optimized to find the ground state.",
+        "id": "4_22_2"
+      },
+      {
+        "q": "Which part of the VQE algorithm is executed on a classical computer?",
+        "options": [
+          "State preparation",
+          "Measurement",
+          "Parameter optimization",
+          "Entanglement creation"
+        ],
+        "answer": 2,
+        "explanation": "VQE is hybrid: the quantum computer measures expectation values, while the classical computer runs the optimizer to pick new parameters.",
+        "id": "4_22_3"
+      },
+      {
+        "q": "Which of the following is a fundamental challenge for physical qubits?",
+        "options": [
+          "High speed",
+          "Decoherence and noise",
+          "Too many electrons",
+          "Lack of cooling"
+        ],
+        "answer": 1,
+        "explanation": "Qubits are extremely sensitive to their environment, leading to loss of quantum information (decoherence) and logical errors.",
+        "id": "4_23_1"
+      },
+      {
+        "q": "How does the 3-qubit bit-flip code encode a logical $|0\\rangle_L$?",
+        "options": [
+          "$|0\\rangle$",
+          "$|000\\rangle$",
+          "$|111\\rangle$",
+          "$|010\\rangle$"
+        ],
+        "answer": 1,
+        "explanation": "Redundancy is used to protect against single-qubit errors; $|0\\rangle_L$ is mapped to $|000\\rangle$.",
+        "id": "4_23_2"
+      }
+    ]
+  }
+}

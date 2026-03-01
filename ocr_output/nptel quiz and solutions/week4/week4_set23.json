@@ -1,0 +1,62 @@
+[
+    {
+        "q": "Which of the following is a fundamental challenge for physical qubits?",
+        "options": [
+            "High speed",
+            "Decoherence and noise",
+            "Too many electrons",
+            "Lack of cooling"
+        ],
+        "answer": 1,
+        "explanation": "Qubits are extremely sensitive to their environment, leading to loss of quantum information (decoherence) and logical errors.",
+        "id": "4_23_1"
+    },
+    {
+        "q": "How does the 3-qubit bit-flip code encode a logical $|0\rangle_L$?",
+        "options": [
+            "$|0\rangle$",
+            "$|000\rangle$",
+            "$|111\rangle$",
+            "$|010\rangle$"
+        ],
+        "answer": 1,
+        "explanation": "Redundancy is used to protect against single-qubit errors; $|0\rangle_L$ is mapped to $|000\rangle$.",
+        "id": "4_23_2"
+    },
+    {
+        "q": "In QGANs (Quantum Generative Adversarial Networks), what is the goal of the Generator?",
+        "options": [
+            "To detect errors",
+            "To generate data distributions that mimic real data",
+            "To price options directly",
+            "To minimize qubit counts"
+        ],
+        "answer": 1,
+        "explanation": "The Generator's task is to learn and reproduce the underlying probability distribution of a target dataset.",
+        "id": "4_23_3"
+    },
+    {
+        "q": "Quantum Amplitude Estimation (QAE) provides a speedup for which financial task?",
+        "options": [
+            "Printing receipts",
+            "Monte Carlo simulations for risk analysis",
+            "Logging users",
+            "Sorting account IDs"
+        ],
+        "answer": 1,
+        "explanation": "QAE offers a quadratic speedup over classical Monte Carlo methods, making it valuable for risk assessment and option pricing.",
+        "id": "4_23_4"
+    },
+    {
+        "q": "What is the primary role of an 'Ancilla' qubit in error detection?",
+        "options": [
+            "To execute gates faster",
+            "To store measurement results without collapsing the data qubits",
+            "To power the chip",
+            "To replace a broken qubit"
+        ],
+        "answer": 1,
+        "explanation": "Ancilla qubits are parity probes that extract error syndromes without measuring the data qubits directly.",
+        "id": "4_23_5"
+    }
+]

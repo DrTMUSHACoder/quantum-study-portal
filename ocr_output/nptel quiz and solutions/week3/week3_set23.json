@@ -1,0 +1,62 @@
+[
+    {
+        "q": "In the Deutsch-Jozsa algorithm, a 'balanced' function returns '1' for exactly how many of its $2^n$ inputs?",
+        "options": [
+            "All of them",
+            "None of them",
+            "Half ($2^{n-1}$)",
+            "Just one"
+        ],
+        "answer": 2,
+        "explanation": "A balanced function is defined as having output 0 for half the inputs and 1 for the other half.",
+        "id": "3_23_1"
+    },
+    {
+        "q": "The Bernstein-Vazirani algorithm identifies a hidden bitstring 's' in how many queries to the oracle?",
+        "options": [
+            "1",
+            "n",
+            "2^n",
+            "√n"
+        ],
+        "answer": 0,
+        "explanation": "Unlike classical algorithms that require $n$ queries, Bernstein-Vazirani finds the secret string in a single quantum query.",
+        "id": "3_23_2"
+    },
+    {
+        "q": "Which quantum effect is commonly used by DJ and BV algorithms to 'read' the function output into the control qubit?",
+        "options": [
+            "Decoherence",
+            "Phase Kickback",
+            "Amplitude Damping",
+            "Quantum Error Correction"
+        ],
+        "answer": 1,
+        "explanation": "Phase Kickback allows the result of an operation on a target qubit (in an eigenvector state) to be reflected as a phase change in the control qubit.",
+        "id": "3_23_3"
+    },
+    {
+        "q": "In Grover's implementation, the phase oracle marks the solution $|w\rangle$ by applying which transformation?",
+        "options": [
+            "$|w\rangle \to |w\rangle$",
+            "$|w\rangle \to -|w\rangle$",
+            "$|w\rangle \to |0\rangle$",
+            "$|w\rangle \to |1\rangle$"
+        ],
+        "answer": 1,
+        "explanation": "A phase oracle flips the sign (phase) of the target state, leaving all other states unchanged.",
+        "id": "3_23_4"
+    },
+    {
+        "q": "To find the secret string $s = 101$ using Bernstein-Vazirani, what will be the measurement result in the standard Z-basis?",
+        "options": [
+            "000",
+            "111",
+            "101",
+            "010"
+        ],
+        "answer": 2,
+        "explanation": "The algorithm is designed such that the secret string $s$ is exactly what appears as the measurement outcome after the final Hadamard transforms.",
+        "id": "3_23_5"
+    }
+]

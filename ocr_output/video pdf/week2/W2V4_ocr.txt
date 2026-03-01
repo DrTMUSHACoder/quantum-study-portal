@@ -1,0 +1,388 @@
+# OCR Extraction: W2V4.pdf
+# Engine: mistral
+# Pages: 14
+# Total Characters: 45271
+============================================================
+
+
+--- Page 0 ---
+
+Page 1
+
+# Week 2: Qiskit Programming
+
+## Video 4
+
+### Building Quantum Circuits
+
+- Hello everyone, welcome back to week two and to now we'll start programming using KisKit. So we have already seen how we can program using the quantum composer tool which is the graphical user interface. Now we'll look at what is KisKit and know how can we program using KisKit.
+
+- So, KisKit is an open-source uh software development toolkit which we call our quantum information science software development kit. Kisskit and it's a high performance SDK. It has been there for last several years.
+
+- We released it in 20 early 2017 and it has gone through a lot of transformation. As for a field or a research area which is very new, uh tools undergo a lot of transformation as the research area develops. KisKit has had a very similar run.
+
+- Earlier KisKit had a metap package architecture where Kiskit algorithms and everything was there. We have made it very lean now. So we have removed that meta package architecture.
+
+- We have made it highly performant. It supports uh static quantum circuits, dynamic circuits as well as it can help you schedule quantum circuits uh work with a bunch of operators and of course uh try out your own primitives and we are going to go through what are primitives and other things in detail. But Kiskit also now has in this latest version the version is uh 22 or 2.3 now that we are running and I'll help you how to install that version but the latest of the biggest changes that we see now is the inclusion of something called like C API.
+
+- So on your uh right you see this this particular block or or this computer uh this entire software stack and you see at the bottom we have the quantum computer part which is on the quantum processing unit or the quantum hardware chip. On top of that, we have something called Kiskate runtime uh which is a service, a cloud-based service that helps us run our quantum circuits on the quantum hardware. And of course, uh one side you have uh a quantum computer as a resource.
+
+- You also have some classical resources and this classical resource could be your laptop or your CPU of your laptop. It could be some AI enabled uh GPUs or uh or some AI enabled hardware or it could be a high performance computer, a supercomput, the best available supercomputer that you have. So that is your compute power.
+
+- On top of your compute power or on top of this compute layer, we have this orchestration layer where you have something called Kiskit serverless again completely opensourced and available. And then you also have something which is which we call Kiskuit HPC integration. Now these two together help us envision and work in this quantum ccentric supercomputing paradigm.
+
+- Right? As for the supercomputing of the HPC community, they were very wellversed with C, C++, but not with Python. And in with Python, there's a lot more optimizations that you can do had you had it in C.
+
+- So that's the main purpose of creating Kiskit C API you know so that now we have a way more optimized highly performant version where we can run KisKit it would be same KisKit code the
+
+--- Page 1 ---
+
+Page 2
+
+# Week 2: Qiskit Programming
+
+## Video 4
+
+### Building Quantum Circuits
+
+developer is still comfortable writing whatever language that they can or whatever language that they are most comfortable in but it internally takes care and runs it on a quantum device as well as on an HPC device right so it takes care of all the uh nodes and how to run things. We have been refactoring KisKit also significantly in the versions that you have seen. There was a Kiskit 1.0 version where we had made it leaner, high performant and from 1.0 to the 2 series that is currently running.
+
+- We have had a shift to rewrite lot of modules into Rust. Now rewriting these modules into Rust not only brings us performance gains but also enables us to support hybrid quantum compute structures. Right now given given this form that we are now being able to do we have a number of dev tools on top of these orchestration layer.
+- these dev tools. Uh, of course our Kiskit SDK is there and along with Kiskit SDK, you have a bunch of add-ons and we'll go through add-ons and I'll show you them as well. We have a third category of dev tools which we call as the transpilation tool.
+- Whenever we have to run these quantum circuits on a quantum hardware, we need to do something called transpilation. You can think of transpilation is very similar to what we have in classical compilation, right? So in classical compilation you convert your uh highle code to some assembly level code.
+- Here you have your high circuit convert it into a circuit which is an instruction set circuit or which is in follows the same instruction as that of the base cubit the quantum chip uh has been uh I mean the way the quantum chip has the instructions on top of it. Of course you have a bunch of abstraction services which are different circuit functions and different applications functions which we are not going to go through in this particular video. Along with all this in parallel we have a feature which we call kiskit code assistant.
+- It uses different LLM models to generate or help you generate kisskit codes. So now in this vibe coding era people are not writing codes from scratch and we have something called kiskit code assistant that helps you do that right. So it helps you uh so you can just in natural language ask that I want to write a code that can do quantum teleportation and it this get code assistant is going to generate that code for you and uh we we'll we'll come to all of that.
+- This is broadly the quantum ecosystem. So we as I said in order to make the Kiskit SDK leaner and more performant we removed a lot of these modules into Kiskit ecosystem wherein for example Kiskit machine learning al quantum algorithms quantum optimization quantum simulation they have all been moved out to KisKit ecosystem right now along with Kiskuit SDK and you have all of this in the KisKit SDK uh we actually support different types of quantum hardware hardware ware uh of course we support IBM quantum hardware but KisKit also supports different other hardware from several other hardware providers as I mentioned uh you have a bunch of tools for quantum HPC for example you have slurm you have quantum resource management you have prefect and you al of course have C++ API which is the latest edition in the near recent version then you have uh the mapping I mean you
+
+--- Page 2 ---
+
+Page 3
+
+# Week 2: Qiskit Programming
+
+## Video 4
+
+### Building Quantum Circuits
+
+have a bunch of add-ons here. Uh you have uh some I mean we we'll we'll go through this in detail but just uh just to tell you that there are different add-ons for different stages of the code generation or uh when you actually convert a problem into a quantum problem you have four steps and for each of those steps you have different types of add-ons that are uh created.
+
+- So you can for a user uh if a user doesn't know all of this that is fine user can still go ahead and ask and you know try to have the best versions of whichever ones we want to be able to use. Now this is just some stats around why we call KisKit a high performance software stack. Kiskit is preferred by uh you know almost 80% of the quantum developer community prefers KisKit because KisKit was there when no other software was there.
+
+- KisKit has been growing. There is a lot of updates that we have been able to do on top of KisKit making it very performant making it very fast and very accurate. There are more than 7,000 dependent projects that use KisKit uh for accessing IBM quantum hardware or any quantum hardware but they for running their quantum circuits they have been using KisKit and of course we do a lot of benchmarking uh of KisKit regularly across bench press which is an open-source repo and this is just one of them.
+
+- I mean we have like a ton of such benchmark results across all our competitors. But our nearest competitor for say transpilation is ticket and kiskit is 83 times faster uh for transpilation alone with uh in comparison with ticket and and the list goes goes uh very long. It's across on on what we what is the benchmarking of kiskit versus other competitors.
+
+- Kiskit runtime as I mentioned earlier runtime is the cloud-based uh uh tool wherein or cloud-based software where you can actually which can help you accurately and efficiently execute these quantum circuits. uh here we try to measure the quality like how many gates can I successfully run successfully reliably without compromising on my quality and what is the speed of running them right and this is again very very competent and and of course uh the best available today on top of that we have as I mentioned Kiskit serverless which helps you do these quantum supercomputing workloads now in terms of benchmarking as I mentioned you Uh this is the on on on your right. This is um by unitary foundation.
+
+- Unitary foundation is an open-source uh community. They do this survey every year across all the tools. And even the latest one in 2025 uh shows that you know Kiskit uh KisKit's adoption is way uh larger than every anyone else.
+
+- And if you look at the top three they are say Kiskit, Kiskuit Air and Kiskit IBM Transpeller. These are the most widely downloaded uh SDKs or softwares that people have been using for running their quantum workloads. Now with in comparison with ticket 2.6 uh kiskuit 2.0.2 is 129 times faster and as I mentioned 83 times faster in transpilation time.
+
+- Again in comparison uh with quality it has 29% fewer two cubit gates. two cubit gates are the noisy gate, single cubit gates, the noise level is pretty low now in at least an IBM hardware. So we don't really uh care a lot about the one cubit gate but the two cubit gate noise is still higher.
+
+--- Page 3 ---
+
+Page 4
+
+# Week 2: Qiskit Programming
+
+## Video 4
+
+### Building Quantum Circuits
+
+- So we are uh we really want to benchmark against the two cubit gates and there were around 144 tests or 144 circuits in bench press and uh kisskit does not fail in any one single circuit right so uh for ticket I mean around 900 circuits uh ticket also completes but it it fails for a significantly uh number of uh circuits however kkit doesn't fail on one single circuit right and that's the extensibility. So 5,700 dependent project uh uh you know we have um more than that of penny lane which is our next next uh competitor in terms of the number of downloads. there are 1,700 um you know repositories or 1,700 projects that use beny lane versus there is 7,400 projects that use this kit and you can go through this detailed article I've put the article uh the bench I mean the benchmarking work is there that was published in nature now in order to go to kiskit and have a setup on your own this is the link which is there so if you go to quantum.cloud.ibibbm.com.
+
+- You actually end up in the platform. Once you are in the platform, you just need to sign in and then you can see all the hardware there. You can see uh as we saw in our uh previous uh videos in the uh the quantum composer the so the quantum composer is there all the compute resources which are our hardware all of that is there.
+
+- All these documentations and even this link to install KisKit is there. Along with that you also have a link to Kiskuit code assistant. So uh you can have a Kiskuit code assistant version with you.
+
+- There is a local install uh for visual studio as visual studio is a widely preferred I mean there are different modes that quantum developers use. Quantum developers use Jupyter notebooks. They use Jupyter notebooks uh uh directly on the locally on their laptops or locally on their systems.
+
+- They also use it on Google Collab. uh they use it also on ipython notebooks on visual studio or directly python codes on visual studio or even on their local right so um I mean even for me visual studio is is something that I prefer I I tend to work myself on visual studio because there is no dependency of internet as that happens there in Google collab uh but yes I mean so I prefer to have a local installation of kiskit but there are several ways and I'll show you what are different ways to have it Now there is a bunch of learning resources that I would like to point here before we move on to actual coding in Kiskit. There is a coding in Kiskit YouTube series.
+
+- It's a great place to learn but it is not updated. So it shows the installation of Kiskit in 1.2. Today we'll do the latest version which is 2.2.3.
+
+- Uh but barring the installation video everything else remains the same. So you can go ahead and do that. Along with that you have a bunch of courses.
+
+- So there are 10 plus free courses. There's this everything in the learning platform is free. There is a bunch of not tutorials, notebooks, uh courses around quantum machine learning, courses around Hamiltonian simulation, courses on an introduction to quantum computing optimization courses.
+
+- All the courses are free and even you can earn your badge for free. So uh along with that there is another thing which is a Kiskit developer certification. So that is a paid one.
+
+--- Page 4 ---
+
+Page 5
+
+# Week 2: Qiskit Programming
+
+## Video 4
+
+### Building Quantum Circuits
+
+- Kiskit developer certification is paid. The level of difficulty is also higher but it is a very valuable credential to have for on your CV to show that yes you know kisskit and you have done things as a part of that I do also encourage you all to whatever projects you do please do it in the open source so that when you put it in your CV you can put the GitHub repository uh people can see what kind of code you have been doing you can contribute back to Kiskit if you want you if you don't want don't contribute but Kiskit is open source so you can have your contributions so you can if you have created something cool and that's not there in KisKit go ahead and create a pull request if your pull request is merged you can actually say that you are a KisKit contributor and every time when people will site Kiskit your name also gets included so that's the best way to show that yes I know Kiskit because I've already done hands-on kiskit and that's what you know we really expect out of a quantum developer and in this course as we have been you know doing this course in order to skill people to become quantum developers this is a very very important step and that's why I'm spending more time here along with that you can also become kiskit advocates yourself so once you have a quantum developer certification and you have done some projects in kiskit you can go ahead and talk about kiskit uh in your school college or you know in your institutions wherever you are so with that I will uh move to one one way of installing kisskit as in that link that I earlier shared with you. You can do if you follow that link and you can have a local installation as I have myself.
+
+- I generally prefer to have that local installation and on your terminals is three simple instructions have uh a virtual environment and then pip install kisskit and it it has everything and that works without you know internet and you don't need to do anything anywhere you are. you can still work from your local laptops or local computers. Uh the other one which I'm showing here and this is feedback from our ex studentents and our uh teaching assistants that they really felt that Google collab is another good tool.
+
+- If you provided you have internet right so if you're using it from your college labs then you definitely you can use it. When you do it in Google Collab, you don't have a one single installation, but every time you open Google Collab, you have to do this. You have to run these cells to be able to install uh the kernel and and that kernel will have KisKit.
+
+- So, you have a bunch of import statements. So, I have run these bunch of import statements. PIP install KisKit airkit experiments IBM runtime.
+
+- This actually helps us, you know, this is like an interface uh which helps us run our circuits on the IBM hardware. So, and and I'm going to run uh and help you guys run some quantum circuits on a quantum device. So, let's try to do that.
+
+- Then we have uh a latte extension that we also would be using. Now once you have run this particular cell uh this notebook will be available to all of you. So you can try I mean work on this notebook and try it.
+
+- Now what you what I'm doing next is once I have this installed I'm going to load this runtime service. Once I load this runtime service I'll put my instance name and my token. So you can find your token
+
+--- Page 5 ---
+
+Week 2: Qiskit Programming
+
+Video 4
+
+Building Quantum Circuits
+
+and your instance name on the IBM quantum platform.
+
+- So once you have logged in you'll see something like this you'll see the instance name you'll see the CRN you can just copy the CRN from here and put it here in your instance again similarly on that particular open instance you'll have your token so put it there and once you have done that you just rerun this cell right you take a couple of more things for example once we initiate a service which is our quantum kiskuit runtime service we take something which we call as a runtime primitive Now there are two runtime primitives that are currently supported. There is one more which will be released very shortly. So the first one is called a sampler.
+
+- So basically what we do on a quantum device. So whenever we are talking about running uh things on a quantum uh uh device what we are doing is we are effectively trying to run a circuit and sample back the output. Right?
+
+- So we run multiple times and do multiple samples and we extract these samples. So if you are trying to do something like that, you use a primitive called sampler. Now the second thing that we do on a quantum computer is if I know my observable.
+
+- For example, if I know that 0 0 means I have to spend money, 01 means that uh you know I'm earning money or 1 0 means that uh you know I have no money left and 1 one means that you know I have to give money. Let's say I'm just making some assumptions here. Your observable is money, right?
+
+- And you do by some calculation you can uh um you can find out whether you are losing money, gaining money or you have to give money or there is no loss no gain. Right? So so if if that is the kind of problem that you are looking at then what you use is called an estimator.
+
+- So estimator gives you an exact probability estimate of the observable in concern. Right? Versus sampler gives you probability distribution of the different samples that you want to extract.
+
+- Now after that what you do is you are saying that okay given my access and all of you have 10 minutes of free access on your quantum platform. So if you go to your quantum platform if you go to your quantum resources you'll be able to see some resources that you have in your instance. So my instance is called open instance and in my open instance I have these machines.
+
+- The ones that have log is that okay I do not have inst access to these. You all will have access to these same three machines and eventually in a couple of months when the IBM quantum hardware is in India, you will also have access to that particular machine. But for now, we have these three machines that we have here.
+
+- And you see that these three machines are 156, 156 and 133 cubit uh processors. And you know, you can actually look at all the details of the processors. I've explained in the previous video where you know how to find those details of the processors.
+
+- Now what you want to check now is that which of the service is the least busy. If you see here, these
+
+Page 6
+
+--- Page 6 ---
+
+Page 7
+
+# Week 2: Qiskit Programming
+
+## Video 4
+
+### Building Quantum Circuits
+
+two services have are online right now and they have like zero pending jobs but versus this this service particular hardware has 5,000 over 5,000 pending jobs right. So what we want to do is we will ask uh kisskit that get me the least busy circuit.
+
+- Now if I have mentioned here the number of cubits if I say my number of cubits is 127 then it is going to find both this 133 and 156. That's why I have said 127. You can give whatever number you need as per the number of circuit uh as per the number of cubits in your quantum circuit.
+
+- Now, as we saw in our um in our previous videos where we were looking at quantum uh circuit composer and we were trying to do different things uh such as uh quantum uh superposition and quantum teleportation or quantum entanglement. We'll try to break these down and try to understand each of these phenomena similarly in case. So for the first phenomena which was superposition we we had this coin toss example that we gave and we said that okay a cubid can be in superposition which is in a state of zero and one and any linear combination of 0 and one and how do we do that we put that cubit through a gate which is called the hadamad gate to create this superposition.
+
+- So that's exactly what we are doing here. We imported um you know a quantum circuit. We are creating a quantum circuit with just one cubit.
+
+- So we say QC equal to quantum circuit 1. Post that we apply on that quantum circuit a hard gate and we say on which cubit you have to apply. So this is uh in in case kit we start from 0 1 2 3 that's the nomencle very similar to what we do in Python.
+
+- So we say that okay on the zero cubit apply a hadamard gate post that uh you want to measure it all and then you have the quantum circuit right. So this is how you create the quantum circuit. You have a hadamard gate you have a barrier and then you have a measurement right.
+
+- So if I just draw it and this is like a mattplot lib version of draw. This is how your circuit is represented. Now as I said once we create this quantum circuit and if we want to run it on a quantum hardware or on a quantum simulator we need to transpile it on whichever device we want to run it right because you know there there could be quantum devices which do not have these high gates we user that can design a bunch of high gates in this case also this hard gate is a high gate and on a chip when it is fabricated on a chip it is a bunch or or a series of basis gates which uh Adam gates breaks down to that process is what is uh happening in transparation.
+
+- So what we do here is we get our back end which our back end was IBM FZ this particular resource that we got since it had no pending jobs. Once we have this back end then what we ask is that okay you have this backend now you generate preset task manager and you give my target backend and I'm giving an optimization level of three here you have optimization level 0 1 2 3 zero may being no optimization one being some optimization which is inherently one by a particular type of algorithm that we run in the back end there is a version of saber and there is a version of lightsaber and there are different optimization roots that we do these are all huristic based optimizations that are happening uh given say you have you have a particular uh device. So you have a coupling map of a device.
+
+--- Page 7 ---
+
+Page 8
+
+# Week 2: Qiskit Programming
+
+## Video 4
+
+### Building Quantum Circuits
+
+- So this is the total number of cubits in this particular device. You see we have 156 cubits and this is the layout of the device. And you see that there are certain cubits in certain edges that are very noisy.
+
+- Right? Now I have taken a 1 cubit circuit here. So I'll say that okay I want the least noisy cubit which is having the kind of connections that I have uh put right out of this entire set.
+
+- Now imagine this is a very simple problem because I have a circuit with only one cubit. Now let's say you are actually running some utility scale circuit or circuits that can potentially give you advantage are 100 cubit and above right. So now if you are trying to get 100 cubits out of this 156 cubits that are uh say less noisy have the exact type of connectivity that you have in your uh user generated circuit.
+
+- So basically you're asking for a graph optimization problem that you have a larger graph which is your coupling map and you have a smaller graph which is your quantum circuit and you're saying how to best place this smaller graph on this larger graph given that I have to optimize for noise for best connectivity and so on so right so that is the process of transpilation and we have a bunch of things to do here we also have along with this histic based transpilation uh schemes we also have something called an AI transpilers So we have been using reinforcement learning based strategies to create or to train models for doing better transpilation and as per your requirement you can try say the AI based transpiler or uh gets inherent transpilations and anything right I'm just trying to give you the different options that you have in order to run your circuit. So now you have generated an instruction set architecture circuit of the of of this previous circuit that you have and you can at this point you can actually print your circuit as well. I should have also printed this circuit here.
+
+- But let's now go and try to execute this on a real quantum hardware first. Right? Anyway, so you have already seen how to run on uh simulator or on a real quantum hardware from quantum composer.
+
+- Here it's very similar. So you have the sampler the pre previously you had taken this u primitive. Now you are saying that the sampler pass the mode and in the mode you say that whether it is a back end or it is a simulator.
+
+- So here in my case it is a back end which is a I which is IBM fits and then I am telling the sampler that okay you have to run some number of jobs for some number of shots and uh number of shots is how many times you want to rerun this circuit right so you tell them that okay I want to run this circuit 1,000 times and once you get back its job result you want to be able to uh get do a count of the number of the measurements right uh once Once you do that, you can plot it and you see that this particular cubit, we remember we had one single cubit and we had put it to superposition. So it could be in the state of zero as well as one. And you see out of the 1,000 times that we ran the circuit, it was in 0 469 times and in 531 out of 1,000 times it was in the state one.
+
+- So we were able to do successfully superposition on a real quantum hardware. Now let's look at our next step which is entanglement right and we have done this again in entanglement in our uh quad of circuit composer. So uh now if we want to do entanglement we are trying to do entanglement between say a pair of cubits.
+
+--- Page 8 ---
+
+Page 9
+
+# Week 2: Qiskit Programming
+
+## Video 4
+
+### Building Quantum Circuits
+
+- So first step is take a quantum circuit and design a quantum circuit with two cubits. Right? So now first thing I'm initializing a quantum circuit with two cubits.
+
+- I'm putting a hard on the first cubits. I'm setting it in superposition first. Once I've set it in superposition, I'm applying a control not gate.
+
+- And as we studied in our previous uh lecture videos, what is the for what is the action of a control not gate? We are controlling and we're putting a source and a target. So based on the source which is the zeroth cubit, the target cubit which is the first cubit is going to change.
+
+- Now once you have done that you can just directly draw the circuit. Now this is another way of drawing the circuit. Remember I showed you if you want to have a visualization like this you need to add uh you know mpl or mplot li in double quotes but if you don't do this is the how the circuit is going to appear which is also fine there are just different visualization techniques this is the cubit zero which you put in superposition first by applying a hard and then you entangle that superposition cubit uh with the with the next cubit which is cubit one and and this is the same representation if If you see this is the representation in mattplot lily.
+
+- Now again we want to be able to run them. So let's take a sampler primitive. We say that okay you run it on a back end and you go ahead and do the transpilation.
+
+- If you have to run it on any back end you have to do the that that particular transpilation. Again I'm taking optimization level equal to three because optimization level equal to three is the best huristic based transpilation available in kiskit right? So it's like 0 1 2 3.
+
+- So I'm taking I'm just randomly taking uh three and if you see here again had hard gate and the C not gate deco composes into a bunch of gates and post that you have your measurements. So now uh let's say I mean of course you know 10 minutes per month of free access you have in this hardware all these hardwares every one of you have 10 minutes per month free and I strongly recommend you all to run for 10 minutes and I'll show you uh the kind of workloads that we are running and what you can run in 10 minutes which is equivalent to 600 seconds. Now once we let's say you have finished your 10 minutes of this month and then you're still running something and you want to run it on a simulator.
+
+- So what we do is we take uh a simulator. We ask air simulator to give us a simulator once it has given us a sale simulator which is our backend sim. Uh it is trying to put in some noise model.
+
+- So it is putting on a noise model from the back end that we wanted to actually run but because our 10 minutes is over we cannot run it on that particular back end. But we don't want to run it on a noless simulator. So there are different ways that you can run a quantum experiment.
+
+- You can run it on a noless simulator. You can run it on a noisy simulator uh which is like a fake simulator or what a lot of names that people have and then you can have it on directly running on your real hardware. So right now I'm trying to show you the second way.
+
+--- Page 9 ---
+
+Page 10
+
+# Week 2: Qiskit Programming
+
+## Video 4
+
+### Building Quantum Circuits
+
+- We already showed how can we run it on a noisy on a real hardware. Now we are trying to see how can we run it on a noisy simulator. So what we are doing here is we are asking uh and we're getting the noise model from IBM phase.
+
+- Now when we say that we are getting the noise model, it is mostly a snapshot of the noise at some instant. Okay. Now that is not an complete representation of the actual hardware.
+
+- Again remember this is a simulator that you are creating on your classical resources. So this is like a simulation of a quantum phenomena which is not exact. Again same the noise [clears throat] will not be exact.
+
+- Sometimes we observe it is like a 20 to 30% representation of the noise but it changes because noise in an in a real hardware also changes over time throughout the day. Now once you have sim have the simulator your noisy simulator ready and your uh sampler ready all you need to do is just run this sampler on the with the circuit that you have just converted into an instruction set and the number of shots here I'm just making the number of shots 100 once you have the job result you want to get the counts of the measurement right now you have these counts of the measurement um Maybe let's just run different cells. So we have run till here.
+
+- And now let's run it on a pig simulator. Post that we are going to try to see how can we see a uh um a state of a cubid on a block sphere. So on on circuit composer we actually did this.
+
+- So we saw that okay how the block sphere can help us visualize the state of a cubid. Can we do that here in kiskit? Of course we can and we can do a lot more.
+
+- I'm not getting into uh the other things that we can do here but I'm just showing you that okay you can create an arbitrary quantum state. So we are trying to create an arbitrary quantum state with some variables theta and phi and once we apply these rotations so rx r y rz uh we apply them and uh on on our cubit and then we plot this block vector. Okay.
+
+- So now we can see that okay this is the cubit that we had and it is now in this state. Now let's try to use these concepts uh of entanglement and superposition to do something even bigger. Right?
+
+- Now as you guys have uh previously in in the other lectures we have already alluded to what is quantum teleportation and quantum teleportation although sounds very sci-fi. It's not really very sci-fi and it is very very practical something to do right. So in in quantum you have this no cloning theorem.
+
+- So you cannot really copy the state of a cubit. when as soon as you go to copy the state, it's a it's like a measurement action and it is collapsing and you lose that quantum state information. However, by means of entanglement and if you have an extra cubit by which you can entangle between different parties, you can actually do um you know transport quantum information from one party to another party and that's what we have here.
+
+- Right? So here we are saying that okay Alice is wanting to share a two cube I mean Alice is wanting to
+
+--- Page 10 ---
+
+Page 11
+
+# Week 2: Qiskit Programming
+
+## Video 4
+
+### Building Quantum Circuits
+
+share some quantum state that Alice has to Bob. Now Alice's quantum state is unknown.
+
+- So Alice doesn't know the quantum state and Alice also doesn't need to know where Bob is. Right? As long as they have met once they have made friends with each other here making friends is they have shared a two cubit entangle state.
+
+- So as long as they have an entangled cubit of half half with each of them and then they can go to different locations they can still have this quantum teleportation provided they have this entangling cubit and they have a means to classically communicate that's it if these two things are there you can actually do uh quantum teleportation now here uh I'm going to explain it to you in different stages so first um you know Alice is going to um I and entangle um this particular sigh u using some C not gate and other things and then Alice is going to apply a hadamard gate measure both her cubits send Bob that okay this is my measurement results now because Alice has done this measurement Bob's state also collapse immediately but Bob cannot find any information out of it till Alice actually calls him and tells him that okay this is my measurement ment output. Now based on Alice's measurement output, Bob will do a set of operations. For example, if Alice says it's 0 0, then Bob will do nothing.
+
+- If Alice says it is 01, then Bob will apply X gate. If Alice says it's um 1 0, then um yeah, then Bob will apply Zate. And if if Alice's measurement is 1 one, then Bob will apply ZX gate.
+
+- Okay. And that's how Bob actually is able to get back that state s right. So this is the protocol of quantum teleportation and we are going to see how it works.
+
+- So first thing here we have a data cubit which is the actual cubit that we need to you know pass. Um then we have some one cubit which is with Alice which is a cubit and then one cubit with Bob which is with Bob B cubit. Now what we are saying is let's entangle them and uh let's see what we can do and how far can we teleport this information.
+
+- So here what I have uh first tried to show you on a block vector is what is the state. So this is the cubid zero. This is the data cubit is is prepared in some state.
+
+- Here we know what how we have prepared it. So that's why you know we have prepared it by some random variable and we are using that. And then the other two Alice cubit and Bob cubit are in state zero for now.
+
+- Now Alice and Bob as I said have to come together at one place entangle this pair then take take their own parts and and go to whatever distance they want to go. Right? So first step what we'll do is we'll apply a hadamad on the first cubit and then apply a control knot on the first and second cubit.
+
+- Now once we have done this you know now we can go you know as far as possible. So this is your data cubit Q0 this is your Alice cubit and this is your um Bob cubit right. So basically now they have to do these things they have to have apply a superposition.
+
+- So apply a hadam get into superposition then you know come come here right? So entangle and uh
+
+--- Page 11 ---
+
+Page 12
+
+# Week 2: Qiskit Programming
+
+## Video 4
+
+### Building Quantum Circuits
+
+entangle between Alice and Bob. Now Alice sends these results to uh Bob, right?
+
+- So Alice has this thing. Alice does her measurement. Alice sends these measurements uh to Bob.
+- Let me just uh rerun H. So now Alice measures her two cubits. Once Alice has done her measurement, they collapse.
+- And now Alice needs to uh send these results to Bob. Bob based on the results that Alice has sent. So if Alice Alice says that okay, I have this then I will apply Z.
+- If Alice says that no, I have applied X you apply Z again. Right? So there are there are different ways of how you can identify this.
+- But this these are the if statements that happens based on Alice's measurement results. Now post this what we do is we actually have a way to so if we can because this is a state this is the data cubid and this is the state that we prepared ourselves. So we can apply an inverse of that same unitary and see the results and then then you know confirm that okay the the teleportation has happened.
+- However if this is the state is coming from some other source the state is not being prepared by you here for demonstration we are preparing the state but the state is not being prepared by you but the state is coming from some other place. So you cannot actually do this. Now um again the same things.
+- So let's say you want to run it on a hardware or on a simulator. So here I have again I'm I'm running it on a simulator. I'm saying okay run it for just 1,000 shots and I'm doing not doing a lot of optimization.
+- I just set optimization level equal to one. It runs the sampler um job. Once it gets So once we have these uh transpiled we want to run it on our sampler.
+- we extract the results and then we plot this histogram. So if you see here Bob's cubit which is this first cubit here is always in zero. So you see that it is con constantly in zero and um you know the number of counts is if if we count the total it will come around somewhere around 1,000.
+- So because this is a simulator, you don't see the other results. But if you actually run it on a hardware, you'll see that there would be some numbers may maybe very small number of numbers, but that would actually come with the other states which is say 1 0 0 or 1 0 1 1 0 and 1 uh 1 1. Right?
+- Now we we'll we'll just validate that as well. But one thing that we saw here is once we have done this teleportation one very important thing is that quantum teleportation is not violating causality. So instantly Bob's state collapsed once Alice has done the measurement.
+- But Bob is not being able to get any information until and unless Alice calls Bob and tells that okay this is my measurement results. Now according to by measurement results you can apply a transformation and you can uh you know get your data back right this call that Alice makes to Bob is classical and thus this is limited by the speed of light so it is not actually you know violating anything it's not violating no cloning theorem or causal causality uh so what is happening is by using quantum entanglement as
+
+--- Page 12 ---
+
+Page 13
+
+# Week 2: Qiskit Programming
+
+## Video 4
+
+### Building Quantum Circuits
+
+a resource Alice is able to make a measurement Alice is destroying information at her end and making that information appear at Bob's end. Right here the best part is that Alice doesn't even need to know where Bob is.
+
+- The location of Bob is not important and the location could be say hundreds or thousands of kilometers away. And if you remember in the very first video in week zero's introductory and ungraded video I had mentioned one of the uh aims we have in quantum communication is to be able to establish intercity quantum key distribution or intercity quantum communication across say 2,000 kilometers. So if we want if we could do space communication so we don't need a media to communicate it would be communication over speed over space we can still transmit information and do that communication over 3,000 uh you know it's 2,000 kilometers that's going to be a a big deal in in the quantum communication uh space and that is primarily because of this quantum entanglement phenomena.
+
+- So here I have put together that entire code that you have above. So you have the three circuits. So you have three cubits, one classical bit.
+
+- Uh so one is your EPR pair which is your E bit or your entangling bit. Um so you create that. Uh so first is this is your data cubit.
+
+- This is your Alice cubit. This is your Bob cubit. You first prepare Alice into some state.
+
+- Uh this is a known state that we prepared here. Then you actually have create an entanglement between um uh Alice and Bob. And here you can actually do it for multiple cubits.
+
+- You can have as many number of cubits. And then what you do is once you have this entanglement, you can just move Q1 and Q2 as as far away from each other as you want. And then you apply uh these these inverse the measurements.
+
+- Uh once you do the measurement, Alice, this is the point when Alice is calling Bob to inform the state of or the results of her measurement. based on her result, Bob is actually applying these different gates and uh is trying to get back the information. So here is sorry quantum teleportation is actually completed.
+
+- However, we have one extra step just to verify right just to verify whether you got the same uh quantum information. So this was the state s that I prepared here. Did I get the exact same sigh here or not?
+
+- Now this I can do because I manually prepared this state right? uh so I can exactly prepare an inverse of the same state and apply it. If it was coming from some other natural source or some other quantum information source, we cannot apply uh uh an inverse because we don't know.
+
+- So that's it's a it's a very hard problem to do a validation and that's the reason why validation of quantum circuits is very very important. So uh now you actually again in instantiate your quantum
+
+--- Page 13 ---
+
+Page 14
+
+# Week 2: Qiskit Programming
+
+## Video 4
+
+### Building Quantum Circuits
+
+runtime service. you create a service and you uh you know you can just run it.
+
+- So you can actually break this into smaller cells. For example, let plot gate uh gate map. If you break it till here, you will actually be able to see uh something like this where you have your compute resources and you will be able to see okay uh given this particular device this was my gate map right.
+- So it is going to show you that okay which are the cubits that are getting used for this particular problem that now after transpilation you can see that out of the 156 cubits which are the three cubits that I'm actually using. Now uh once you have done that you just run your circuit on the hardware. Once you run your circuit you get a job ID and you can check something like a job status.
+- Initially when you run this you will have that okay it was on IBM fairs this is your job ID and the job ID is cued. Uh say after some time you uh try the job status again and once you get a status of done only after you get a status of done you can just get the results and the counts printed. Now here you see that okay uh okay this this this doesn't look intuitive let's create an histogram and see so this zero the first one uh that is your Bob state so Bob is actually in the state zero most of the times but you do see that okay Bob is in the state of one also a number of times this is just because of the noise in the real hardware as we did above in the simulator case we just saw this we we saw a perfect teleportation like Bob always stays in the state zero right however here we don't see that here we see that okay Bob also has gone into state of a one a couple of times so you can actually interpret with this results itself or you can also go ahead and trace Bob's results on cubit 2 once you do that you get the get the counts of it that okay Bob uh was 0 38 851 times and Bob was uh you know um in the state 1 245 five times, right?
+- So this 245 that you see is purely the hardware noise, right? It's just due to the hardware noise and the error. But the concept of quantum teleportation which is the most important one here and we are not talking about noise and error mitigation.
+- I didn't even show you ways to do error mitigation. This is also a problem that you are seeing here is also for dynamic circuits not just for noise but that is not important here. What we really want to see is we were able to do quantum teleportation.
+- We were not breaking the no cloning theorem. So the no cloning theorem still stands true and the original information the original quantum state with Alice is no no longer available to Alice. So no no cloning theorem is still true.
+- Alice while Alice lost that information only after Alice loses that information Bob's Bob actually gains that information. Now this makes this entire concept very strong and it can be used in several quantum communication and quantum cryptography applications. So thank you everyone and see you in the next video.

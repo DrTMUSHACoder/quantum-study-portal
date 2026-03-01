@@ -1,0 +1,278 @@
+{
+  "timestamp": "2026-02-13 21:18:53",
+  "total_files": 38,
+  "successful": 36,
+  "failed": 2,
+  "engines_used": {
+    "mistral": true,
+    "chandra": false
+  },
+  "files": [
+    {
+      "file": "resources\\week_1\\Quiz\\Assingment 1 solution.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 15587,
+      "total_pages": 8
+    },
+    {
+      "file": "resources\\week_1\\Quiz\\Week1_Quiz.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 8901,
+      "total_pages": 5
+    },
+    {
+      "file": "resources\\week_1\\Lecture Notes\\PM_Lec3_QMech.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 7536,
+      "total_pages": 18
+    },
+    {
+      "file": "resources\\week_1\\Lecture Notes\\PM_Lecs1-2_QMech.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 25153,
+      "total_pages": 50
+    },
+    {
+      "file": "resources\\week_2\\lecture note\\Week2Qiskit1.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 3598,
+      "total_pages": 8
+    },
+    {
+      "file": "resources\\week_2\\quize\\assigment2.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 8201,
+      "total_pages": 7
+    },
+    {
+      "file": "resources\\week_2\\quize\\week 2 solutions.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 8268,
+      "total_pages": 7
+    },
+    {
+      "file": "resources\\week_3\\lecture note\\Grover_latex_notes.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 13951,
+      "total_pages": 9
+    },
+    {
+      "file": "resources\\week_3\\lecture note\\Grover_lecture_whiteboard_notes.pdf",
+      "success": false,
+      "winner": "N/A",
+      "total_chars": 0,
+      "total_pages": 0
+    },
+    {
+      "file": "resources\\week_3\\quizes\\assigment3.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 7881,
+      "total_pages": 5
+    },
+    {
+      "file": "resources\\week_3\\quizes\\assignment_solutions.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 6166,
+      "total_pages": 6
+    },
+    {
+      "file": "resources\\week_4\\lecture notes\\Week4_QEC.pdf",
+      "success": false,
+      "winner": "N/A",
+      "total_chars": 0,
+      "total_pages": 0
+    },
+    {
+      "file": "resources\\week_4\\quiz\\assigment4.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 6719,
+      "total_pages": 5
+    },
+    {
+      "file": "resources\\Transcript\\transcript_fHsySd6tgHE.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 32485,
+      "total_pages": 10
+    },
+    {
+      "file": "resources\\Transcript\\transcript_voSRtTKiTQo.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 4632,
+      "total_pages": 2
+    },
+    {
+      "file": "resources\\Transcript\\Week1\\W1V1.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 33591,
+      "total_pages": 11
+    },
+    {
+      "file": "resources\\Transcript\\Week1\\W1V2.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 4750,
+      "total_pages": 2
+    },
+    {
+      "file": "resources\\Transcript\\Week1\\W1V3.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 31031,
+      "total_pages": 8
+    },
+    {
+      "file": "resources\\Transcript\\Week1\\W1V4.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 31603,
+      "total_pages": 8
+    },
+    {
+      "file": "resources\\Transcript\\Week1\\W1V5.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 25520,
+      "total_pages": 7
+    },
+    {
+      "file": "resources\\Transcript\\Week1\\W1V6.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 29404,
+      "total_pages": 8
+    },
+    {
+      "file": "resources\\Transcript\\Week1\\W1V7.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 29429,
+      "total_pages": 8
+    },
+    {
+      "file": "resources\\Transcript\\Week1\\W1V8.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 17921,
+      "total_pages": 5
+    },
+    {
+      "file": "resources\\Transcript\\Week2\\W2V1.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 43356,
+      "total_pages": 11
+    },
+    {
+      "file": "resources\\Transcript\\Week2\\W2V2.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 25942,
+      "total_pages": 7
+    },
+    {
+      "file": "resources\\Transcript\\Week2\\W2V3.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 15597,
+      "total_pages": 4
+    },
+    {
+      "file": "resources\\Transcript\\Week2\\W2V4.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 45271,
+      "total_pages": 14
+    },
+    {
+      "file": "resources\\Transcript\\Week3\\W3V1.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 35211,
+      "total_pages": 9
+    },
+    {
+      "file": "resources\\Transcript\\Week3\\W3V2.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 10655,
+      "total_pages": 3
+    },
+    {
+      "file": "resources\\Transcript\\Week3\\W3V3.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 19996,
+      "total_pages": 5
+    },
+    {
+      "file": "resources\\Transcript\\Week3\\W3V4.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 21912,
+      "total_pages": 6
+    },
+    {
+      "file": "resources\\Transcript\\Week4\\W4V1.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 13060,
+      "total_pages": 4
+    },
+    {
+      "file": "resources\\Transcript\\Week4\\W4V2.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 30298,
+      "total_pages": 8
+    },
+    {
+      "file": "resources\\Transcript\\Week4\\W4V3.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 24104,
+      "total_pages": 6
+    },
+    {
+      "file": "resources\\Transcript\\Week4\\W4V4.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 24314,
+      "total_pages": 7
+    },
+    {
+      "file": "resources\\Transcript\\Week4\\W4V5.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 31404,
+      "total_pages": 8
+    },
+    {
+      "file": "resources\\Transcript\\Week4\\W4V6.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 15518,
+      "total_pages": 4
+    },
+    {
+      "file": "resources\\Transcript\\Week4\\W4V7.pdf",
+      "success": true,
+      "winner": "mistral",
+      "total_chars": 18418,
+      "total_pages": 5
+    }
+  ]
+}

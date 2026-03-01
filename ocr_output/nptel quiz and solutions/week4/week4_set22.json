@@ -1,0 +1,62 @@
+[
+    {
+        "q": "What does VQE stand for in the context of NISQ-era algorithms?",
+        "options": [
+            "Variational Quantum Eigensolver",
+            "Visual Quality Estimator",
+            "Variable Quantum Engine",
+            "Virtual Quantum Emulator"
+        ],
+        "answer": 0,
+        "explanation": "VQE is a hybrid quantum-classical algorithm used to find the minimum eigenvalue of a Hamiltonian.",
+        "id": "4_22_1"
+    },
+    {
+        "q": "In VQE, the parameterized quantum circuit used to prepare the trial state is called an:",
+        "options": [
+            "Oracle",
+            "Ansatz",
+            "Encoder",
+            "Diffuser"
+        ],
+        "answer": 1,
+        "explanation": "The 'Ansatz' is the specific circuit template with adjustable parameters that is optimized to find the ground state.",
+        "id": "4_22_2"
+    },
+    {
+        "q": "Which part of the VQE algorithm is executed on a classical computer?",
+        "options": [
+            "State preparation",
+            "Measurement",
+            "Parameter optimization",
+            "Entanglement creation"
+        ],
+        "answer": 2,
+        "explanation": "VQE is hybrid: the quantum computer measures expectation values, while the classical computer runs the optimizer to pick new parameters.",
+        "id": "4_22_3"
+    },
+    {
+        "q": "Potential Energy Surface (PES) in quantum chemistry represents energy as a function of:",
+        "options": [
+            "Temperature",
+            "Number of electrons",
+            "Inter-atomic distances",
+            "Qubit count"
+        ],
+        "answer": 2,
+        "explanation": "A PES shows how the total energy of a molecule changes as the nuclei are moved relative to each other.",
+        "id": "4_22_4"
+    },
+    {
+        "q": "What is 'Chemical Accuracy' typically defined as in energy calculations?",
+        "options": [
+            "1 eV",
+            "1 kcal/mol",
+            "1 Joule",
+            "1% error"
+        ],
+        "answer": 1,
+        "explanation": "Chemical accuracy refers to a precision of ~1 kcal/mol, which is necessary to predict reaction rates correctly.",
+        "id": "4_22_5"
+    }
+]

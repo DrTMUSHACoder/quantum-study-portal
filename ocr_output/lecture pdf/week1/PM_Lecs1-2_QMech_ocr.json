@@ -1,0 +1,264 @@
+{
+  "file": "resources\\week_1\\Lecture Notes\\PM_Lecs1-2_QMech.pdf",
+  "file_name": "PM_Lecs1-2_QMech.pdf",
+  "success": true,
+  "winner": "mistral",
+  "total_pages": 50,
+  "total_chars": 25153,
+  "pages": [
+    {
+      "page_number": 0,
+      "text": "# Lectures 1,2 : Postulates of Quantum Mechanics\n\nPrabha Mandayam\n\nDepartment of Physics, Indian Institute of Technology Madras\n\n![img-0.jpeg](img-0.jpeg)\n\nNPTEL Aug 2021",
+      "text_length": 170
+    },
+    {
+      "page_number": 1,
+      "text": "Outline\n\n- Postulates of quantum mechanics, as applied to two-level quantum systems (qubits!).\n\n^{}[]",
+      "text_length": 101
+    },
+    {
+      "page_number": 2,
+      "text": "# Outline\n\n- Postulates of quantum mechanics, as applied to two-level quantum systems (qubits!).\n- Quantum states, operators and time-evolution.\n\nA",
+      "text_length": 147
+    },
+    {
+      "page_number": 3,
+      "text": "# Outline\n\n- Postulates of quantum mechanics, as applied to two-level quantum systems (qubits!).\n- Quantum states, operators and time-evolution.\n- A brief glimpse into the mathematical framework of quantum theory … and quantum computing!\n\nA",
+      "text_length": 240
+    },
+    {
+      "page_number": 4,
+      "text": "# Recap: The Qubit\n\n- A quantum bit is described by a general superposition of the form,\n\n$$\n| \\psi \\rangle = \\alpha | 0 \\rangle + \\beta | 1 \\rangle , \\alpha , \\beta \\in \\mathbb {C},\n$$\n\nsatisfying $|\\alpha|^2 + |\\beta|^2 = 1$.\n\n- $|0\\rangle$, $|1\\rangle$ are a pair of orthogonal quantum states corresponding to the classical bits 0, 1.",
+      "text_length": 337
+    },
+    {
+      "page_number": 5,
+      "text": "# Recap: The Qubit\n\n- A quantum bit is described by a general superposition of the form,\n\n$$\n| \\psi \\rangle = \\alpha | 0 \\rangle + \\beta | 1 \\rangle , \\quad \\alpha , \\beta \\in \\mathbb {C},\n$$\n\nsatisfying $|\\alpha|^2 + |\\beta|^2 = 1$.\n\n- $|0\\rangle$, $|1\\rangle$ are a pair of orthogonal quantum states corresponding to the classical bits 0, 1.\n\n- Matrix representation: we make the association\n\n$$\n| 0 \\rangle = \\left( \\begin{array}{c} 1 \\\\ 0 \\end{array} \\right), | 1 \\rangle = \\left( \\begin{array}{c} 0 \\\\ 1 \\end{array} \\right).\n$$",
+      "text_length": 532
+    },
+    {
+      "page_number": 6,
+      "text": "# Recap: The Qubit\n\nA quantum bit is described by a general superposition of the form,\n\n$$\n| \\psi \\rangle = \\alpha | 0 \\rangle + \\beta | 1 \\rangle , \\quad \\alpha , \\beta \\in \\mathbb {C},\n$$\n\nsatisfying $|\\alpha|^2 + |\\beta|^2 = 1$.\n\n- $|0\\rangle$, $|1\\rangle$ are a pair of orthogonal quantum states corresponding to the classical bits 0, 1.\n\n- Matrix representation: we make the association\n\n$$\n| 0 \\rangle = \\left( \\begin{array}{c} 1 \\\\ 0 \\end{array} \\right), | 1 \\rangle = \\left( \\begin{array}{c} 0 \\\\ 1 \\end{array} \\right).\n$$\n\n- The bra-ket notation: Qubit states are represented as ket-vectors $(|.|)$.\n\n$|0\\rangle$ is called \"ket-0\" and $|1\\rangle$ is called \"ket-1\".",
+      "text_length": 674
+    },
+    {
+      "page_number": 7,
+      "text": "# How does the quantum world work?\n\n## Three Questions\n\n1. How does one specify the state of a quantum system at a given time?\n2. Can we predict what its state will be at later time?\n3. What can we say about the physical quantities that we obtain by making measurements on the system?\n\nWe will answer these questions in the form of three postulates, each of which addresses one of them.",
+      "text_length": 386
+    },
+    {
+      "page_number": 8,
+      "text": "# Postulate 1 (The State of a Quantum System)\n\nThe state of a quantum system is a unit vector (the state vector) in a complex inner product space (Hilbert space, more generally).\n\n![img-1.jpeg](img-1.jpeg)\n\nA",
+      "text_length": 208
+    },
+    {
+      "page_number": 9,
+      "text": "# Postulate 1 (The State of a Quantum System)\n\nThe state of a quantum system is a unit vector (the state vector) in a complex inner product space (Hilbert space, more generally).\n\nRecall: If  $\\mathbb{V}$  is a complex linear vector space, the following hold.\n\n$\\triangleright$  If  $|v\\rangle \\in \\mathbb{V}$  is a vector in the vector space, then for any complex scalar (number)  $\\lambda \\in \\mathbb{C}, \\lambda |v\\rangle \\in \\mathbb{V}$ .\n\nA",
+      "text_length": 445
+    },
+    {
+      "page_number": 10,
+      "text": "# Postulate 1 (The State of a Quantum System)\n\nThe state of a quantum system is a unit vector (the state vector) in a complex inner product space (Hilbert space, more generally).\n\nRecall: If  $\\mathbb{V}$  is a complex linear vector space, the following hold.\n\n- If  $|v\\rangle \\in \\mathbb{V}$  is a vector in the vector space, then for any complex scalar (number)  $\\lambda \\in \\mathbb{C}, \\lambda |v\\rangle \\in \\mathbb{V}$ .\n- If  $|v\\rangle, |w\\rangle \\in \\mathbb{V}$ , then,  $\\alpha |v\\rangle + \\beta |w\\rangle \\in \\mathbb{V}$ , for all complex scalars  $\\alpha, \\beta \\in \\mathbb{C}$ .\n\nA",
+      "text_length": 594
+    },
+    {
+      "page_number": 11,
+      "text": "# Postulate 1 (The State of a Quantum System)\n\nThe state of a quantum system is a unit vector (the state vector) in a complex inner product space (Hilbert space, more generally).\n\nRecall: If  $\\mathbb{V}$  is a complex linear vector space, the following hold.\n\n- If  $|v\\rangle \\in \\mathbb{V}$  is a vector in the vector space, then for any complex scalar (number)  $\\lambda \\in \\mathbb{C}, \\lambda |v\\rangle \\in \\mathbb{V}$ .\n- If  $|v\\rangle, |w\\rangle \\in \\mathbb{V}$ , then,  $\\alpha |v\\rangle + \\beta |w\\rangle \\in \\mathbb{V}$ , for all complex scalars  $\\alpha, \\beta \\in \\mathbb{C}$ .\n- Basis: A  $d$ -dimensional linear vector space is spanned by  $d$  orthogonal vectors, say,  $\\{|e_1\\rangle, |e_2\\rangle, \\ldots, |e_d\\rangle\\}$ , so that every  $|v\\rangle \\in \\mathbb{V}$  can be written as  $|v\\rangle = \\sum_{i=1}^{d} v_i |e_i\\rangle$ , where  $v_i \\in \\mathbb{C}$  are complex numbers.",
+      "text_length": 899
+    },
+    {
+      "page_number": 12,
+      "text": "# Matrix representation and inner-product\n\nFor a $d$-dimensional vector space, ket-$v$ can be represented as,\n\n![img-2.jpeg](img-2.jpeg)\n\nA",
+      "text_length": 139
+    },
+    {
+      "page_number": 13,
+      "text": "# Matrix representation and inner-product\n\nFor a $d$-dimensional vector space, ket-$v$ can be represented as,\n\n$$\n|v\\rangle = \\begin{pmatrix} v_1 \\\\ v_2 \\\\ \\vdots \\\\ v_d \\end{pmatrix}.\n$$\n\n- Correspondingly, the bra-vector, is the complex conjugate, transpose - also called the adjoint - of the ket-vector.\n\n$$\n\\langle v| = (v_1^* v_2^* \\dots v_d^*).\n$$",
+      "text_length": 353
+    },
+    {
+      "page_number": 14,
+      "text": "# Matrix representation and inner-product\n\nFor a $d$-dimensional vector space, ket-$v$ can be represented as,\n\n$$\n|v\\rangle = \\begin{pmatrix} v_1 \\\\ v_2 \\\\ \\vdots \\\\ v_d \\end{pmatrix}.\n$$\n\n- Correspondingly, the bra-vector, is the complex conjugate, transpose - also called the adjoint - of the ket-vector.\n\n$$\n\\langle v| = (v_1^* v_2^* \\dots v_d^*).\n$$\n\n- The inner product is defined as the matrix product of the bra and the ket:\n\n$$\n\\langle v|w\\rangle = (v_1^* v_2^* \\dots v_d^*) \\begin{pmatrix} w_1 \\\\ w_2 \\\\ \\vdots \\\\ w_d \\end{pmatrix} = \\sum_{i=1}^{d} v_i^* w_i.\n$$",
+      "text_length": 571
+    },
+    {
+      "page_number": 15,
+      "text": "# Two-level quantum systems\n\n- How does one figure out the relevant Hilbert space for a system? We will illustrate some of the ideas through examples.\n- A two-level quantum system is described by a two-dimensional complex linear vector space, denoted $\\mathbb{C}^2$.\n\nA",
+      "text_length": 269
+    },
+    {
+      "page_number": 16,
+      "text": "# Two-level quantum systems\n\n- How does one figure out the relevant Hilbert space for a system? We will illustrate some of the ideas through examples.\n- A two-level quantum system is described by a two-dimensional complex linear vector space, denoted $\\mathbb{C}^2$.\n- Linearity and the superposition principle: If $|\\psi\\rangle, |\\phi\\rangle \\in \\mathbb{C}^2$ represent two states of the qubit, then any complex linear combination $\\alpha|\\psi\\rangle + \\beta|\\phi\\rangle$ is also a valid state of the qubit $(\\alpha, \\beta \\in \\mathbb{C})$.",
+      "text_length": 541
+    },
+    {
+      "page_number": 17,
+      "text": "# Two-level quantum systems\n\n- How does one figure out the relevant Hilbert space for a system? We will illustrate some of the ideas through examples.\n- A two-level quantum system is described by a two-dimensional complex linear vector space, denoted $\\mathbb{C}^2$.\n- Linearity and the superposition principle: If $|\\psi\\rangle, |\\phi\\rangle \\in \\mathbb{C}^2$ represent two states of the qubit, then any complex linear combination $\\alpha|\\psi\\rangle + \\beta|\\phi\\rangle$ is also a valid state of the qubit $(\\alpha, \\beta \\in \\mathbb{C})$.\n- Two state vectors $|\\nu\\rangle$ and $|\\omega\\rangle$ represent the same state if they are related by\n\n$$\n|\\nu\\rangle = \\lambda |\\omega\\rangle \\quad \\text{for some non-zero complex number} \\quad \\lambda \\in \\mathbb{C}.\n$$\n\nOne uses this to normalize the vector to have unit norm, that is, $\\langle \\nu |\\nu \\rangle = 1$. Thus the quantum state is determined up to an overall phase.",
+      "text_length": 924
+    },
+    {
+      "page_number": 18,
+      "text": "# Qubit state space\n\n- The state space of a qubit is spanned by the pair of orthonormal states $\\{|0\\rangle, |1\\rangle\\}$. This is called the standard or computational basis.\n\n$$\n\\langle 0 | 1 \\rangle = \\langle 1 | 0 \\rangle = 0; \\langle 0 | 0 \\rangle = \\langle 1 | 1 \\rangle = 1.\n$$\n\nA",
+      "text_length": 286
+    },
+    {
+      "page_number": 19,
+      "text": "# Qubit state space\n\nThe state space of a qubit is spanned by the pair of orthonormal states $\\{|0\\rangle, |1\\rangle\\}$. This is called the standard or computational basis.\n\n$$\n\\langle 0 | 1 \\rangle = \\langle 1 | 0 \\rangle = 0; \\langle 0 | 0 \\rangle = \\langle 1 | 1 \\rangle = 1.\n$$\n\n- Geometric visualization: Any arbitrary qubit state can be represented as,\n\n$$\n| \\psi \\rangle = \\cos \\left(\\frac {\\theta}{2}\\right) | 0 \\rangle + e ^ {i \\phi} \\sin \\left(\\frac {\\theta}{2}\\right) | 1 \\rangle , \\quad \\theta \\in [ 0, \\pi ], \\quad \\phi \\in [ 0, 2 \\pi ],\n$$\n\nsince the state is (a) normalized $(|\\alpha|^2 + |\\beta|^2 = 1)$ and (b) overall phase is not fixed.",
+      "text_length": 655
+    },
+    {
+      "page_number": 20,
+      "text": "# Qubit state space\n\nThe state space of a qubit is spanned by the pair of orthonormal states $\\{|0\\rangle, |1\\rangle\\}$. This is called the standard or computational basis.\n\n$$\n\\langle 0 | 1 \\rangle = \\langle 1 | 0 \\rangle = 0; \\langle 0 | 0 \\rangle = \\langle 1 | 1 \\rangle = 1.\n$$\n\n- Geometric visualization: Any arbitrary qubit state can be represented as,\n\n$$\n| \\psi \\rangle = \\cos \\left(\\frac {\\theta}{2}\\right) | 0 \\rangle + e ^ {i \\phi} \\sin \\left(\\frac {\\theta}{2}\\right) | 1 \\rangle , \\quad \\theta \\in [ 0, \\pi ], \\quad \\phi \\in [ 0, 2 \\pi ],\n$$\n\nsince the state is (a) normalized $(|\\alpha|^2 + |\\beta|^2 = 1)$ and (b) overall phase is not fixed.\n\n- This suggests a mapping to points of the surface of a unit sphere in real, 3-d space: Bloch-Poincaré sphere.",
+      "text_length": 767
+    },
+    {
+      "page_number": 21,
+      "text": "# Physical examples of qubit systems\n\n![img-3.jpeg](img-3.jpeg)\n(a) Polarization states of light\n\n$$\n\\begin{array}{l}\n|0\\rangle \\equiv |H\\rangle \\text{ (horizontally polarized state)} \\\\\n|1\\rangle \\equiv |V\\rangle \\text{ (vertically polarized state)}.\n\\end{array}\n$$\n\nA",
+      "text_length": 269
+    },
+    {
+      "page_number": 22,
+      "text": "# Physical examples of qubit systems\n\n(b) Spin-1/2 systems:\n\nThe spin (angular momentum) along any direction takes on one of two values: $\\pm \\frac{1}{2}$ in units of $\\hbar$ ($= \\frac{h}{2\\pi}$, Planck's constant)\n\n![img-4.jpeg](img-4.jpeg)\n\nFigure: Spin qubits on Gallium-Arsenide semiconductors, Blühm Lab (RWTH Aachen)\n\n$$\n\\begin{array}{l}\n|0\\rangle \\equiv | + \\frac{1}{2}\\rangle \\equiv | \\uparrow \\rangle \\text{ (spin-up state)} \\\\\n|1\\rangle \\equiv | - \\frac{1}{2}\\rangle \\equiv | \\downarrow \\rangle \\text{ (spin-down state)}.\n\\end{array}\n$$",
+      "text_length": 546
+    },
+    {
+      "page_number": 23,
+      "text": "# Physical examples of qubit systems\n\n(c) Two- level atoms\n\n![img-5.jpeg](img-5.jpeg)\n\n$$\n\\begin{array}{l}\n|0\\rangle \\equiv |a\\rangle \\text{ (ground state)} \\\\\n|1\\rangle \\equiv |b\\rangle \\text{ (excited state)}.\n\\end{array}\n$$\n\nA",
+      "text_length": 229
+    },
+    {
+      "page_number": 24,
+      "text": "# Physical examples of qubit systems\n\n(c) Two-level atoms\n\n![img-6.jpeg](img-6.jpeg)\n\n$|0\\rangle \\equiv |a\\rangle$ (ground state)\n$|1\\rangle \\equiv |b\\rangle$ (excited state).\n\n$\\triangleright$ Superconducting qubits, which form the backbone of the IBM Q architecture are artificial two-level atoms!",
+      "text_length": 299
+    },
+    {
+      "page_number": 25,
+      "text": "# Basis states\n\n- The pair $\\{|0\\rangle, |1\\rangle\\}$ is often called the **computational** basis for the qubit space. Note that the basis states of the qubit space are not unique!\n\n![img-7.jpeg](img-7.jpeg)\n\nA",
+      "text_length": 210
+    },
+    {
+      "page_number": 26,
+      "text": "# Basis states\n\n- The pair $\\{|0\\rangle, |1\\rangle\\}$ is often called the **computational** basis for the qubit space. Note that the basis states of the qubit space are not **unique!**\n\n- In the previous lecture, we have marked three sets of basis states for the qubit system on the Bloch sphere: $\\{|0\\rangle, |1\\rangle\\}$, $\\{|+\\rangle, |-\\rangle\\}$, $\\{|+i\\rangle, |-i\\rangle\\}$.\n\nA",
+      "text_length": 385
+    },
+    {
+      "page_number": 27,
+      "text": "# Basis states\n\n- The pair $\\{|0\\rangle, |1\\rangle\\}$ is often called the **computational** basis for the qubit space. Note that the basis states of the qubit space are not **unique!**\n\n- In the previous lecture, we have marked three sets of basis states for the qubit system on the Bloch sphere: $\\{|0\\rangle, |1\\rangle\\}$, $\\{|+\\rangle, |-\\rangle\\}$, $\\{|+i\\rangle, |-i\\rangle\\}$.\n\n- Physically, for a spin-$1/2$ system, $\\{|0\\rangle, |1\\rangle\\}$ correspond to the spin-up and spin-down states along the $z$-direction. Then,\n\n- $\\{|+\\rangle, |-\\rangle\\}$ correspond to spin states along the $x$-direction.\n\n- $\\{|+i\\rangle, |-i\\rangle\\}$ correspond to spin states along the $y$-direction.",
+      "text_length": 691
+    },
+    {
+      "page_number": 28,
+      "text": "# Basis states\n\n- The pair $\\{|0\\rangle, |1\\rangle\\}$ is often called the **computational** basis for the qubit space. Note that the basis states of the qubit space are not **unique!**\n\n- In the previous lecture, we have marked three sets of basis states for the qubit system on the Bloch sphere: $\\{|0\\rangle, |1\\rangle\\}$, $\\{|+\\rangle, |-\\rangle\\}$, $\\{|+i\\rangle, |-i\\rangle\\}$.\n\n- Physically, for a spin-$1/2$ system, $\\{|0\\rangle, |1\\rangle\\}$ correspond to the spin-up and spin-down states along the $z$-direction. Then,\n\n- $\\{|+\\rangle, |-\\rangle\\}$ correspond to spin states along the $x$-direction.\n- $\\{|+i\\rangle, |-i\\rangle\\}$ correspond to spin states along the $y$-direction.\n\n- **Exercise**: Check the orthogonality relations for all three qubit bases!",
+      "text_length": 768
+    },
+    {
+      "page_number": 29,
+      "text": "# Basis transformation\n\n- Transforming from one basis to another:\n\n$$\n\\begin{array}{l}\n| + \\rangle = \\frac {1}{\\sqrt {2}} (| 0 \\rangle + | 1 \\rangle); \\quad | - \\rangle = \\frac {1}{\\sqrt {2}} (| 0 \\rangle - | 1 \\rangle) \\\\\n| 0 \\rangle = \\frac {1}{\\sqrt {2}} (| + \\rangle + | - \\rangle); \\quad | 1 \\rangle = \\frac {1}{\\sqrt {2}} (| + \\rangle - | - \\rangle)\n\\end{array}\n$$\n\nNPTEL",
+      "text_length": 377
+    },
+    {
+      "page_number": 30,
+      "text": "# Basis transformation\n\n- Transforming from one basis to another:\n\n$$\n\\begin{array}{l}\n| + \\rangle = \\frac {1}{\\sqrt {2}} (| 0 \\rangle + | 1 \\rangle); \\quad | - \\rangle = \\frac {1}{\\sqrt {2}} (| 0 \\rangle - | 1 \\rangle) \\\\\n| 0 \\rangle = \\frac {1}{\\sqrt {2}} (| + \\rangle + | - \\rangle); \\quad | 1 \\rangle = \\frac {1}{\\sqrt {2}} (| + \\rangle - | - \\rangle)\n\\end{array}\n$$\n\n- This can be represented as the action of the linear operator $U$,\n\n$$\nU | 0 \\rangle = | + \\rangle , U | 1 \\rangle = | - \\rangle , U | + \\rangle = | 0 \\rangle , U | - \\rangle = | 1 \\rangle ,\n$$\n\nwhere $U$ can be represented as the matrix,\n\n$$\nU = \\frac {1}{\\sqrt {2}} \\left( \\begin{array}{cc} 1 &amp; 1 \\\\ 1 &amp; -1 \\end{array} \\right).\n$$",
+      "text_length": 713
+    },
+    {
+      "page_number": 31,
+      "text": "# Basis transformation\n\n- Transforming from one basis to another:\n\n$$\n\\begin{array}{l}\n| + \\rangle = \\frac {1}{\\sqrt {2}} (| 0 \\rangle + | 1 \\rangle); \\quad | - \\rangle = \\frac {1}{\\sqrt {2}} (| 0 \\rangle - | 1 \\rangle) \\\\\n| 0 \\rangle = \\frac {1}{\\sqrt {2}} (| + \\rangle + | - \\rangle); \\quad | 1 \\rangle = \\frac {1}{\\sqrt {2}} (| + \\rangle - | - \\rangle)\n\\end{array}\n$$\n\n- This can be represented as the action of the linear operator $U$,\n\n$$\nU | 0 \\rangle = | + \\rangle , U | 1 \\rangle = | - \\rangle , U | + \\rangle = | 0 \\rangle , U | - \\rangle = | 1 \\rangle ,\n$$\n\nwhere $U$ can be represented as the matrix,\n\n$$\nU = \\frac {1}{\\sqrt {2}} \\left( \\begin{array}{cc} 1 &amp; 1 \\\\ 1 &amp; -1 \\end{array} \\right).\n$$\n\n- Note that $U$ is a unitary matrix, $U^{\\dagger}U = UU^{\\dagger} = I$, where $U^{\\dagger} = (U^{*})^{T}$ is the conjugate-transpose (or adjoint).\n\n- $U$ is indeed the same as the Hadamard gate $H$, an important quantum gate!",
+      "text_length": 940
+    },
+    {
+      "page_number": 32,
+      "text": "# Outer product\n\nFor a $d$-dimensional vector space, the outer product $|\\nu\\rangle\\langle w|$ represents a $d \\times d$ matrix.\n\n$$\n|\\nu\\rangle\\langle w| = \\begin{pmatrix} v_1 \\\\ v_2 \\\\ \\vdots \\\\ v_d \\end{pmatrix} \\begin{pmatrix} w_1^* w_2^* \\dots w_d^* \\end{pmatrix} = \\begin{pmatrix} v_1 w_1^* &amp; v_1 w_2^* &amp; \\dots &amp; v_1 w_d^* \\\\ v_2 w_1^* &amp; v_2 w_2^* &amp; \\dots &amp; v_2 w_d^* \\\\ \\vdots &amp; \\vdots &amp; \\dots &amp; \\vdots \\\\ v_d w_1^* &amp; v_d w_2^* &amp; \\dots &amp; v_d w_d^* \\end{pmatrix}\n$$\n\nNPTEL",
+      "text_length": 526
+    },
+    {
+      "page_number": 33,
+      "text": "# Outer product\n\nFor a $d$-dimensional vector space, the outer product $|\\nu\\rangle\\langle w|$ represents a $d \\times d$ matrix.\n\n$$\n|\\nu\\rangle\\langle w| = \\begin{pmatrix} v_1 \\\\ v_2 \\\\ \\vdots \\\\ v_d \\end{pmatrix} \\begin{pmatrix} w_1^* &amp; w_2^* &amp; \\ldots &amp; w_d^* \\end{pmatrix} = \\begin{pmatrix} v_1 w_1^* &amp; v_1 w_2^* &amp; \\ldots &amp; v_1 w_d^* \\\\ v_2 w_1^* &amp; v_2 w_2^* &amp; \\ldots &amp; v_2 w_d^* \\\\ \\vdots &amp; \\vdots &amp; \\ldots &amp; \\vdots \\\\ v_d w_1^* &amp; v_d w_2^* &amp; \\ldots &amp; v_d w_d^* \\end{pmatrix}\n$$\n\nThus, outerproducts of the form $|0\\rangle\\langle 0|$, $|0\\rangle\\langle 1|$, $|1\\rangle\\langle 0|$ and $|1\\rangle\\langle 1|$ represent $2 \\times 2$ matrices; these are linear operators acting on qubits.",
+      "text_length": 747
+    },
+    {
+      "page_number": 34,
+      "text": "# Outer product\n\nFor a $d$-dimensional vector space, the outer product $|\\nu\\rangle\\langle w|$ represents a $d \\times d$ matrix.\n\n$$\n|\\nu\\rangle\\langle w| = \\begin{pmatrix} v_1 \\\\ v_2 \\\\ \\vdots \\\\ v_d \\end{pmatrix} \\begin{pmatrix} w_1^* w_2^* \\cdots w_d^* \\end{pmatrix} = \\begin{pmatrix} v_1 w_1^* &amp; v_1 w_2^* &amp; \\cdots &amp; v_1 w_d^* \\\\ v_2 w_1^* &amp; v_2 w_2^* &amp; \\cdots &amp; v_2 w_d^* \\\\ \\vdots &amp; \\vdots &amp; \\cdots &amp; \\vdots \\\\ v_d w_1^* &amp; v_d w_2^* &amp; \\cdots &amp; v_d w_d^* \\end{pmatrix}\n$$\n\nThus, outerproducts of the form $|0\\rangle\\langle 0|$, $|0\\rangle\\langle 1|$, $|1\\rangle\\langle 0|$ and $|1\\rangle\\langle 1|$ represent $2 \\times 2$ matrices; these are linear operators acting on qubits.\n\nThe operator $U$ that transforms $\\{|0\\rangle, |1\\rangle\\} \\leftrightarrow \\{|+\\rangle, |-\\rangle\\}$ can be represented as,\n\n$$\nU = |+ \\rangle \\langle 0 | + |- \\rangle \\langle 1 | = |0\\rangle \\langle + | + |1\\rangle \\langle + |.\n$$",
+      "text_length": 962
+    },
+    {
+      "page_number": 35,
+      "text": "# Physical Quantities (Observables)\n\n- Classically, the state space is described by the position and momentum of the particle at the given time. Physical quantities or observables are functions of $(x, p)$.\n\n## Postulate 2 (Observables of a Quantum System)\n\nThe observables of a quantum system (such as position, momentum, spin components) are described by (Hermitian operators) on the quantum state space.\n\n- Recall that linear operators act on a ket vector from the left.\n- Example: Spin observables of a spin-1/2 system.\n\nA",
+      "text_length": 526
+    },
+    {
+      "page_number": 36,
+      "text": "# Spin Observables\n\n- Consider the operator $S_z$ represented by the matrix,\n\n$$\nS_z = \\frac{\\hbar}{2} Z = \\frac{\\hbar}{2} \\begin{pmatrix} 1 &amp; 0 \\\\ 0 &amp; -1 \\end{pmatrix}.\n$$\n\n- Then,\n\n$$\nS_z |0\\rangle = \\frac{\\hbar}{2} \\begin{pmatrix} 1 &amp; 0 \\\\ 0 &amp; -1 \\end{pmatrix} \\begin{pmatrix} 1 \\\\ 0 \\end{pmatrix} = \\frac{\\hbar}{2} \\begin{pmatrix} 1 \\\\ 0 \\end{pmatrix} = \\frac{\\hbar}{2} |0\\rangle\n$$\n\n$$\nS_z |1\\rangle = \\frac{\\hbar}{2} \\begin{pmatrix} 1 &amp; 0 \\\\ 0 &amp; -1 \\end{pmatrix} \\begin{pmatrix} 0 \\\\ 1 \\end{pmatrix} = -\\frac{\\hbar}{2} \\begin{pmatrix} 0 \\\\ 1 \\end{pmatrix} = -\\frac{\\hbar}{2} |1\\rangle.\n$$\n\n- Note that the action of $S_z$ on $|0\\rangle$ or $|1\\rangle$ is simply a scalar $(\\pm \\frac{\\hbar}{2})$ times $|0\\rangle$ or $|1\\rangle$.\n\nA",
+      "text_length": 761
+    },
+    {
+      "page_number": 37,
+      "text": "# Spin Observables\n\n- Consider the operator $S_z$ represented by the matrix,\n\n$$\nS_z = \\frac{\\hbar}{2} Z = \\frac{\\hbar}{2} \\begin{pmatrix} 1 &amp; 0 \\\\ 0 &amp; -1 \\end{pmatrix}.\n$$\n\n- Then,\n\n$$\nS_z |0\\rangle = \\frac{\\hbar}{2} \\begin{pmatrix} 1 &amp; 0 \\\\ 0 &amp; -1 \\end{pmatrix} \\begin{pmatrix} 1 \\\\ 0 \\end{pmatrix} = \\frac{\\hbar}{2} \\begin{pmatrix} 1 \\\\ 0 \\end{pmatrix} = \\frac{\\hbar}{2} |0\\rangle\n$$\n\n$$\nS_z |1\\rangle = \\frac{\\hbar}{2} \\begin{pmatrix} 1 &amp; 0 \\\\ 0 &amp; -1 \\end{pmatrix} \\begin{pmatrix} 0 \\\\ 1 \\end{pmatrix} = -\\frac{\\hbar}{2} \\begin{pmatrix} 0 \\\\ 1 \\end{pmatrix} = -\\frac{\\hbar}{2} |1\\rangle.\n$$\n\n- Note that the action of $S_z$ on $|0\\rangle$ or $|1\\rangle$ is simply a scalar $(\\pm \\frac{\\hbar}{2})$ times $|0\\rangle$ or $|1\\rangle$.\n\n- The spin-up ($|0\\rangle$) and spin-down ($|1\\rangle$) states corresponding to the $Z$-axis are eigenstates of the operator $S_z$.\n\nA",
+      "text_length": 894
+    },
+    {
+      "page_number": 38,
+      "text": "# Spin observables and eigenstates\n\n- $S_{z}$ represents the physical observable corresponding to the $Z$-component of the spin of the spin-$1/2$ system.\n\n![img-8.jpeg](img-8.jpeg)\n\nA",
+      "text_length": 183
+    },
+    {
+      "page_number": 39,
+      "text": "# Spin observables and eigenstates\n\n- $S_{z}$ represents the physical observable corresponding to the $Z$-component of the spin of the spin-$1/2$ system.\n- Similarly, we can represent the observables corresponding to the $X$-component and $Y$-component of the spin as,\n\n$$\nS_{x} = \\frac{\\hbar}{2} X = \\frac{\\hbar}{2} \\left( \\begin{array}{cc} 0 &amp; 1 \\\\ 1 &amp; 0 \\end{array} \\right); \\quad S_{y} = \\frac{\\hbar}{2} Y = \\frac{\\hbar}{2} \\left( \\begin{array}{cc} 0 &amp; -i \\\\ i &amp; 0 \\end{array} \\right).\n$$",
+      "text_length": 508
+    },
+    {
+      "page_number": 40,
+      "text": "# Spin observables and eigenstates\n\n- $S_{z}$ represents the physical observable corresponding to the $Z$-component of the spin of the spin-$1/2$ system.\n- Similarly, we can represent the observables corresponding to the $X$-component and $Y$-component of the spin as,\n\n$$\nS_{x} = \\frac{\\hbar}{2} X = \\frac{\\hbar}{2} \\left( \\begin{array}{cc} 0 &amp; 1 \\\\ 1 &amp; 0 \\end{array} \\right); \\quad S_{y} = \\frac{\\hbar}{2} Y = \\frac{\\hbar}{2} \\left( \\begin{array}{cc} 0 &amp; -i \\\\ i &amp; 0 \\end{array} \\right).\n$$\n\n- Exercise: Verify the eigenvalue equations\n\n$$\n\\begin{array}{l}\nS_{x} | + \\rangle = \\frac{\\hbar}{2} | + \\rangle, \\quad S_{x} | - \\rangle = - \\frac{\\hbar}{2} | - \\rangle, \\\\\nS_{y} | + i \\rangle = \\frac{\\hbar}{2} | + i \\rangle, \\quad S_{x} | - i \\rangle = - \\frac{\\hbar}{2} | - i \\rangle.\n\\end{array}\n$$",
+      "text_length": 812
+    },
+    {
+      "page_number": 41,
+      "text": "# Spin observables and eigenstates\n\n- $S_{z}$ represents the physical observable corresponding to the $Z$-component of the spin of the spin-$1/2$ system.\n- Similarly, we can represent the observables corresponding to the $X$-component and $Y$-component of the spin as,\n\n$$\nS_{x} = \\frac{\\hbar}{2} X = \\frac{\\hbar}{2} \\begin{pmatrix} 0 &amp; 1 \\\\ 1 &amp; 0 \\end{pmatrix}; \\quad S_{y} = \\frac{\\hbar}{2} Y = \\frac{\\hbar}{2} \\begin{pmatrix} 0 &amp; -i \\\\ i &amp; 0 \\end{pmatrix}.\n$$\n\n- Exercise: Verify the eigenvalue equations\n\n$$\n\\begin{aligned}\nS_{x} | + \\rangle &amp;= \\frac{\\hbar}{2} |+ \\rangle, \\quad S_{x} | - \\rangle = - \\frac{\\hbar}{2} |- \\rangle, \\\\\nS_{y} | + i \\rangle &amp;= \\frac{\\hbar}{2} |+ i \\rangle, \\quad S_{x} | - i \\rangle = - \\frac{\\hbar}{2} |- i \\rangle.\n\\end{aligned}\n$$\n\n- Note that the matrices $X, Y$ and $Z$ are Hermitian and unitary!",
+      "text_length": 857
+    },
+    {
+      "page_number": 42,
+      "text": "# Hermitian Operators\n\nThe operator $S_{z}$ is Hermitian. It is equal to its conjugate-transpose: $\\left(S_{z}\\right)^{T})^{*} = S_{z}$.\n\n$$\n\\left( \\begin{array}{cc} 1 &amp; 0 \\\\ 0 &amp; -1 \\end{array} \\right)^{T} \\Bigg)^{*} = \\left( \\begin{array}{cc} 1 &amp; 0 \\\\ 0 &amp; -1 \\end{array} \\right).\n$$\n\nNITTEL",
+      "text_length": 307
+    },
+    {
+      "page_number": 43,
+      "text": "# Hermitian Operators\n\nThe operator $S_{z}$ is Hermitian. It is equal to its conjugate-transpose: $\\left(S_{z}\\right)^{T})^{*} = S_{z}$.\n\n$$\n\\left(\\left( \\begin{array}{cc} 1 &amp; 0 \\\\ 0 &amp; -1 \\end{array} \\right)^{T}\\right)^{*} = \\left( \\begin{array}{cc} 1 &amp; 0 \\\\ 0 &amp; -1 \\end{array} \\right).\n$$\n\nExercise: Verify that $S_{\\times}$ is also a Hermitian matrix.",
+      "text_length": 369
+    },
+    {
+      "page_number": 44,
+      "text": "# Hermitian Operators\n\nThe operator $S_{z}$ is Hermitian. It is equal to its conjugate-transpose: $\\left(S_{z}\\right)^{T})^{*} = S_{z}$.\n\n$$\n\\left(\\left( \\begin{array}{cc} 1 &amp; 0 \\\\ 0 &amp; -1 \\end{array} \\right)^{T}\\right)^{*} = \\left( \\begin{array}{cc} 1 &amp; 0 \\\\ 0 &amp; -1 \\end{array} \\right).\n$$\n\n- Exercise: Verify that $S_{x}$ is also a Hermitian matrix.\n- Hermitian operators have real eigenvalues. These eigenvalues represent the physical values of the corresponding observables.\n- For a spin-$1/2$ system, the spin along the $Z$-axis can take one of two values $\\pm \\hbar/2$ corresponding to the states $|0\\rangle$ and $|1\\rangle$ respectively.\n- The spin along the $X$-axis can take one of two values $\\pm \\hbar/2$ corresponding to the states $|+\\rangle$ and $|-\\rangle$ respectively.",
+      "text_length": 800
+    },
+    {
+      "page_number": 45,
+      "text": "# Postulate 3 (Time Evolution in Quantum Mechanics)\n\nGiven a system in the state, $|\\psi(t_0)\\rangle \\in \\mathcal{H}$, at time $t_0$, the state at time $t &gt; t_0$ is given by a unitary operator $U(t, t_0)$ i.e.,\n\n$$\n| \\psi (t) \\rangle = U (t, t _ {0}) | \\psi (t _ {0}) \\rangle \\in \\mathcal {H}.\n$$\n\nThe unitary operator satisfies\n\n(i) $U(t_0, t_0) = I$,\n(ii) For $t \\geq t_1 \\geq t_0$, one has $U(t, t_0) = U(t, t_1)U(t_1, t_0)$,\n(iii) For $t &lt; t_0$, $U(t_0, t) = U(t, t_0)^\\dagger$.\n\n- Unitary operators preserve the inner product and hence, preserve the norm.\n\n$$\n\\langle \\psi (t) | \\psi (t) \\rangle = \\langle \\psi (t _ {0}) U ^ {\\dagger} U | \\psi (t _ {0}) \\rangle = \\langle \\psi (t _ {0}) | \\psi (t _ {0}) \\rangle .\n$$\n\n- All quantum gates are unitary matrices; they are all reversible transformations.",
+      "text_length": 811
+    },
+    {
+      "page_number": 46,
+      "text": "# The Schrödinger equation\n\n- We can rewrite the time-evolution as a differential equation called the **Schrödinger equation**\n\n$$\ni\\hbar \\frac{\\partial}{\\partial t} |\\psi(t)\\rangle = H(t) |\\psi(t)\\rangle.\n$$\n\n$H(t)$ is called the **Hamiltonian (operator)** for the system.\n\nA",
+      "text_length": 276
+    },
+    {
+      "page_number": 47,
+      "text": "# The Schrödinger equation\n\n- We can rewrite the time-evolution as a differential equation called the **Schrödinger equation**\n\n$$\ni\\hbar \\frac{\\partial}{\\partial t} |\\psi(t)\\rangle = H(t) |\\psi(t)\\rangle.\n$$\n\n$H(t)$ is called the **Hamiltonian (operator)** for the system.\n\n- The Hamiltonian is in fact the Hermitian operator corresponding to the **energy** of the system.\n\nA",
+      "text_length": 376
+    },
+    {
+      "page_number": 48,
+      "text": "# The Schrödinger equation\n\n- We can rewrite the time-evolution as a differential equation called the Schrödinger equation\n\n$$\ni \\hbar \\frac {\\partial}{\\partial t} | \\psi (t) \\rangle = H (t) | \\psi (t) \\rangle .\n$$\n\n$H(t)$ is called the Hamiltonian (operator) for the system.\n\n- The Hamiltonian is in fact the Hermitian operator corresponding to the energy of the system.\n\n- When $H$ is independent of time, one can show that\n\n$$\nU (t, t _ {0}) = \\exp \\left(\\frac {- i H (t - t _ {0})}{\\hbar}\\right),\n$$\n\nwhere $e^A \\coloneqq \\sum_{m=0}^{\\infty} \\frac{A^m}{m!}$ for any linear operator $A$.",
+      "text_length": 590
+    },
+    {
+      "page_number": 49,
+      "text": "# References\n\n- Modern Quantum Mechanics, J J Sakurai (Chapter 1)\n- Feynman Lectures on Physics, Vol III\n- Quantum Computing and Quantum Information, Nielsen and Chuang (Chapter 2)\n\nA",
+      "text_length": 183
+    }
+  ],
+  "raw_results": {
+    "mistral": 25153,
+    "chandra": 0
+  }
+}

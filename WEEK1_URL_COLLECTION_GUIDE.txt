@@ -1,0 +1,45 @@
+# NPTEL Week 1 YouTube URL Collection Guide
+
+## Quick Instructions:
+1. Open: https://onlinecourses.nptel.ac.in/noc26_cs89/
+2. Click "Sign in with Google"
+3. Login with: avalavahitha@gmail.com / Vahitha@14
+4. Navigate to Week 1 in the course menu
+
+## Week 1 Lessons to Extract (Unit 16):
+Copy the YouTube URL for each lesson:
+
+### Lesson 78 - Algorithms towards Quantum Advantage
+URL: https://www.youtube.com/watch?v=fHsySd6tgHE ✓ (Already collected)
+
+### Lesson 79 - A Brief Introduction to Application of Quantum
+URL: _____________________________
+
+### Lesson 80 - Quantum Computing Basics  
+URL: _____________________________
+
+### Lesson 81 - Postulates of Quantum Mechanics - I
+URL: _____________________________
+
+### Lesson 82 - Postulates of Quantum Mechanics - II
+URL: _____________________________
+
+### Lesson 83 - Quantum Measurements
+URL: _____________________________
+
+### Lesson 84 - Quantum Gates and Circuits - Part 1
+URL: _____________________________
+
+### Lesson 85 - Quantum Gates and Circuits - Part 2
+URL: _____________________________
+
+## How to find YouTube URL from each lesson:
+Method 1: Right-click on video → "Copy video URL"
+Method 2: Inspect element → Find <iframe src="https://www.youtube.com/embed/VIDEO_ID">
+Method 3: Check page source for youtube.com links
+
+## After collecting all URLs:
+Paste them back here and I will automatically:
+- Download all transcripts
+- Format them into PDFs with bullet points
+- Organize them by lecture number

@@ -1,0 +1,62 @@
+[
+    {
+        "q": "What is the optimal number of iterations for Grover's search in a database of size N with 1 solution?",
+        "options": [
+            "O(N)",
+            "O(√N)",
+            "O(log N)",
+            "O(1)"
+        ],
+        "answer": 1,
+        "explanation": "Grover's algorithm provides a quadratic speedup, requiring approximately $(\\pi/4)\\sqrt{N}$ iterations to find a single target.",
+        "id": "3_22_1"
+    },
+    {
+        "q": "The Grover operator consists of two primary parts applied repeatedly. What is the second part called?",
+        "options": [
+            "Oracle",
+            "Diffuser (Inversion about the mean)",
+            "Hadamard transform",
+            "Measurement"
+        ],
+        "answer": 1,
+        "explanation": "The diffuser reflects amplitudes about their average, effectively amplifying the state marked by the oracle.",
+        "id": "3_22_2"
+    },
+    {
+        "q": "In the geometric interpretation of Grover's search, each iteration rotates the state vector by which angle?",
+        "options": [
+            "θ",
+            "2θ",
+            "θ/2",
+            "π"
+        ],
+        "answer": 1,
+        "explanation": "Each Grover iteration performs a rotation of $2\\theta$ in the two-dimensional subspace spanned by the target and non-target states.",
+        "id": "3_22_3"
+    },
+    {
+        "q": "What happens if you run Grover's algorithm for significantly more than the optimal number of iterations?",
+        "options": [
+            "The probability stays at 1",
+            "The probability of success decreases (over-rotation)",
+            "The system crashes",
+            "The speedup becomes exponential"
+        ],
+        "answer": 1,
+        "explanation": "Running too many iterations causes the state vector to rotate past the target state, reducing the overlap and thus the success probability.",
+        "id": "3_22_4"
+    },
+    {
+        "q": "How many qubits are required to search a space of N = 64 elements?",
+        "options": [
+            "6",
+            "8",
+            "64",
+            "32"
+        ],
+        "answer": 0,
+        "explanation": "Since $2^6 = 64$, a system of 6 qubits provides the 64 basis states needed for the database indices.",
+        "id": "3_22_5"
+    }
+]

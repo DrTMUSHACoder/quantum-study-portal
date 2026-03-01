@@ -1,0 +1,24 @@
+# OCR Extraction: transcript_voSRtTKiTQo.pdf
+# Engine: mistral
+# Pages: 2
+# Total Characters: 4632
+============================================================
+
+
+--- Page 0 ---
+
+File Type PDF Qs Civil Papers 2011
+
+# Lecture 2 - Video Transcript
+
+- [Music] hello and welcome so why are you taking this course you're taking this course because the future of computing is here and you have a role to play quantum computers will solve some of the tough problems beyond the reach of classical computers a milestone known as quantum advantage in the next few minutes we're going to look at some of the applications of quantum computing and the road ahead the integration of quantum computing ai and classical computing into hybrid multi-cloud workflows will drive the most significant computing revolution in 60 years quantum powered workflows will radically reshape how enterprises work so before we go a little more deeper into quantum computing we need to know that quantum technologies actually include quantum cryptography quantum communications quantum systems and quantum hardware among other things but the focus of this course is going to be on quantum computing and today we are going to focus more on the uh you know the application aspects of it so quantum computing actually incorporates science mathematics engineering business programming it's a truly multi-disciplinary area where students from diverse branches can actually take this course on quantum computing so whether you're from physics chemistry computer science or engineering you actually have a role to play in this and industry is excited because the compelling applications in finance materials chemistry logistics so there are several of these right and so this is an area that spans multiple disciplines and can potentially impact several industries you're going to see a lot of collaboration among people from different backgrounds as we start to make impact in this field so there are several potential use cases of quantum computing that industry and academia have started exploring and this slide you know lists out some of these and you'll see that these are very interesting use cases things that you know even the most powerful supercomputers today are not able to perform to a very good extent right and that's what makes it a very exciting set of potential use cases for quantum computers so for example ibm and daimler are working towards using quantum computers to model material systems including lithium sulfur that are relevant to advancing the performance of batteries right so this is one very interesting use case here is another one quantum computers are also being used in the financial services industry to model the expected value of financial instruments they can be used for some of the compelling banking issues in india like modeling non-performing assets loan risk profiling and many such applications quantum computers are being looked at as the next generation tool for chemists and chemical engineers developing advanced energy solutions several industries are actually exploring quantum applications these range from you know automotive finance logistics health care and this is a list of you know applications and a lot of you know research papers have also been published and there are links on this page that take you to some of those research papers so that you can go deeper into these applications so in this course you will learn to write quantum programs in kiskit and run them on actual quantum hardware systems of today so you'll write some of this in kisket the textbook is available online this kit also provides libraries for you to write models in machine learning chemistry nature finance and optimization in this course you will learn how to write quantum circuits to take on the role of a kernel developer you'll also look at some of the quantum algorithms and learn how you could write them yourselves finally you will also learn to develop models for real-world use cases like the ones we briefly discussed in areas like chemistry and finance the rapidly growing quantum industry will require quantum aware and quantum proficient engineers and this course is going to look at how you know you can do some of these roles so the quantum era is coming and you need to be ready quantum is expected to have a big impact on businesses businesses are going to need people with quantum skills
+
+Page 1
+
+--- Page 1 ---
+
+Page 2
+
+# Lecture 2 - Video Transcript
+
+and already several companies are hiring quantum engineers and scientists but adding quantum to existing workflows we are expected to see drastic improvement in our problem solving capabilities as noble laureate bill phillips said using quantum principles to compute is as different from classical computing as a classical supercomputer is from venapakas

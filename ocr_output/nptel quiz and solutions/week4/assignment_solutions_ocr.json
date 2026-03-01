@@ -1,0 +1,44 @@
+{
+  "file": "resources\\week_3\\quizes\\assignment_solutions.pdf",
+  "file_name": "assignment_solutions.pdf",
+  "success": true,
+  "winner": "mistral",
+  "total_pages": 6,
+  "total_chars": 6166,
+  "pages": [
+    {
+      "page_number": 0,
+      "text": "Status: Not ready still under review. INTRODUCTION TO QUANTUM COMPUTING IIT MADRAS &amp; IBM RESEARCH INDIA\n\n|  Week 3 | Assignment 3 Soln | 20 Marks | Feb 2026  |\n| --- | --- | --- | --- |\n\n- This assignment has 10 questions of the multiple choice type.\n- Each question can have multiple correct options. If you indicate all the correct answers, you get 2 marks.\n- No marks will be awarded if you indicate an incorrect answer.\n- If you indicate some, but not all, correct answers, you get 1 mark.\n\n1. Consider the $N$-qubit computational basis state\n\n$$\n|X\\rangle = |X_{N-1}X_{N-2}\\dots X_1X_0\\rangle.\n$$\n\nWe are given\n\n$$\n|\\psi\\rangle = \\frac{1}{\\sqrt{2^N}} \\sum_{Y \\in \\{0,1\\}^N} (-1)^{X \\cdot Y} |Y\\rangle,\n$$\n\nwhere the mod-2 inner product is\n\n$$\nX \\cdot Y = (X_{N-1}Y_{N-1}) \\oplus (X_{N-2}Y_{N-2}) \\oplus \\dots \\oplus (X_0Y_0).\n$$\n\n## Step 1: Action of the Hadamard Transform\n\nRecall the single-qubit Hadamard action:\n\n$$\nH|0\\rangle = \\frac{|0\\rangle + |1\\rangle}{\\sqrt{2}}, \\qquad H|1\\rangle = \\frac{|0\\rangle - |1\\rangle}{\\sqrt{2}}.\n$$\n\nFor $N$ qubits, the tensor product gives the identity:\n\n$$\nH^{\\otimes N}|X\\rangle = \\frac{1}{\\sqrt{2^N}} \\sum_{Y \\in \\{0,1\\}^N} (-1)^{X \\cdot Y} |Y\\rangle.\n$$\n\nComparing with the given expression, we see immediately that\n\n$$\n|\\psi\\rangle = H^{\\otimes N}|X\\rangle.\n$$\n\nHence the required unitary is\n\n$$\n\\boxed{\\hat{U} = H^{\\otimes N}.}\n$$\n\n## Step 2: Recovering $X$\n\nSince the Hadamard transform is its own inverse,\n\n$$\nH^{\\otimes N}H^{\\otimes N} = I,\n$$",
+      "text_length": 1499
+    },
+    {
+      "page_number": 1,
+      "text": "applying  $H^{\\otimes N}$  again gives\n\n$$\nH ^ {\\otimes N} | \\psi \\rangle = H ^ {\\otimes N} H ^ {\\otimes N} | X \\rangle = | X \\rangle .\n$$\n\nMeasuring in the computational basis then yields  $X$  with probability 1.\n\nFinal Answer:\n\n(c)  $\\hat{U} = H^{\\otimes N}$ , and  $X$  can be perfectly recovered.\n\n2. In the Deutsch-Jozsa problem, a function  $f: \\{0,1\\}^n \\to \\{0,1\\}$  is promised to be either constant or balanced.\n\nTo determine with  $100\\%$  certainty whether the function is constant or balanced using a classical deterministic algorithm:\n\n# Worst-case analysis:\n\nA balanced function outputs 0 for exactly  $2^{n - 1}$  inputs and 1 for the other  $2^{n - 1}$  inputs. In the worst case, the algorithm may query  $2^{n - 1}$  inputs and obtain the same output each time. At this stage, the function could still be constant, or it could be balanced (with the opposite value appearing in the remaining inputs).\n\nTherefore, one additional query is required to break the ambiguity.\n\nHence, the minimum number of queries required is\n\n$$\n2 ^ {n - 1} + 1.\n$$\n\nFinal Answer:\n\n(c)  $2^{n - 1} + 1$\n\n3. Refer to the circuit shown in Figure 1\n\n![img-0.jpeg](img-0.jpeg)\nFigure 1: Circuit for W3_Q3\n\nFinal Answer:\n\n(c)  $|010\\rangle$  and (d)  $|110\\rangle$ .",
+      "text_length": 1258
+    },
+    {
+      "page_number": 2,
+      "text": "4. Both the Deutsch-Jozsa and Bernstein-Vazirani algorithms encode the function output  $f(x)$  into the phase of the quantum state.\n\n# Key properties exploited:\n\n- Superposition: The input register is prepared in an equal superposition of all possible  $x$ , allowing the function to be evaluated on all inputs simultaneously.\n- Phase Kickback: Using a suitably prepared ancilla qubit, the function value  $f(x)$  is transferred into the phase factor  $(-1)^{f(x)}$  of the computational basis states.\n\nThe Uncertainty Principle is not directly used in this encoding process.\n\n# Final Answer:\n\n(b) Phase Kickback and (c) Superposition.\n\n5. Refer to the circuit shown in Figure 2\n\n![img-1.jpeg](img-1.jpeg)\nFigure 2: Circuit for W3_Q5\n\nFinal Answer:\n\n$\\boxed{(d)\\mid 000\\rangle}$",
+      "text_length": 779
+    },
+    {
+      "page_number": 3,
+      "text": "6. Refer to the circuit shown below (see SolutionData2026/W3_Q6.png).\n\n![img-2.jpeg](img-2.jpeg)\n\nFrom the circuit, we observe that not all four wires collapse to 0 at measurement.\n\nFinal Answer:\n\n$\\boxed{(c) 0.}$\n\n7. The Bernstein-Vazirani algorithm uses the same overall circuit structure as the Deutsch-Jozsa algorithm.\n\nBoth circuits:\n\n- Prepare the input register in superposition using Hadamard gates,\n- Apply an oracle that encodes the function into the phase,\n- Apply Hadamard gates again before measurement.\n\nThe only difference lies in the specific function implemented by the oracle.\n\nFinal Answer:\n\n(d) It is identical in structure, differing only in the function implemented by the oracle.",
+      "text_length": 702
+    },
+    {
+      "page_number": 4,
+      "text": "8. The reflection about the uniform superposition state $|u\\rangle$ (Grover diffuser) is constructed using Hadamard transforms.\n\nConstruction:\n\n- Apply $H^{\\otimes n}$ to transform $|u\\rangle$ into $|0\\ldots 0\\rangle$,\n- Perform a phase flip (reflection) about $|0\\ldots 0\\rangle$,\n- Apply $H^{\\otimes n}$ again to transform back.\n\nThis effectively implements the reflection about $|u\\rangle$.\n\nFinal Answer:\n\n1. By transforming $|u\\rangle$ to $|0\\ldots 0\\rangle$ with Hadamard gates, reflecting about $|0\\ldots 0\\rangle$, and transforming back\n\n9. Refer to the circuit shown in Figure 3\n\n![img-3.jpeg](img-3.jpeg)\nFigure 3: Circuit for W3_Q9\n\nStep 1: Structure of the circuit\n\nFrom Figure 3, we observe:\n\n- The first three qubits have Hadamard gates applied at the beginning.\n- The ancilla qubit is prepared in the $|-\\rangle$ state.\n- The oracle region (between dashed lines) does not apply any controlled operations depending on the input.\n- A second layer of Hadamard gates is applied to the first three qubits.\n- The first three qubits are then measured.\n\nStep 2: Interpretation\n\nSince the oracle does not introduce any input-dependent phase change, the function implemented is constant. In the Deutsch–Jozsa algorithm, this results in the final measurement being $|000\\rangle$.\n\nFinal Answer:\n\n1. Deutsch–Jozsa with Constant Function Oracle",
+      "text_length": 1346
+    },
+    {
+      "page_number": 5,
+      "text": "10. In Grover’s algorithm, the state evolution can be understood as a rotation in a two-dimensional subspace of the full Hilbert space.\n\nGeometric Interpretation:\n\nThe relevant 2D plane is spanned by:\n\n- The target state $|a\\rangle$,\n- The state $|e\\rangle$, which is the uniform superposition of all non-target states.\n\nThese two states are orthogonal and form a basis for the subspace in which Grover’s iterations perform successive rotations toward $|a\\rangle$.\n\nFinal Answer:\n\n$(b)$ The target state $|a\\rangle$ and a uniform superposition of all non-target states, $|e\\rangle$.",
+      "text_length": 582
+    }
+  ],
+  "raw_results": {
+    "mistral": 6166,
+    "chandra": 0
+  }
+}

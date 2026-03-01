@@ -1,0 +1,196 @@
+# OCR Extraction: assigment4.pdf
+# Engine: mistral
+# Pages: 5
+# Total Characters: 6719
+============================================================
+
+
+--- Page 0 ---
+
+2/12/26, 2:38 PM
+Introduction to Quantum Computing: Quantum Algorithms and Qiskit - - Unit 6 - Week 4
+
+X
+
+![img-0.jpeg](img-0.jpeg)
+
+(https://swayam.gov.in)
+
+![img-1.jpeg](img-1.jpeg)
+
+(https://swayam.gov.in/nc_details/NPTEL)
+
+ushawin2020@gmail.com
+
+NPTEL (https://swayam.gov.in/explorer?ncCode=NPTEL) » Introduction to Quantum Computing: Quantum Algorithms and Qiskit (course)
+
+Click to register for Certification exam (https://examform.nptel.ac.in/2020_01/exam_form/dashboard)
+
+# Week 4: Assignment 4
+
+Assignment not submitted
+
+Due date: 2026-02-18, 23:59 IST.
+
+- This assignment has 10 questions of the multiple choice type.
+- Each question can have multiple correct options. If you indicate all the correct answers, you get 2 marks.
+- No marks will be awarded if you indicate an incorrect answer.
+- If you indicate some, but not all correct answers, you get 1 mark.
+
+1) Which of the following statements regarding Variational Quantum Algorithms (VQAs) 1 point are correct? (Select all that apply)
+
+☐ Classical part of the VQA calculates the cost function
+☐ A shallow and faithful cost function is desirable
+☐ Problem-agnostic ansatz perform better than Problem-inspired ansatz
+☐ Randomly initialized deep Quantum Circuits exhibit Barren Plateau
+
+Fig. 1 shows quantum circuit used in molecular simulations using VQE implementation by Kandala et. al.1. Answer the following questions 2 and 3, with reference to Fig. 1.
+
+https://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=43&amp;assessment=83
+
+--- Page 1 ---
+
+2/12/26, 2:38 PM
+
+Introduction to Quantum Computing: Quantum Algorithms and Qiskit - - Unit 6 - Week 4
+
+# Week 4 ()
+
+NISQ-era quantum algorithms (unit? unit=43&amp;lesson =44)
+$\bigcirc$  Variational Quantum Algorithms (unit? unit=43&amp;lesson =45)
+$\bigcirc$  Variational Quantum Eigensolver (unit? unit=43&amp;lesson =46)
+Quantum Generative Adversarial Networks (QGANs) (unit? unit=43&amp;lesson =47)
+Fixing quantum errors with quantum tricks: A brief introduction to Quantum Error Correction - Part 1 (unit? unit=43&amp;lesson =48)
+Fixing quantum errors with quantum tricks: A brief introduction to Quantum Error Correction - Part 2 (unit? unit=43&amp;lesson =49)
+
+![img-2.jpeg](img-2.jpeg)
+Figure 1: Quantum circuit implementing VQE algorithm.
+
+2) Select all the statements that hold for  $U_{ENT}$  and the unitaries  $U^{i,j}(\Theta_k)$ .
+
+1 point
+
+Together,  $U_{ENT}$  and the unitaries  $U^{i,j}(\Theta_k)$  form the trial state.
+$\square$ $U_{ENT}$  refers to "entangling block".
+The unitaries  $U^{i,j}(\Theta_k)$  are multiqubit unitaries.
+The state created by these unitaries have both superposition and entanglement.
+
+3) The number of layers  $d$  is primarily a function of
+
+1 point
+
+$\bigcirc$  the gates being performed
+the number of qubits in the system.
+$\bigcirc$  both (a) and (b).
+the available depth or coherence time.
+
+4) Quantum Generative Adversarial Networks (QGANs) consists of:
+
+1 point
+
+Encoder
+Generator
+Decoder
+□Discriminator
+
+5) Which of the following statements is an accurate description of the phenomenon of decoherence?
+
+□ Decoherence causes a pure quantum state to transform into an incoherent mixture of multiple states.
+
+https://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=43&amp;assessment=83
+
+--- Page 2 ---
+
+2/12/26, 2:38 PM
+Introduction to Quantum Computing: Quantum Algorithms and Qiskit - - Unit 6 - Week 4
+
+☐ Fixing quantum errors with quantum tricks: A brief introduction to Quantum Error Correction - Part 3 (unit? unit=43&amp;lesson =50)
+
+● Week 4: Lecture notes (unit? unit=43&amp;lesson =51)
+
+○ Week 4 Feedback Form: Introduction to Quantum Computing: Quantum Algorithms and Qiskit (unit? unit=43&amp;lesson =52)
+
+○ Quiz: Week 4: Assignment 4 (assessment? name=83)
+
+Download Videos ()
+
+Transcripts ()
+
+☐ Decoherence is caused when a quantum system evolves with time via a unitary transformation.
+
+☐ Decoherence is caused when a quantum system is coupled to a bath or environment and the joint system evolves via a unitary transformation.
+
+☐ Decoherence is a reversible process.
+
+6) Select all the options that apply to the three-qubit quantum error correcting code. 1 point
+
+☐ The three-qubit code assumes that the bit-flip noise occurs identically and independently on the encoded qubits.
+
+☐ The encoding transforms the state $\alpha |0\rangle +\beta |1\rangle$ to $(\alpha |0\rangle +\beta |1\rangle)^{\otimes 3}$ where $|\alpha |^2 +|\beta |^2 = 1$.
+
+☐ The bit-flip noise flips the qubit with some probability $p$ and leaves it untouched with probability $1 - p$.
+
+☐ The encoding transforms the state $\alpha |0\rangle +\beta |1\rangle$ to $(\alpha |000\rangle +\beta |111\rangle)$ where $|\alpha |^2 +|\beta |^2 = 1$.
+
+7) Let $S1$ and $S2$ denote the syndrome bits at the end of the 3-qubit bit-flip quantum error 1 point correction protocol. Match the syndrome bit values to their respective recovery gates.
+
+|  Syndrome (S1, S2) | Recovery Gates  |
+| --- | --- |
+|  x. (0, 1) | i. I ⊗ I ⊗ X  |
+|  y. (1, 1) | ii. X ⊗ I ⊗ I  |
+|  z. (1, 0) | iii. I ⊗ X ⊗ I  |
+
+○ x-i, y-ii, z-iii
+○ x-i, y-iii, z-ii
+○ x-ii, y-iii, z-i
+○ x-iii, y-i, z-ii
+
+8)
+
+1 point
+
+https://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=43&amp;assessment=83
+
+--- Page 3 ---
+
+2/12/26, 2:38 PM
+Introduction to Quantum Computing: Quantum Algorithms and Qiskit - - Unit 6 - Week 4
+
+Analyse the following 7-qubit circuit and answer the question.
+
+![img-3.jpeg](img-3.jpeg)
+
+What is the probability for all of the first 6 wires to output 0 when measured at the end of this circuit?
+
+☐ 1/64
+☐ 1/2
+☐ 0
+☐ 1
+
+9) Consider the encoded (or logical) state $|\psi_L\rangle = \alpha |000\rangle +\beta |111\rangle$ subject to a 1 point quantum noise channel where each qubit can undergo a bit flip with probability $p$. The exact probability that the 3-qubit bit-flip quantum error correcting code fails to recover the original state is given by $x\cdot p^{y}\cdot (1 - p)^{z} + p^{3}$, where $p$ is the bit-flip probability and $x,y,z$ are the variables to be identified. The value of $y\cdot x + z$ (here, $\cdot$ denotes multiplication)
+
+☐ 6
+☐ 7
+☐ 10
+☐ 5
+
+10) Consider a 3-qubit state in the $\{|+ \rangle, |- \rangle\}$ basis, of the form 1 point $\frac{1}{\sqrt{2}} (|+ + + \rangle + |- - - \rangle)$. Which of the following sets of errors can be detected on this state?
+
+☐ $\{XII, IXI, IIX\}$
+☐ $\{IZI, ZIZ\}$
+☐ $\{ZII, IZI, IIZ\}$
+☐ $\{ZII, IZZ, ZZZ\}$
+
+https://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=43&amp;assessment=83
+
+--- Page 4 ---
+
+2/12/26, 2:38 PM
+Introduction to Quantum Computing: Quantum Algorithms and Qiskit - - Unit 6 - Week 4
+
+You may submit any number of times before the due date. The final submission will be considered for grading.
+
+Submit Answers
+
+https://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=43&amp;assessment=83
+5/5

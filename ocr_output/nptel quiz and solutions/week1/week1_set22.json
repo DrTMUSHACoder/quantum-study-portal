@@ -1,0 +1,62 @@
+[
+    {
+        "q": "In the normalization of the state vector $|\\psi\\rangle = \\binom{(1+i)/\\sqrt{2}}{(1-i)/\\sqrt{2}}$, what is the calculated value of $|(1+i)/\\sqrt{2}|^2 + |(1-i)/\\sqrt{2}|^2$ before re-normalization?",
+        "options": [
+            "1",
+            "2",
+            "1/2",
+            "4"
+        ],
+        "answer": 1,
+        "explanation": "As per the solution, $|1+i|^2/2 + |1-i|^2/2 = 2/2 + 2/2 = 2$. Since this is not 1, a further normalization factor of $1/\\sqrt{2}$ is needed.",
+        "id": "1_22_1"
+    },
+    {
+        "q": "What is the normalization factor applied to the state $(\\frac{1+i}{4})|0\\rangle + (\\frac{3-i}{4})|1\\rangle$ to make it a unit vector?",
+        "options": [
+            "$\\sqrt{3}/2$",
+            "$\\sqrt{3/4}$",
+            "$2/\\sqrt{3}$",
+            "$1/\\sqrt{2}$"
+        ],
+        "answer": 2,
+        "explanation": "The sum of absolute squares is $6/8 = 3/4$. The normalization factor is the inverse of the square root of this sum, which is $\\sqrt{4/3} = 2/\\sqrt{3}$.",
+        "id": "1_22_2"
+    },
+    {
+        "q": "A Pauli-Z gate maps the input state $\\alpha|0\\rangle + \\beta|1\\rangle$ to which output state?",
+        "options": [
+            "$\\alpha|0\\rangle + \\beta|1\\rangle$",
+            "$\\alpha|1\\rangle + \\beta|0\\rangle$",
+            "$\\alpha|0\\rangle - \\beta|1\\rangle$",
+            "$-\\alpha|0\\rangle + \\beta|1\\rangle$"
+        ],
+        "answer": 2,
+        "explanation": "The Z gate adds a relative phase of $\\pi$ ($e^{i\\pi} = -1$) to the $|1\\rangle$ component: $Z|0\\rangle = |0\rangle$ and $Z|1\rangle = -|1\rangle$.",
+        "id": "1_22_3"
+    },
+    {
+        "q": "Which property of a matrix identifies it as a valid quantum gate representing a single-qubit transformation?",
+        "options": [
+            "It must be Hermitian ($U=U^\\dagger$)",
+            "It must be Unitary ($U^\\dagger U = I$)",
+            "It must have real eigenvalues",
+            "It must be diagonal"
+        ],
+        "answer": 1,
+        "explanation": "As per Postulate 3 and general gate definitions, all quantum gates must be Unitary to preserve the normalization of the state vector.",
+        "id": "1_22_4"
+    },
+    {
+        "q": "To implement the transformation $|00\\rangle \\to \\frac{1}{\\sqrt{2}}(|00\\rangle - |11\\rangle)$, what is the first gate applied to the first qubit in the standard circuit shown in the solutions?",
+        "options": [
+            "Hadamard (H)",
+            "Pauli-X (NOT)",
+            "Pauli-Z",
+            "CNOT"
+        ],
+        "answer": 1,
+        "explanation": "The circuit starts with an X gate on the first qubit to change $|00\\rangle$ to $|10\\rangle$, followed by an H gate and then a CNOT.",
+        "id": "1_22_5"
+    }
+]

@@ -1,0 +1,259 @@
+# OCR Extraction: Grover_latex_notes.pdf
+# Engine: mistral
+# Pages: 9
+# Total Characters: 13951
+============================================================
+
+
+--- Page 0 ---
+
+Quantum Algorithms : Grover’s Search
+
+Dhiraj Madan *
+
+June 2021
+
+## 1 Introduction
+
+Consider a large (and unordered) database of size N, consisting of N elements $a_1, \ldots, a_N$. The problem is to search for a given element y i.e. we need to find an index $x$, such that $a_x = y$. We assume that the elements are arranged in the form of an unordered array without any index built on top. Classically, one can search for this in linear or $O(N)$ time by iterating through each of the elements one by one. The question is can we do better? Well classically we can not. This is because we will need to look at each element at least once which will consume linear time. However we will see in this lecture that it is indeed possible to obtain a quadratic improvement over this lower bound in quantum setting through the Grover’s search algorithm [1] which we will describe next i.e. we will be able to perform the above search using an $O(\sqrt{N})$ depth quantum circuit.
+
+## 2 Oracle Search problem
+
+Our algorithm is indeed more general and works for general oracle search problems. An oracle is essentially a black box function $f:[N]\mapsto \{0,1\}$. Here we denote by $[N]$ the set of indices $\{1,2,\dots,N\}$. One is only given a query access to the oracle. The problem is to find an $x$ where $f(x) = 1$ in minimum number of queries. Again this takes $O(N)$ queries classically. Note that the problem of database search is also a form of oracle search problem. Here given a search element $y$, one can define an oracle $f_y$ as follows:
+
+$$
+f_y(x) = \begin{cases}
+1 &amp; \text{if } a_x = y \\
+0 &amp; \text{Otherwise}
+\end{cases} \tag{1}
+$$
+
+Now searching for an element with $f_y(x) = 1$ is equivalent to searching for $x$ such that $a_x = y$. From hereon, we now consider the more general problem of finding $x$ where $f(x) = 1$.
+
+*Advisory Research Engineer, IBM Research India
+
+--- Page 1 ---
+
+2.1 The quantum oracle
+
+In quantum setting one has the capacity to use a quantum oracle. This allows one to query the function $f$ in superposition. As in general quantum operations we model this using a reversible unitary mapping defined as follows:-
+
+$O_{f}\ket{x}\ket{y}=\ket{x}\ket{y\oplus f(x)}$ (2)
+
+Here we use 2 quantum registers a query register with $\lceil log(N)\rceil$ qubits for input query $\ket{x}$ and a 1 qubit register $\ket{y}$ to receive the output. Note that if the second register is $\ket{0}$, one indeed gets $f(x)$ in the second register after the application of oracle:-
+
+$O_{f}\ket{x}\ket{0}=\ket{x}\ket{0\oplus f(x)}=\ket{x}\ket{f(x)}$ (3)
+
+Note that if the second register is $\ket{1}$, one indeed gets the flipped value of $f(x)$ i.e. $\overline{f(x)}$ in the second register :-
+
+$O_{f}\ket{x}\ket{1}=\ket{x}\ket{1\oplus f(x)}=\ket{x}\ket{\overline{f(x)}}$ (4)
+
+A magic happens when the second register is indeed in superposed state $\ket{-\}=\frac{\ket{0}-\ket{1}}{\sqrt{2}}$:
+
+$O_{f}\ket{x}\ket{-\}}=\mathcal{O}_{f}\ket{x}\left(\frac{\ket{0}-\ket{1}}{\sqrt{2}}\right)$ (5)
+$=\frac{O_{f}\ket{x}\ket{0}-O_{f}\ket{x}\ket{1}}{\sqrt{2}}$ (6)
+$=\frac{\ket{x}\ket{f(x)}-\ket{x}\ket{\overline{f(x)}}}{\sqrt{2}}$ (7)
+$=\left\{\begin{array}[]{ll}\ket{x}\ket{-\}&\text{if $f(x)=0$}\cr-\ket{x}\ket{-\}&\text{if $f(x)=1$}\end{array}\right.$ (8)
+$=\left(-\ref{1}\right)^{f(x)}\ket{x}\ket{-\}}$ (9)
+
+Thus we are able to convert the oracle in the form of a phase oracle which essentially multiplies a phase of form $(-1)^{f(x)}$.
+
+## 3 Querying in superposition
+
+We will use the phase oracle in order to speed up our search. We assume that there is exactly 1 marked element a i.e. $f(a)=1$ and $f(x)=0\forall x\neq a$. Note that a quantum oracle can indeed be applied in superposed state which is the source of our speedup. To begin with let’s say we have created a superposition of all states i.e. $\ket{U}=\frac{\sum_{x\in[N]}\ket{x}}{\sqrt{N}}$.
+
+Such a state can be easily created if N is a power of 2 i.e. $N=2^{n}$ by performing $H^{\otimes n}\ket{0^{n}}=\ket{U}$. Henceforth we will assume in this lecture that $N$ is indeed a power of 2.
+
+--- Page 2 ---
+
+Problem to ponder 1. What happens when $N$ is not a power of 2. Can you reduce to the case where $N$ is a power of 2 using a simple modification? You might incur a constant multiplicative overhead in size.
+
+Let's say we now create the above state $|U\rangle$. We use this as the starting state of the algorithm $|\psi_0\rangle$ i.e.
+
+$$
+\begin{array}{l}
+|\psi_0\rangle = \frac{1}{\sqrt{N}} \sum_x |x\rangle \quad (10) \\
+= \frac{1}{\sqrt{N}} (|a\rangle + \sum_{x \ne a} |x\rangle) \quad (11) \\
+= \frac{1}{\sqrt{N}} |a\rangle + \sqrt{\frac{N-1}{N}} \left(\frac{\sum_{x \ne a} |a\rangle}{\sqrt{N-1}}\right) \quad (12) \\
+= \frac{1}{\sqrt{N}} |a\rangle + \sqrt{\frac{N-1}{N}} |e\rangle \quad (13)
+\end{array}
+$$
+
+where in the last equation we have define $|e\rangle = \left(\frac{\sum_{x\neq a}|a\rangle}{\sqrt{N - 1}}\right)$.
+
+Thus our state $|\psi \rangle_0$ lies in the plane spanned by $|a\rangle$ and $|e\rangle$. See Figure 1.
+
+![img-0.jpeg](img-0.jpeg)
+Figure 1: The initial state
+
+We also see that the angle between $|\psi \rangle_0$ and $|e\rangle$, $\theta_0$ is given by :-
+
+$$
+\cos(\theta_0) = |\langle e|\psi_0\rangle| = \sqrt{\frac{N-1}{N}} \quad (14)
+$$
+
+or
+
+$$
+\sin(\theta_0) = \frac{1}{\sqrt{N}} \quad (15)
+$$
+
+or
+
+$$
+\theta_0 = \sin^{-1} \frac{1}{\sqrt{N}} \approx \frac{1}{\sqrt{N}} \quad (16)
+$$
+
+--- Page 3 ---
+
+Thus the angle is close 0 for large N, or $|U\rangle$ is quite close to $|e\rangle$. In order to bring it close to $|a\rangle$, we would need a rotation, roughly by $\frac{\pi}{2}$. Is this rotation possible?
+
+### 3.1 Effect of oracle
+
+First we see how the oracle $O_{f}$ acts on $|\psi\rangle_{0}$, since we will need to use this oracle to achieve the desired rotation. We actually consider the more general effect of oracle on vectors in the plane $\text{span}\{|a\rangle,|e\rangle\}$. We observe that :-
+
+$O_{f}\ket{a}|-\rangle=(-1)^{f(a)}\ket{a}|-\rangle=-|a\rangle|-\rangle$ (17)
+
+and
+
+$O_{f}\ket{e}|-\rangle=O_{f}\left(\frac{\sum_{x\neq a}|x\rangle}{\sqrt{N-1}}\right)|-\rangle$ (18)
+$=\frac{1}{\sqrt{N-1}}\sum_{x\neq a}O_{f}\ket{x}|-\rangle$ (19)
+$=\frac{1}{\sqrt{N-1}}\sum_{x\neq a}(-1)^{f(x)}\ket{x}|-\rangle$ (20)
+$=\frac{1}{\sqrt{N-1}}\sum_{x\neq a}|x\rangle|-\rangle$ (21)
+$=|e\rangle|-\rangle$ (22)
+
+Thus on a general vector in the plan $\alpha\ket{a}+\beta\ket{e}$, $O_{f}$ acts as: -
+
+$O_{f}(\alpha\ket{a}+\beta\ket{e})|-\rangle=(-\alpha\ket{a}+\beta\ket{e})|-\rangle$ (23)
+
+This is equivalent to a reflection about the axis $\ket{e}$. See figure 2 .
+
+## 4 From reflection to rotation
+
+Essentially we would now need to convert to use the above reflection to perform a rotation. Is this even possible ? Well it is indeed possible if one performs two successive reflections in a plane about different vectors.
+
+###### Lemma 1.
+
+If $\ket{u}$ and $\ket{v}$ are 2 vectors in a plane making an angle $\theta$. Let $R_{\ket{u}}$ and $R_{\ket{v}}$ be reflections in the plane about $\ket{u}$ and $\ket{v}$ respectively. Then the two successive reflections $R_{\ket{u}}R_{\ket{v}}$ together achieve a rotation in the plane by angle $2\theta$ in the orientation from $\ket{v}$ to $\ket{u}$.
+
+###### Proof.
+
+The proof is pictorially depicted in Figure 3. Consider any arbitrary vector $\ket{\psi}$ in the plane containing $\ket{u}$ and $\ket{v}$ (Figure 3a). Say it makes an angle $\phi$ with $\ket{u}$ i.e. an angle of $\theta+\phi$ with $\ket{v}$. Then a reflection about $\ket{v}$ takes it to the opposite side of $\ket{v}$ making an angle of $\theta+\phi$ with $\ket{v}$ (Figure 3b). This
+
+--- Page 4 ---
+
+![img-1.jpeg](img-1.jpeg)
+Figure 2: Action of orcale in span  $\{|a\rangle ,|e\rangle \}$
+
+makes an angle of  $2\theta + \phi$  with  $|u\rangle$ . A further reflection about  $|u\rangle$  brings it to the original side of  $|u\rangle$  making an angle  $2\theta + \phi$  (Figure 3c). Since the original angle was  $\phi$  the is essentially a rotation by  $2\theta$  in the direction from  $|v\rangle$  to  $|u\rangle$ .
+
+# 4.1 The second reflection
+
+We are already performing 1 reflection around  $|e\rangle$ . What is the second reflection axis that can be chosen? Well we can choose this to be the most symmetric vector i.e.  $|U\rangle = \frac{1}{\sqrt{N}}\sum_{x\in |N\rangle}\frac{|x\rangle}{\sqrt{N}}$ . In this case we know that the angle between the two successive reflection axes is  $\theta_0 = \sin^{-\frac{1}{\sqrt{N}}}$  and hence the two successive reflections will achieve a rotation by angle  $2\sin^{-\frac{1}{\sqrt{N}}}$ .
+
+The question is how to achieve the above reflection? Firstly we can reduce this to a simpler problem of reflecting about  $|0\rangle^n$  using the 3 steps below:
+
+1. Map  $|U\rangle$  to  $|0^n\rangle$
+2. Reflect about  $|0^n\rangle$  i.e. perform  $R_{|0^n\rangle}$
+3. Map  $|0^n\rangle$  back to  $|U\rangle$
+
+Steps 1 and 2 above can both be achieved using Hadamards since
+
+$$
+H ^ {\otimes} \left| 0 ^ {n} \right\rangle = | U \rangle \tag {24}
+$$
+
+and
+
+$$
+H ^ {\otimes} | U \rangle = | 0 ^ {n} \rangle \tag {25}
+$$
+
+--- Page 5 ---
+
+![img-2.jpeg](img-2.jpeg)
+(c) After 2 reflections  $R_{|u\rangle}R_{|v\rangle}\psi$
+Figure 3: Rotation through two reflections
+
+--- Page 6 ---
+
+It now remains to show how to achieve reflection about $|0^n\rangle$ i.e. perform $R_{|0^n\rangle}$. Here we need to be able to perform :-
+
+$$
+R \left| 0 ^ {n} \right\rangle = \left| 0 ^ {n} \right\rangle \tag {26}
+$$
+
+and
+
+$$
+R \left| b _ {1}, \dots , b _ {n} \right\rangle = - \left| b _ {1}, \dots , b _ {n} \right\rangle \tag {27}
+$$
+
+for all other basis elements $b_{1},\ldots ,b_{n}$ not equal to $0^n$.
+
+This is equivalent to performing $R|b_1, \ldots, b_n\rangle = (-1)^{b_1 \vee b_2 \dots \vee b_n}|b_1, \ldots, b_n\rangle$. Thus performing an OR operation and translating to a phase oracle gives the above effect.
+
+# 5 The algorithm and analysis
+
+Thus running the above pair of reflections each time gives us an effect of rotation by angle $2\theta_0$ in the plane. Initially $|\psi \rangle_0$ makes an angle of $\theta_0$ with $|e\rangle$ (See figure 1). Thus after $T$ iterations of the above 2 successive reflections, the angle between the statevector and $|\epsilon \rangle$ increases to $(2T + 1)\theta_0$
+
+We need to increase this angle so as to bring our state vector close to $|a\rangle$ or increase the angle close to $\frac{\pi}{2}$. It can be shown that it is always possible to increase the angle to lie in the range $\frac{\pi}{4}$ and $\frac{3\pi}{4}$.
+
+Problem to ponder 2. Show that it is indeed possible.
+
+Hint: Make cases on whether $\theta_0$ is $\leq$ or $&gt;\frac{\pi}{4}$. In each case work out if $T$ can be chosen so that $(2T + 1)\theta_0$ lies in range $\left[\frac{\pi}{4}, \frac{3\pi}{4}\right]$.
+
+One can now work out that the total number of iterations needed must satisfy :-
+
+$$
+\frac {\pi}{4} \leq (2 T + 1) \theta_ {0} \leq \frac {3 \pi}{4} \tag {28}
+$$
+
+Thus it suffices to choose
+
+or,
+
+$$
+2 T + 1 = \left\lceil \frac {\frac {\pi}{4}}{\theta_ {0}} \right\rceil \tag {29}
+$$
+
+$$
+T = \left\lceil \left(\frac {\pi}{4 \theta_ {0}} - 1\right) / 2 \right\rceil \tag {30}
+$$
+
+The above is indeed $O(\sqrt{N})$ for $\theta_0 = \sin^{-1}\frac{1}{\sqrt{N}}$.
+
+Thus in $O(\sqrt{N})$ number of reflections one can indeed obtain a state $|\psi \rangle$ which makes an angle less than $\frac{\pi}{4}$ with $|a\rangle$. Now a measurement in standard basis will yield $|a\rangle$ with probability $\geq \cos^2\frac{\pi}{4} = \frac{1}{2}$.
+
+This gives a randomized algorithm with success probability $\frac{1}{2}$. One can check if algorithm succeeds by computing the oracle $f$ on the measured element.
+
+--- Page 7 ---
+
+If it fails the algorithm can be repeated. Note that  $k$  is independent repetitions of the algorithm will increase the success probability to  $\geq 1 - \left(\frac{1}{2}\right)^k$ , bringing it arbitrarily close to 1 with increase in  $k$ .
+
+The entire algorithm is summarized in Algorithm 1.
+
+Algorithm 1: Grover's Search Algorithm
+Create  $|\psi_0\rangle = \frac{1}{\sqrt{N}}\sum_x|x\rangle$  using  $H^{\otimes n}|0^n\rangle$  .
+for  $t = 1$  to  $T(= O(\sqrt{N}))$  do Reflect  $|\psi \rangle_{t = 1}$  about  $|e\rangle$  using  $O_{f}$  Reflect the above about  $|U\rangle$  using  $H^{\otimes n}R_{|0^n\rangle}H^{\otimes n}$  to get  $|\psi_t\rangle$  end Measure  $|\psi \rangle_T$  in standard basis to get  $x$  if  $f(x) = 1$  then Return x; else Throw error end
+
+Note that the above bound of  $O(\sqrt{N})$  is indeed tight and in fact it is impossible to improve over the same [2]. We end this leaving you with a couple of more problems to ponder on :-
+
+Problem to ponder 3. What if there are multiple elements marked, say  $k$  elements are marked? How will the algorithm change?
+
+Problem to ponder 4. What if the number of marked elements is not known in advance?
+
+Hope you enjoyed learning about this algorithm.
+
+# References
+
+[1] Lov K Grover. A fast quantum mechanical algorithm for database search. In Proceedings of the twenty-eighth annual ACM symposium on Theory of computing, pages 212-219, 1996.
+[2] Charles H Bennett, Ethan Bernstein, Gilles Brassard, and Umesh Vazirani. Strengths and weaknesses of quantum computing. SIAM journal on Computing, 26(5):1510-1523, 1997.
+[3] Michael A Nielsen and Isaac Chuang. Quantum computation and quantum information, 2002.
+[4] Abraham Asfaw, Antonio Corcoles, Luciano Bello, Yael Ben-Haim, Mehdi Bozzo-Rey, Sergey Bravyi, Nicholas Bronn, Lauren Capelluto, Almudena Carrera Vazquez, Jack Ceroni, Richard Chen, Albert Frisch, Jay Gambetta, Shelly Garion, Leron Gil, Salvador De La Puente Gonzalez, Francis Harkins, Takashi Imamichi, Hwajung Kang, Amir h. Karamlou, Robert
+
+--- Page 8 ---
+
+Loredo, David McKay, Antonio Mezzacapo, Zlatko Minev, Ramis Movassagh, Giacomo Nannicini, Paul Nation, Anna Phan, Marco Pistoia, Arthur Rattew, Joachim Schaefer, Javad Shabani, John Smolin, John Stenger, Kristan Temme, Madeleine Tod, Stephen Wood, and James Wootton. Learn quantum computation using qiskit, 2020.
+
+![img-3.jpeg](img-3.jpeg)

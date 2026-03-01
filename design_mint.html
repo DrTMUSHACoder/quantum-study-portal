@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design 5: Frosted Mint</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-grad: linear-gradient(135deg, #e0f7fa 0%, #f1f8e9 100%);
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --primary: #00897b;
+            --text: #263238;
+        }
+
+        body {
+            background: var(--bg-grad);
+            color: var(--text);
+            font-family: 'Quicksand', sans-serif;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .frosted-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px rgba(0, 137, 123, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .frosted-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 137, 123, 0.3);
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 137, 123, 0.4);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Quantum Learning Space 🌿</h1>
+
+        <div class="frosted-card" style="margin-bottom: 2rem; text-align: center;">
+            <h2 style="margin-top: 0;">Welcome to your calm study zone.</h2>
+            <p>Focus on "Quantum Superposition" today.</p>
+            <button class="btn">Start Session</button>
+        </div>
+
+        <div class="grid">
+            <div class="frosted-card">
+                <h3>Daily Goal</h3>
+                <div style="font-size: 3rem; font-weight: 700; color: #004d40;">85%</div>
+                <p>You are almost there!</p>
+            </div>
+            <div class="frosted-card">
+                <h3>Upcoming Quiz</h3>
+                <p style="font-size: 1.2rem;">Linear Algebra Basics</p>
+                <div
+                    style="background: rgba(0, 137, 123, 0.1); color: var(--primary); padding: 5px 10px; border-radius: 10px; display: inline-block;">
+                    Due Tomorrow</div>
+            </div>
+            <div class="frosted-card">
+                <h3>Community</h3>
+                <p>35 students are online.</p>
+                <button class="btn" style="width: 100%; background: #26a69a;">Join Discussion</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

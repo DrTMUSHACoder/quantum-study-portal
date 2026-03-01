@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design 6: Sunset Horizon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-grad: linear-gradient(160deg, #ff7e5f 0%, #feb47b 100%);
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --border: 1px solid rgba(255, 255, 255, 0.5);
+            --text: #fff;
+        }
+
+        body {
+            background: var(--bg-grad) fixed;
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .sunset-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            transition: 0.3s;
+        }
+
+        .sunset-card:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #FF512F 0%, #DD2476 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(221, 36, 118, 0.3);
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(221, 36, 118, 0.5);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>RISE & LEARN</h1>
+
+        <div class="sunset-card"
+            style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h2 style="margin: 0; font-size: 2rem;">Good Evening, Harish.</h2>
+                <p style="font-size: 1.2rem; opacity: 0.9;">Ready to tackle Complex Numbers?</p>
+            </div>
+            <button class="btn">Resume</button>
+        </div>
+
+        <div class="grid">
+            <div class="sunset-card">
+                <h3>Your Streak</h3>
+                <div style="font-size: 4rem; font-weight: 800;">12 <span style="font-size: 1.5rem;">DAYS</span></div>
+            </div>
+            <div class="sunset-card">
+                <h3>Module Progress</h3>
+                <div
+                    style="width: 100%; background: rgba(255,255,255,0.3); height: 10px; border-radius: 5px; margin-top: 1rem;">
+                    <div style="width: 70%; background: #fff; height: 100%; border-radius: 5px;"></div>
+                </div>
+                <p style="text-align: right; margin-top: 5px;">70% Complete</p>
+            </div>
+            <div class="sunset-card">
+                <h3>Achievements</h3>
+                <div style="font-size: 3rem;">🏆 🥇 🎖️</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

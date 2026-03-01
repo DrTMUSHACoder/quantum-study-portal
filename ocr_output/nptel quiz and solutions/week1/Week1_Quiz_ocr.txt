@@ -1,0 +1,342 @@
+# OCR Extraction: Week1_Quiz.pdf
+# Engine: mistral
+# Pages: 5
+# Total Characters: 8901
+============================================================
+
+
+--- Page 0 ---
+
+2/12/26, 11:56 AM
+Introduction to Quantum Computing: Quantum Algorithms and Qiskit - - Unit 3 - Week 1
+
+X
+
+![img-0.jpeg](img-0.jpeg)
+
+(https://swayam.gov.in) (https://swayam.gov.in/nc_details/NPTEL)
+
+ushawin2020@gmail.com
+
+NPTEL (https://swayam.gov.in/explorer?ncCode=NPTEL) » Introduction to Quantum Computing: Quantum Algorithms and Qiskit (course)
+
+Click to register for Certification exam (https://examform.nptel.ac.in/2026/02/04)
+
+If already registered, click to check your payment status
+
+Course outline
+
+About NPTEL ()
+
+How does an NPTEL online course work? ()
+
+Week 1 ()
+
+- Algorithms towards Quantum Advantage and Careers in Quantum Computing (unit? unit=16&amp;lesson=78)
+- A Brief Introduction to Applications of Quantum (unit? unit=16&amp;lesson=19)
+- Quantum Computing Basics
+
+# Week 1: Assignment 1
+
+The due date for submitting this assignment has passed.
+
+Due on 2026-02-04, 23:59 IST.
+
+Assignment submitted on 2026-02-02, 22:05 IST
+
+- This assignment has 10 questions of the multiple choice type.
+- Each question can have multiple correct options. If you indicate all the correct answers, you get 2 marks.
+- No marks will be awarded if you indicate an incorrect answer.
+- If you indicate some, but not all, correct answers, you get 1 mark.
+
+1) Recall the Bloch sphere (geometric) representation of a qubit system, where in the state of a qubit 2 points is parameterized by two angles $\theta$ and $\phi$, as
+
+$$
+| \psi \rangle = \left(\cos \frac {\theta}{2}\right) | 0 \rangle + e ^ {i \phi} \left(\sin \frac {\theta}{2}\right) | 1 \rangle .
+$$
+
+What are the values of the angles $\theta$ and $\phi$ for the state $|\psi \rangle = \binom{(1 + i) / \sqrt{2}}{(1 - i) / \sqrt{2}}$?
+
+$\theta = \pi /2$ and $\phi = \pi /2$
+$\theta = \pi /2$ and $\phi = 3\pi /2$
+$\theta = \pi$ and $\phi = \pi /4$
+$\theta = \pi /4$ and $\phi = \pi /2$
+
+Yes, the answer is correct.
+
+Score: 2
+
+Accepted Answers:
+
+$\theta = \pi /2$ and $\phi = 3\pi /2$
+
+2)
+
+2 points
+
+https://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=16&amp;assessment=80
+
+--- Page 1 ---
+
+2/12/26, 11:56 AM
+
+Introduction to Quantum Computing: Quantum Algorithms and Qiskit - - Unit 3 - Week 1
+
+(unit? unit=16&amp;lesson=2 0)
+
+Postulates of Quantum Mechanics - I (unit? unit=16&amp;lesson=2 1)
+Postulates of Quantum Mechanics - II (unit? unit=16&amp;lesson=2 2)
+Quantum Measurements (unit? unit=16&amp;lesson=2 3)
+Quantum Gates and Circuits - Part 1 (unit? unit=16&amp;lesson=2 4)
+Quantum Gates and Circuits - Part 2 (unit? unit=16&amp;lesson=2 5)
+- Week 1: Lecture notes (unit? unit=16&amp;lesson=2 6)
+Week 1 Feedback Form: Introduction to Quantum Computing: Quantum Algorithms and Qiskit (unit? unit=16&amp;lesson=2 7)
+- Quiz: Week 1: Assignment 1 (assessment? name=80)
+- Week 1: Solution (unit? unit=16&amp;lesson=8 4)
+
+# Week 2 ()
+
+The state  $|\phi \rangle = \left(\frac{1 + i}{4}\right)|0\rangle +\left(\frac{3 - i}{4}\right)|1\rangle$  is measured in the  $\{|+\rangle ,|- \rangle \}$  basis (also called the Hadamard basis). What is the probability of obtaining  $| + \rangle$  as the measurement result?
+
+1/3
+2/3
+$\sqrt{\frac{2}{3}}$
+
+Yes, the answer is correct.
+
+Score: 2
+
+Accepted Answers:
+
+2/3
+
+3) Which of the following gate sequences adds a relative phase of  $\pi$  between  $|0\rangle$  and  $|1\rangle$ ?
+
+2 points
+
+![img-1.jpeg](img-1.jpeg)
+
+Partially Correct.
+
+Score: 1
+
+Accepted Answers:
+
+![img-2.jpeg](img-2.jpeg)
+
+4) Suppose the state  $| + \rangle = \frac{|0\rangle + |1\rangle}{\sqrt{2}}$ , is transformed via a quantum gate of the form
+
+$P = |0\rangle \langle 0| + e^{i\phi}|1\rangle \langle 1|$ . Find the angle  $\phi$  such that, after the action of the gate, the probability of obtaining  $| + \rangle$  is  $1 / 2$ .
+
+2 points
+
+$\phi = 0$
+$\phi = \pi /2$
+$\phi = \pi /4$
+$\phi = \pi$
+
+No, the answer is incorrect.
+
+https://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=16&amp;assessment=80
+
+--- Page 2 ---
+
+2/12/26, 11:56 AM
+Introduction to Quantum Computing: Quantum Algorithms and Qiskit - - Unit 3 - Week 1
+
+Week 3 ()
+☐
+
+Week 4 ()
+☐
+
+Download Videos ()
+☐
+
+Transcripts ()
+
+Score: 0
+Accepted Answers:
+$$
+\phi = \pi / 2
+$$
+
+5)
+Which of the circuits below implement the following operation? $O = \begin{pmatrix} 0 &amp; 1 &amp; 0 &amp; 0 \\ 1 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{pmatrix}$
+
+2 points
+
+☐
+![img-3.jpeg](img-3.jpeg)
+
+☐
+![img-4.jpeg](img-4.jpeg)
+
+☐
+![img-5.jpeg](img-5.jpeg)
+
+☐
+![img-6.jpeg](img-6.jpeg)
+
+No, the answer is incorrect.
+Score: 0
+Accepted Answers:
+![img-7.jpeg](img-7.jpeg)
+
+6) Which of these are valid quantum gates?
+
+2 points
+
+☐
+![img-8.jpeg](img-8.jpeg)
+
+Yes, the answer is correct.
+
+https://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=16&amp;assessment=80
+3/5
+
+--- Page 3 ---
+
+2/12/26, 11:56 AM
+
+Introduction to Quantum Computing: Quantum Algorithms and Qiskit - - Unit 3 - Week 1
+
+Score: 2
+
+Accepted Answers:
+
+$$
+\left( \begin{array}{cc} 1 &amp; 0 \\ 0 &amp; e^{\pi i / 4} \end{array} \right)
+$$
+
+$$
+\left( \begin{array}{cc} \frac{1}{\sqrt{2}} &amp; -\frac{i}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} &amp; \frac{i}{\sqrt{2}} \end{array} \right)
+$$
+
+$$
+\left( \begin{array}{cc} e^{-\pi i / 3} &amp; 0 \\ 0 &amp; e^{\pi i / 3} \end{array} \right)
+$$
+
+7) Which of these circuits implement the transformation $|00\rangle \rightarrow \frac{1}{\sqrt{2}} |00\rangle -\frac{1}{\sqrt{2}} |11\rangle$?
+
+2 points
+
+![img-9.jpeg](img-9.jpeg)
+
+![img-10.jpeg](img-10.jpeg)
+
+![img-11.jpeg](img-11.jpeg)
+
+![img-12.jpeg](img-12.jpeg)
+
+No, the answer is incorrect.
+
+Score: 0
+
+Accepted Answers:
+
+![img-13.jpeg](img-13.jpeg)
+
+8) Which of the following pairs of quantum states can be perfectly distinguished?
+
+2 points
+
+$$
+\left(\sqrt{\frac{6}{19}} |0\rangle + \sqrt{\frac{13}{19}} |1\rangle, \sqrt{\frac{6}{19}} |0\rangle + \sqrt{\frac{13}{19}} |1\rangle\right)
+$$
+
+$$
+\left(\sqrt{\frac{13}{19}} |0\rangle + \sqrt{\frac{6}{19}} |1\rangle, -\sqrt{\frac{6}{19}} |0\rangle + \sqrt{\frac{13}{19}} |1\rangle\right)
+$$
+
+$$
+\left(\sqrt{\frac{6}{19}} |0\rangle - \sqrt{\frac{13}{19}} |1\rangle, \sqrt{\frac{13}{19}} |0\rangle + \sqrt{\frac{6}{19}} |1\rangle\right)
+$$
+
+$$
+\left(\sqrt{\frac{6}{19}} |0\rangle - \sqrt{\frac{13}{19}} |1\rangle, -\sqrt{\frac{6}{19}} |0\rangle - \sqrt{\frac{13}{19}} |1\rangle\right)
+$$
+
+Yes, the answer is correct.
+
+https://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=16&amp;assessment=80
+
+--- Page 4 ---
+
+2/12/26, 11:56 AM
+Introduction to Quantum Computing: Quantum Algorithms and Qiskit - - Unit 3 - Week 1
+
+Score: 2
+
+Accepted Answers:
+$$
+\left(\sqrt {\frac {13}{19}} | 0 \rangle + \sqrt {\frac {6}{19}} | 1 \rangle , - \sqrt {\frac {6}{19}} | 0 \rangle + \sqrt {\frac {13}{19}} | 1 \rangle\right)
+$$
+$$
+\left(\sqrt {\frac {6}{19}} | 0 \rangle - \sqrt {\frac {13}{19}} | 1 \rangle , \sqrt {\frac {13}{19}} | 0 \rangle + \sqrt {\frac {6}{19}} | 1 \rangle\right)
+$$
+
+9)
+
+2 points
+
+Which of the following states are equivalent to $|\psi \rangle = \cos \frac{\pi}{4} |0\rangle + e^{i\pi /3}\sin \frac{\pi}{4} |1\rangle$ physically?
+
+☐
+(a) $e^{i\frac{\pi}{2}}\cos \frac{\pi}{4} |0\rangle +e^{i\left(\frac{\pi}{4} +\frac{\pi}{2}\right)}\sin \frac{\pi}{4} |1\rangle$
+☐
+(b) $\cos \frac{\pi}{4} |0\rangle +e^{i\frac{4\pi}{3}}\sin \frac{\pi}{4} |1\rangle$
+☐
+(c) $-\cos \frac{\pi}{4} |0\rangle -e^{i\frac{\pi}{3}}\sin \frac{\pi}{4} |1\rangle$
+☐
+(d) $\cos \frac{\pi}{4} |0\rangle +e^{i\frac{\pi}{6}}\sin \frac{\pi}{4} |1\rangle$
+
+Yes, the answer is correct.
+
+Score: 2
+
+Accepted Answers:
+(a) $e^{i\frac{\pi}{2}}\cos \frac{\pi}{4} |0\rangle +e^{i\left(\frac{\pi}{3} +\frac{\pi}{2}\right)}\sin \frac{\pi}{4} |1\rangle$
+(c) $-\cos \frac{\pi}{4} |0\rangle -e^{i\frac{\pi}{3}}\sin \frac{\pi}{4} |1\rangle$
+
+10) Consider the following single-qubit rotation gates:
+
+2 points
+
+$$
+R _ {x} (\theta) = \left( \begin{array}{cc} \cos \left(\frac {\theta}{2}\right) &amp; - i \sin \left(\frac {\theta}{2}\right) \\ - i \sin \left(\frac {\theta}{2}\right) &amp; \cos \left(\frac {\theta}{2}\right) \end{array} \right), \quad R _ {y} (\theta) = \left( \begin{array}{cc} \cos \left(\frac {\theta}{2}\right) &amp; - \sin \left(\frac {\theta}{2}\right) \\ \sin \left(\frac {\theta}{2}\right) &amp; \cos \left(\frac {\theta}{2}\right) \end{array} \right), \quad R _ {Z} (\theta) = \left( \begin{array}{cc} e ^ {- i \theta / 2} &amp; 0 \\ 0 &amp; e ^ {i \theta / 2} \end{array} \right)
+$$
+
+The Hadamard gate can be realized as a sequence of gates of the form $H = e^{i\phi /2}R_z(\alpha)R_x(\theta)R_z(\beta)$. Identify the values of $\phi, \alpha, \theta$ and $\beta$.
+
+☐
+$$
+\phi = \pi / 4, \alpha = \beta = \pi , \theta = \pi / 2.
+$$
+
+☐
+$$
+\phi = 0, \alpha = \beta = \pi / 2, \theta = \pi / 4.
+$$
+
+☐
+$$
+\phi = \pi / 4, \alpha = \beta = \pi / 2, \theta = \pi / 4.
+$$
+
+☐
+$$
+\phi = \pi / 2, \alpha = \beta = \theta = \pi / 2.
+$$
+
+No, the answer is incorrect.
+
+Score: 0
+
+Accepted Answers:
+$$
+\phi = \pi / 4, \alpha = \beta = \pi / 2, \theta = \pi / 4.
+$$
+
+https://onlinecourses.nptel.ac.in/noc26_cs89/unit?unit=16&amp;assessment=80
+5/5

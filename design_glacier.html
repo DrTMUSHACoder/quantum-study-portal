@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design 8: Glacier Blue</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0f4f8;
+            --glass-bg: rgba(220, 235, 255, 0.4);
+            --border: 1px solid rgba(255, 255, 255, 0.6);
+            --text-dark: #102a43;
+            --accent: #334e68;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+            color: var(--text-dark);
+            font-family: 'Roboto', sans-serif;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .ice-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow:
+                0 4px 6px rgba(0, 0, 0, 0.05),
+                inset 0 0 15px rgba(255, 255, 255, 0.5);
+            transition: all 0.3s;
+        }
+
+        .ice-card:hover {
+            background: rgba(220, 235, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        h1 {
+            font-weight: 300;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+            color: var(--accent);
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            background: #243b53;
+            color: #fff;
+            padding: 0.8rem 1.6rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #102a43;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 8px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 300;
+            margin: 0 auto 1rem auto;
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Quantum Mechanics / Study Portal</h1>
+
+        <div class="grid">
+            <div class="ice-card" style="text-align: center;">
+                <h3>Overall Mastery</h3>
+                <div class="stat-circle">B+</div>
+                <p>Consistent progress observed.</p>
+            </div>
+
+            <div class="ice-card">
+                <h3>Current Topic</h3>
+                <h2 style="margin-top: 0.5rem; font-weight: 400;">Heisenberg Uncertainty</h2>
+                <p style="line-height: 1.6;">The more you know the position, the less you know the momentum.</p>
+                <button class="btn" style="margin-top: 1rem;">View Notes</button>
+            </div>
+
+            <div class="ice-card">
+                <h3>Library</h3>
+                <ul style="padding-left: 20px;">
+                    <li>Lecture 1: Intro (PDF)</li>
+                    <li>Lecture 2: Wavefunctions (PDF)</li>
+                    <li>Lecture 3: Operators (PDF)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design 9: Bordeaux Glass</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-grad: linear-gradient(to right, #2c0e16, #4a192c);
+            --card-bg: rgba(70, 20, 40, 0.4);
+            --border: 1px solid rgba(255, 200, 200, 0.15);
+            --text-gold: #e5c1cd;
+        }
+
+        body {
+            background: var(--bg-grad);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .wine-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: var(--border);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s;
+        }
+
+        .wine-card:hover {
+            background: rgba(80, 25, 45, 0.5);
+            border-color: rgba(255, 200, 200, 0.3);
+            transform: translateY(-5px);
+        }
+
+        h1,
+        h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--text-gold);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            border-left: 5px solid var(--text-gold);
+            padding-left: 20px;
+        }
+
+        .btn {
+            background: transparent;
+            border: 1px solid var(--text-gold);
+            color: var(--text-gold);
+            padding: 0.6rem 2rem;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: var(--text-gold);
+            color: #2c0e16;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Quantum Studies</h1>
+
+        <div class="grid">
+            <div class="wine-card">
+                <h2>The Lectures</h2>
+                <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">Explore the fundamental principles
+                    of quantum mechanics through our curated series.</p>
+                <button class="btn">Enter Library</button>
+            </div>
+
+            <div class="wine-card">
+                <h2>Your Progress</h2>
+                <div style="font-size: 4rem; font-family: 'Cinzel', serif; color: var(--text-gold);">IV</div>
+                <p>Week 4: Completed</p>
+            </div>
+
+            <div class="wine-card">
+                <h2>Examination</h2>
+                <p>The next assessment is scheduled for Friday.</p>
+                <div style="margin-top: 1rem; color: var(--text-gold);">Status: Prepared</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

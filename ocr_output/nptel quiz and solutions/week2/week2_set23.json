@@ -1,0 +1,62 @@
+[
+    {
+        "q": "Which of the following describes a Bell State?",
+        "options": [
+            "A state of 1 qubit",
+            "A maximally entangled state of 2 qubits",
+            "A state where qubits are completely independent",
+            "A classical bit pair"
+        ],
+        "answer": 1,
+        "explanation": "Bell States are the four specific states of two qubits that represent the maximum possible entanglement between them.",
+        "id": "2_23_1"
+    },
+    {
+        "q": "To create the Bell state $(|00\\rangle + |11\\rangle)/\\sqrt{2}$, which gates are applied and in what order?",
+        "options": [
+            "X then CNOT",
+            "H then CNOT",
+            "CNOT then H",
+            "H then X"
+        ],
+        "answer": 1,
+        "explanation": "Applying a Hadamard on the first qubit ($H \\otimes I$) followed by a CNOT from the first to the second qubit generates this Bell state.",
+        "id": "2_23_2"
+    },
+    {
+        "q": "In Quantum Teleportation, how many classical bits does Alice send to Bob?",
+        "options": [
+            "1",
+            "2",
+            "3",
+            "0"
+        ],
+        "answer": 1,
+        "explanation": "Alice sends two classical bits (resulting from her Bell measurement) to Bob so he can apply the correct recovery gates.",
+        "id": "2_23_3"
+    },
+    {
+        "q": "The No-Cloning Theorem states that:",
+        "options": [
+            "Qubits cannot be measured",
+            "An unknown quantum state cannot be perfectly duplicated",
+            "CNOT gates are impossible",
+            "Classical bits are superior to qubits"
+        ],
+        "answer": 1,
+        "explanation": "The No-Cloning Theorem is a fundamental result in quantum mechanics that prevents the creation of an identical copy of an arbitrary unknown quantum state.",
+        "id": "2_23_4"
+    },
+    {
+        "q": "What happens if you measure one qubit of a Bell state $(|00\\rangle + |11\\rangle)/\\sqrt{2}$ and get $|0\\rangle$?",
+        "options": [
+            "The other qubit remains in superposition",
+            "The other qubit immediately collapses to $|0\\rangle$",
+            "The other qubit collapses to $|1\\rangle$",
+            "The entanglement is preserved"
+        ],
+        "answer": 1,
+        "explanation": "In an entangled state like this, measuring one qubit instantly determines the state of the other. If the first is $|0\\rangle$, the second must also be $|0\\rangle$ due to the correlation.",
+        "id": "2_23_5"
+    }
+]

@@ -1,0 +1,193 @@
+SOLUTIONS TO ASSIGNMENT 2
+INTRODUCTION TO QUANTUM COMPUTING
+IIT MADRAS & IBM RESEARCH INDIA
+Week 2 Assignment 2 Solutions Jan 2026
+1.Question:Which of the following are Qiskit Runtime primitives currently available
+on the IBM Quantum Platform?
+Answer: (a) Sampler, (b) Estimator
+Explanation:
+Qiskit Runtime provides two core primitives for quantum computing:
+•Sampler: Executes quantum circuits and returns quasi-probability distribu-
+tions of measurement outcomes
+•Estimator: Computes expectation values of observables on quantum states
+Circuit-Runner and Executor are not official IBM Qiskit Runtime primitives.
+2.Question:According to the IBM Quantum Composer documentation, which version
+of OpenQASM is currently supported for writing quantum circuits in the code editor?
+Answer: (b) OpenQASM 2.0
+Explanation:
+IBM Quantum Composer currently supports OpenQASM 2.0 as the standard quan-
+tum assembly language for circuit representation. While OpenQASM 3.0 exists and
+offers enhanced features, the Composer interface primarily uses version 2.0 for com-
+patibility and stability.
+3.Question:Which statement correctly describes the difference between the Sampler
+and Estimator primitives in Qiskit?
+1Answer: (a) Sampler returns measurement outcome distributions from a
+circuit, while Estimator returns expectation values of specified observables
+Explanation:
+•Sampler: Returns the full probability distribution over measurement outcomes
+(quasi-probabilities), useful for sampling-based algorithms
+•Estimator: Computes⟨ψ|H|ψ⟩for a given observableH, returning expectation
+values rather than raw measurement data
+Option (a) correctly captures this fundamental distinction.
+4.Question:In the transpilation process, which of the following steps are NOT per-
+formed to prepare a quantum circuit for execution on real quantum hardware?
+Answer: (d) Converting all gates to Hadamard and CNOT gates only
+Explanation:
+Transpilation involves:
+•Decomposing gates into the backend’s native gate set (which varies by hardware)
+•Mapping logical to physical qubits based on connectivity
+•Optimizing circuit depth and gate count
+However, transpilation doesnotrestrict all gates to only Hadamard and CNOT.
+Different quantum processors support different native gate sets (e.g., some useR z,√
+X, and CNOT as basis gates).
+5.Question:Using IBM Quantum Composer, create a 3-qubit circuit starting in state
+|000⟩. Apply a rotation gateR y(π
+3) to the first qubit (q[0]). What is the resulting
+quantum state?
+Answer: (b)
+2Explanation:
+TheR y(θ) gate rotates a qubit around the Y-axis of the Bloch sphere:
+Ry(θ) =cos(θ/2)−sin(θ/2)
+sin(θ/2) cos(θ/2)
+ApplyingR y(π/3) to|0⟩:
+Ry(π/3)|0⟩= cos(π/6)|0⟩+ sin(π/6)|1⟩=√
+3
+2|0⟩+1
+2|1⟩
+For the 3-qubit system:
+|ψ⟩= √
+3
+2|0⟩+1
+2|1⟩!
+⊗ |0⟩ ⊗ |0⟩=√
+3
+2|000⟩+1
+2|100⟩
+IBM Quantum Implementation:
+3Statevector Visualization Result:
+The statevector visualization shows non-zero amplitudes only at positions 000 and
+100 (binary), with magnitudes√
+3
+2≈0.866 and1
+2= 0.5 respectively, confirming
+option (b) as correct.
+6.Question:Create a 3-qubit GHZ state by applying a Hadamard gate to q[0], followed
+by CNOT gates from q[0] to q[1] and q[0] to q[2]. Visualize the density matrix using
+the state city representation.
+Answer: (a)
+Explanation:
+The GHZ (Greenberger-Horne-Zeilinger) state is created using the following Qiskit
+code:
+4Circuit construction:
+1qc = QuantumCircuit (3)
+2qc.h(0) # Creates superposition
+3qc.cx (0, 1) # Creates : (|000 > + |110 >)/ sqrt (2)
+4qc.cx (0, 2) # Creates GHZ: (|000 > + |111 >)/ sqrt (2)
+Final state:
+|GHZ⟩=1√
+2(|000⟩+|111⟩)
+Density matrix:
+ρ=|GHZ⟩⟨GHZ|=1
+2(|000⟩⟨000|+|000⟩⟨111|+|111⟩⟨000|+|111⟩⟨111|)
+In the state city representation, non-zero elements appear only at:
+•(0,0) and (7,7) positions (diagonal elements, real)
+•(0,7) and (7,0) positions (off-diagonal coherence terms, real)
+All with magnitude 0.5. The imaginary part should be zero. Option (a) correctly
+shows this pattern.
+7.Question:Starting with the initial state|ψ⟩=1
+2(|00⟩+|01⟩+|10⟩+|11⟩), apply
+a CNOT gate with control qubit q[0] and target qubit q[1], followed by a Hadamard
+gate on q[0]. What is the resulting quantum state?
+Answer: (b)√
+2
+2(|00⟩+|10⟩)
+Explanation:
+The circuit implementing this question is created using the following Qiskit code:
+Circuit construction:
+1# 1. Create initial state by applying a Hadamard Gate to q[0]
+and q [1].
+2qc = QuantumCircuit (2)
+3qc.h(0)
+4qc.h(1)
+5
+56
+7# 2. Apply CNOT ( control =q[0] , target =q [1])
+8qc.cx (0, 1)
+9
+10# 3. Apply Hadamard on q[0]
+11qc.h(0)
+12
+13print (qc. draw ())
+14
+15final_state = Statevector (qc)
+16final_state . draw (’latex ’)
+Final state:√
+2
+2(|00⟩+|10⟩)
+8.Question:Apply a rotation gateR y(2π
+3) to the first qubit of state|000⟩, followed
+by a CNOT from qubit 0 to qubit 1. What is the resulting quantum state?
+Answer: (a)1
+2|000⟩+√
+3
+2|011⟩
+Explanation:
+The circuit implementing this question is created using the following Qiskit code:
+Circuit construction:
+1qc = QuantumCircuit (3)
+2
+3# Apply Ry (2 pi /3) to qubit 0
+4qc.ry (2* np.pi /3, 0)
+5
+6# Apply CNOT from qubit 0 to qubit 1
+7qc.cx (0, 1)
+8
+9print (qc. draw ())
+10final_state = Statevector (qc)
+11final_state . draw (’latex ’)
+Final state:
+1
+2|000⟩+√
+3
+2|011⟩
+69.Question:In a quantum teleportation protocol, Bob applies correction gates based
+on the 2-bit classical message from Alice. If Bob’s gate sequences in four trials are:
+(I, I), (Z, I), (X, I), and (XZ, I), what are the corresponding 2-bit messages Alice
+sent?
+Answer: (a) 00, 01, 10, 11
+Explanation:
+In quantum teleportation, Alice measures two qubits and sends the results (2 classical
+bits) to Bob. Bob applies correction gates based on these measurement outcomes:
+Measurement (m 1m0)Bob’s Gates Correction
+00 I No correction needed
+01 Z Phase flip
+10 X Bit flip
+11 XZ (or ZX) Both flips
+The standard teleportation protocol uses:
+•m 0= 0: No X gate;m 0= 1: Apply X gate
+•m 1= 0: No Z gate;m 1= 1: Apply Z gate
+Matching Bob’s gates to messages:
+•(I, I)→00
+•(Z, I)→01
+•(X, I)→10
+•(XZ, I)→11
+10.Question:Alice and Bob share an entangled state1√
+2(|01⟩+|10⟩). If Alice measures
+her qubit in the computational basis and obtains result|0⟩, what is the state of Bob’s
+qubit after Alice’s measurement?
+Answer: (a)|1⟩
+Explanation:
+7The shared entangled state is:
+|ψ⟩=1√
+2(|01⟩+|10⟩)
+where the first qubit belongs to Alice and the second to Bob.
+When Alice measures her qubit in the computational basis:
+•If Alice measures|0⟩: The state collapses to the component with Alice’s qubit
+= 0, which is|01⟩. Bob’s qubit is in state|1⟩.
+•If Alice measures|1⟩: The state collapses to|10⟩, and Bob’s qubit is in state
+|0⟩.
+Since Alice obtained|0⟩, the joint state after measurement is|01⟩, meaning Bob’s
+qubit is definitively in state|1⟩ .
+Note:Questions 6, 7, and 8 include Python code implementations using Qiskit for
+verification and visualization of quantum states.
+8
